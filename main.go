@@ -1,13 +1,17 @@
 package main
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/atotto/clipboard"
 	"github.com/dimfeld/httptreemux"
@@ -23,8 +27,17 @@ import (
 	"github.com/kabukky/journey/server"
 	"github.com/kabukky/journey/structure/methods"
 	"github.com/kabukky/journey/templates"
+	"github.com/webview/webview"
 	"i2pgit.org/idk/railroad/https"
 )
+
+func save(c *configuration.Configuration) error {
+	data, err := json.Marshal(c)
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(filenames.ConfigFilename, data, 0600)
+}
 
 func httpsRedirect(w http.ResponseWriter, r *http.Request, _ map[string]string) {
 	http.Redirect(w, r, configuration.Config.HttpsUrl+r.RequestURI, http.StatusMovedPermanently)
@@ -45,7 +58,7 @@ func onReady() {
 	systray.SetTitle("Railroad Blog")
 	systray.SetTooltip("Blog is running on I2P: http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
 	mShowUrl := systray.AddMenuItem("http://"+listener.Addr().(i2pkeys.I2PAddr).Base32(), "copy blog address to clipboard")
-
+	mEditUrl := systray.AddMenuItem("Edit your blog", "copy blog address to clipboard")
 	if strings.HasSuffix(configuration.Config.Url, "i2p") {
 		mCopyUrl := systray.AddMenuItem("Copy blog address", "copy blog address to clipboard")
 		go func() {
@@ -68,10 +81,22 @@ func onReady() {
 		log.Println("Finished quitting")
 	}()
 	go func() {
+		<-mEditUrl.ClickedCh
+		log.Println("Requesting edit")
+		cmd := exec.Command(findMe())
+		var out []byte
+		var err error
+		if out, err = cmd.CombinedOutput(); err != nil {
+			log.Fatal("COMMAND", err)
+		}
+		log.Println(string(out))
+		log.Println("Finished requesting edit")
+	}()
+	go func() {
 		<-mShowUrl.ClickedCh
 		log.Println("Requesting copy base32")
 		clipboard.WriteAll("http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
-		log.Println("Finished quitting")
+		log.Println("Finished copy base32")
 	}()
 	//	}
 }
@@ -79,6 +104,8 @@ func onReady() {
 func onExit() {
 	// clean up here
 }
+
+var webView webview.WebView
 
 var url string
 
@@ -109,11 +136,67 @@ Your site will still be available by it's cryptographic address.
 Setting Url to an .i2p domain name will also set HttpsUrl to the
 same domain name.`
 
+// Check if we're already running. If we are, run a webview to edit and admin the blog.
+func portCheck(addr string) (status bool, faddr string, err error) {
+	host, port, err := net.SplitHostPort(addr)
+	if err != nil {
+		log.Fatal("Invalid address")
+	}
+	if host == "" {
+		host="127.0.0.1"
+	}
+	timeout := time.Second
+	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
+	if err != nil {
+		if strings.Contains(err.Error(), "connection refused"){
+			err = nil
+		}
+		log.Println("Connecting error:", err)
+	}
+	if conn != nil {
+		defer conn.Close()
+		status = true
+		faddr = net.JoinHostPort(host, port)
+		log.Println("Opened", net.JoinHostPort(host, port))
+	}
+	return
+}
+
+func findMe() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return filepath.Join(dir, os.Args[0])
+}
+
 func main() {
 	// Setup
 	var err error
-	if !fileExists("config.json") {
-		ioutil.WriteFile("config.json", []byte(configjson), 0644)
+
+	if status, addr, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {
+		log.Println("TEST")
+		if status == true {
+			log.Println("TEST1")
+			debug := true
+			webView := webview.New(debug)
+			defer webView.Destroy()
+			webView.SetTitle("Railroad Blog - Administration")
+			webView.SetSize(800, 600, webview.HintNone)
+			log.Println("http://" + addr + "/admin")
+			webView.Navigate("http://" + addr + "/admin")
+			webView.Run()
+			return
+		}
+	}else{
+		log.Fatal(err)
+	}
+	// Enforce safe local configuration
+	if configuration.Config.HttpHostAndPort == ":8084" {
+		configuration.Config.HttpHostAndPort = "127.0.0.1:8084"
+	}
+	if configuration.Config.HttpsHostAndPort == ":8085" {
+		configuration.Config.HttpsHostAndPort = "127.0.0.1:8085"
 	}
 	configuration.Config.UseLetsEncrypt = false
 	listener, err = sam.I2PListener("railroad", "127.0.0.1:7656", "railroad")
@@ -122,14 +205,15 @@ func main() {
 	}
 
 	defer listener.Close()
-	configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()	
+	configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 	if strings.HasSuffix(configuration.Config.Url, "i2p") {
 		configuration.Config.HttpsUrl = configuration.Config.Url
 	} else {
 		log.Println(domainhelp)
+		configuration.Config.HttpsHostAndPort = listener.Addr().(i2pkeys.I2PAddr).Base32()
 	}
-	
-	configuration.Config.HttpsHostAndPort = listener.Addr().(i2pkeys.I2PAddr).Base32()
+
+	save(configuration.Config)
 
 	// GOMAXPROCS - Maybe not needed
 	runtime.GOMAXPROCS(runtime.NumCPU())

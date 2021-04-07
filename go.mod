@@ -16,6 +16,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/russross/blackfriday v1.6.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
+	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e // indirect
 	github.com/yuin/gopher-lua v0.0.0-20200816102855-ee81675732da // indirect
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect

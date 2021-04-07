@@ -29,6 +29,8 @@ If your $GOPATH is set, leave it as-is.
         GOOS=windows go build -ldflags -H=windowsgui -o railroad.exe
         cd ../
         tar -zcvf railroad.tar.gz railroad
+        wget -O railroad/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
+        wget -O railroad/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
         zip -r railroad.zip railroad
 
 ## install a package
