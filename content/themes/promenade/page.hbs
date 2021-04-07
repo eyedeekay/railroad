@@ -1,0 +1,19 @@
+{{!< default}}
+<main class="content contentpost" role="main">
+    <article class="contentpost_inner {{post_class}}" itemscope itemtype="http://schema.org/BlogPosting" role="article">
+        {{#post}}
+        {{#if tags}}<span class="contentpost_meta">{{tags separator=" · "}}</span>{{/if}}
+        <h1 class="contentpost_headline post-title" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</h1>
+        <section class="contentpost_articlecontent post-content">
+            {{content}}
+        </section>
+        <footer class="contentpost_footer_page post-footer">
+            <section class="share">
+                <a href="https://twitter.com/share?text={{encode title}}&amp;url={{url absolute="true"}}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" title="Share on Twitter"><i class="fa fa-twitter fa-lg share_symbol twitter_symbol"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{url absolute="true"}}" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" title="Share on Facebook"><i class="fa fa-facebook fa-lg share_symbol facebook_symbol"></i></a>
+                <a href="https://plus.google.com/share?url={{url absolute="true"}}" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" title="Share on Google+"><i class="fa fa-google-plus fa-lg share_symbol google-plus_symbol"></i></a>
+            </section>
+        </footer>
+        {{/post}}
+    </article>
+</main>

@@ -1,0 +1,44 @@
+{{!< default}}
+<main class="contentlist" role="main">
+	<section class="contentlist_inner">
+		{{#foreach posts}}
+		<article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post_item {{post_class}}">
+			<header class="post_item_header">
+				<h2 itemprop="name" class="post_item_title">
+					<a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">
+						{{{title}}}
+					</a>
+				</h2>
+			</header>
+			<section itemprop="description" class="post_item_excerpt">
+				{{#if image}}
+					<img src="{{image}}" alt="image" class="post_item_image" />
+				{{/if}}
+				<p>{{excerpt words="35"}}&hellip;&nbsp;<a href="{{url}}" itemprop="url">»</a></p>
+			</section>
+			<footer class="post_item_footer">
+				<ul class="post_item_meta_list">
+					<li class="post_item_meta_item">
+						<time datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">
+							{{date published_at timeago="true"}}
+						</time>
+					</li>
+					{{#if tags}}
+					<li class="post_item_meta_item post_tags">
+						{{tags}}
+					</li>
+					{{/if}}
+					<li class="post_item_meta_item">
+						<a href="{{url}}#disqus_thread">Comments</a>
+					</li>
+				</ul>
+			</footer>
+		</article>
+		{{/foreach}}
+		{{#if pagination}}
+		<div class="contentlist_pagination">
+			{{{pagination}}}
+		</div>
+		{{/if}}
+	</section>
+</main>

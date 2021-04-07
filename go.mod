@@ -3,9 +3,11 @@ module i2pgit.org/idk/railroad
 go 1.16
 
 require (
+	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/eyedeekay/sam3 v0.32.32
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/getlantern/systray v1.1.0 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568 // indirect
 	github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3

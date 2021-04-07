@@ -1,0 +1,350 @@
+@import "variables";
+
+body {
+	font-family: $fontDefault;
+    line-height: $goldenRatio + 0em;
+    font-weight: 400;
+    font-size: 1.125em;
+    color: $colorText;
+    background-color: $colorWhite;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    word-wrap: break-word;
+}
+h1, h2, h3, h4, h5, h6  {
+    @include mixinHeader;
+    text-rendering: optimizeLegibility;
+    line-height: 1.15em;
+}
+img {
+    border: 0;
+    max-width: 100%;
+}
+a {
+    word-wrap: break-word;
+}
+pre {
+    padding: 10px;
+    border: 1px solid $colorPreBorder;
+    overflow: auto;
+    background: none repeat scroll 0% 0% $colorPreBackground;
+    code {
+        padding: 0px;
+        background: none;
+        border: none;
+    }
+}
+code {
+    font-size: 0.85em;
+    padding: 1px 3px;
+    white-space: pre-wrap;
+    background: none repeat scroll 0% 0% #F7FAFB;
+    border: 1px solid #E3EDF3;
+}
+.sidebar {
+	color: $colorWhite;
+	@media only screen and (min-width: $breakLarge) {
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	    bottom: 0;
+	    width: $sidebarWidth;
+	    //max-width: $maxWidthSidebar;
+	    background: $colorSidebarBackground no-repeat center center;
+	    background-size: cover;
+	}
+	@media only screen and (max-width: $breakSmall) {
+		position: relative;
+		height: $sidebarHeight;
+		min-height: $minHeightSidebar;
+        width: 100%;
+        background: $colorSidebarBackground no-repeat center center;
+        background-size: cover;
+	}
+}
+.sidebar_userimage {
+	@media only screen and (min-width: $breakLarge) {
+	    width: $sizeUserimageSidebar;
+        height: $sizeUserimageSidebar;
+        border-radius: $sizeUserimageSidebar;
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin: 0 0 0;
+        border: $sizeUserimageSidebarBorder solid $colorWhite;
+	}
+	@media only screen and (max-width: $breakSmall) {
+        width: $sizeUserimageSidebar / 1.5;
+        height: $sizeUserimageSidebar / 1.5;
+        border-radius: $sizeUserimageSidebar / 1.5;
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        margin: 0 auto 0;
+        border: $sizeUserimageSidebarBorder / 1.5 solid $colorWhite;
+    }
+}
+.sidebar_inner {
+	@media only screen and (min-width: $breakLarge) {
+		position: absolute;
+        bottom: 0;
+        padding: 3em 10% 10%;
+	}
+	@media only screen and (max-width: $breakSmall) {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-width: $breakSmall;
+        box-sizing: border-box;
+        padding: 1em;
+        text-align: center;
+    }
+}
+.sidebar_title {
+    margin: 0.4em 0;
+    font-size: 1.75em;
+	text-shadow: $titleSidebarShadow;
+}
+.sidebar_symbols {
+    white-space: nowrap;
+    @media only screen and (min-width: $breakLarge) {
+        margin: 0 0 1em 0;
+    }
+}
+.sidebar_symbol {
+    color: $colorWhite;
+    text-shadow: $titleSidebarShadow;
+    display: inline-block;
+    margin: 0 1%;
+}
+.github_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorGithub;
+    }
+}
+.linkedin_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorLinkedin;
+    }
+}
+.xing_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorXing;
+    }
+}
+.flickr_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorFlickr;
+    }
+}
+.youtube_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorYoutube;
+    }
+}
+.rss_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorRss;
+    }
+}
+.twitter_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorTwitter;
+    }
+}
+.facebook_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorFacebook;
+    }
+}
+.google-plus_symbol {
+    @include mixinLinkHover;
+    &:hover {
+        color: $colorGooglePlus;
+    }
+}
+.sidebar_link {
+    margin: 0;
+    a {
+        color: $colorWhite;
+        text-decoration: none;
+        font-size: 0.75em;
+        text-shadow: $titleSidebarShadow;
+        @include mixinLinkHover;
+    }
+    @media only screen and (max-width: $breakSmall) {
+        display: inline-block;
+        margin: 0 2%;
+    }
+}
+.contentlist {
+    @media only screen and (min-width: $breakLarge) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100 - $sidebarWidth + 0%;
+        box-shadow: $contentListShadow;
+        overflow-x: auto;
+    }
+}
+.contentlist_inner {
+    width: 100%;
+    max-width: 47em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    @media only screen and (min-width: $breakLarge) {
+        padding: 1em 1em 1em 5em;
+    }
+    @media only screen and (max-width: $breakSmall) {
+        padding: 1em 1em;
+    }
+}
+.post_item_header{
+    padding-bottom: 0.4em;
+}
+.post_item_title {
+    margin: 0 0 0.4em 0;
+    font-size: $fontSizePostItemTitle;
+    a {
+        color: $colorText;
+        @include mixinLinkHover;
+    }
+}
+.post_item {
+    position: relative;
+    padding: 1.5em 0 1.5em 0;
+    border-bottom: 1px solid $colorBorderPostList;
+    word-wrap: break-word;
+}
+.post_item_image {
+    max-width: 50%;
+}
+.post_item_excerpt {
+    p {
+        margin: 0;
+        font-size: 0.9em;
+        line-height: 1.7em;
+    }
+    a {
+        color: $colorLink;
+        @include mixinLinkHover;
+    }
+}
+.post_item_meta_list {
+    margin: 0;
+    padding: 0.75em 0 0 0;
+    list-style: none outside none;
+}
+.post_item_meta_item {
+    display: inline-block;
+    font-size: 0.75em;
+    a {
+        color: $colorLink;
+        @include mixinLinkHover;
+    }
+    &:before {
+        content: " · ";
+    }
+    &:first-child:before {
+        content: "";
+        display: none;
+    }
+}
+.post_tags {
+    color: $colorLink;
+}
+.contentlist_pagination {
+    margin-top: 2em;
+}
+.pagination {
+    text-align: center;
+    a {
+        color: $colorLink;
+        @include mixinLinkHover;
+    }
+}
+.older-posts {
+    &:before {
+        content: " · ";
+    }
+}
+.newer-posts {
+    &:after {
+        content: " · ";
+    }
+}
+.contentpost {
+    @media only screen and (min-width: $breakLarge) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 70%;
+        box-shadow: $contentListShadow;
+        overflow-x: auto;
+    }
+}
+.contentpost_inner {
+    max-width: 40em;
+    margin: 0 auto;
+    padding: 0 1em;
+    position: relative;
+}
+.contentpost_meta {
+    font-size: 0.75em;
+    a {
+        color: $colorLink;
+        @include mixinLinkHover;
+    }
+}
+.contentpost_headline {
+    font-size: 3em;
+    line-height: 1em;
+}
+.contentpost_articlecontent {
+    padding-bottom: 2em;
+    border-bottom: 1px solid $colorBorderPostList;
+}
+.contentpost_footer {
+    padding: 1em 0;
+    border-bottom: 1px solid $colorBorderPostList;
+    margin-bottom: 2em;
+}
+.share {
+    float: right;
+    text-align: right;
+}
+.share_symbol {
+    color: $colorText;
+    padding-left: 0.3em;
+}
+.contentpost_footerbar {
+    h5 {
+        margin: 0;
+        //line-height: 1.1em;
+    }
+    time {
+        font-size: 0.75em;
+    }
+}
+.contentpost_footer_page {
+    padding: 1em 0;
+    margin-bottom: 2em;
+}

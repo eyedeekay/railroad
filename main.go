@@ -1,15 +1,20 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"runtime"
 	"strings"
 
+	"github.com/atotto/clipboard"
 	"github.com/dimfeld/httptreemux"
 	"github.com/eyedeekay/sam3/helper"
 	"github.com/eyedeekay/sam3/i2pkeys"
+	"github.com/getlantern/systray"
+	"github.com/getlantern/systray/example/icon"
 	"github.com/kabukky/journey/configuration"
 	"github.com/kabukky/journey/database"
 	"github.com/kabukky/journey/filenames"
@@ -35,18 +40,95 @@ var configjson = `{
 	"UseLetsEncrypt":false
 }`
 
+func onReady() {
+	systray.SetIcon(icon.Data)
+	systray.SetTitle("Railroad Blog")
+	systray.SetTooltip("Blog is running on I2P: http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
+	mShowUrl := systray.AddMenuItem("http://"+listener.Addr().(i2pkeys.I2PAddr).Base32(), "copy blog address to clipboard")
+
+	if strings.HasSuffix(configuration.Config.Url, "i2p") {
+		mCopyUrl := systray.AddMenuItem("Copy blog address", "copy blog address to clipboard")
+		go func() {
+			<-mCopyUrl.ClickedCh
+			log.Println("Requesting copy short address helper")
+			clipboard.WriteAll(configuration.Config.Url + "/i2paddresshelper=" + listener.Addr().(i2pkeys.I2PAddr).Base32())
+			log.Println("Finished copy short address helper")
+		}()
+	}
+	mQuit := systray.AddMenuItem("Quit", "Quit the whole app")
+
+	// Sets the icon of a menu item. Only available on Mac and Windows.
+	mQuit.SetIcon(icon.Data)
+
+	//	for {
+	go func() {
+		<-mQuit.ClickedCh
+		log.Println("Requesting quit")
+		systray.Quit()
+		log.Println("Finished quitting")
+	}()
+	go func() {
+		<-mShowUrl.ClickedCh
+		log.Println("Requesting copy base32")
+		clipboard.WriteAll("http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
+		log.Println("Finished quitting")
+	}()
+	//	}
+}
+
+func onExit() {
+	// clean up here
+}
+
 var url string
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
+
+var listener net.Listener
+
+var domainhelp = `You haven't configured an I2P hostname for your site.
+If you want to, edit config.json and change the value of "Url:" to your desired human-readable name, ending in .i2p.
+For example:
+
+{
+	"HttpHostAndPort":"127.0.0.1:8084",
+	"HttpsHostAndPort":"127.0.0.1:8085",
+	"HttpsUsage":"None",
+	"Url":"http://blog.idk.i2p",
+	"HttpsUrl":"https://127.0.0.1:8085",
+	"UseLetsEncrypt":false
+}
+
+Your site will still be available by it's cryptographic address.
+Setting Url to an .i2p domain name will also set HttpsUrl to the
+same domain name.`
 
 func main() {
 	// Setup
 	var err error
+	if !fileExists("config.json") {
+		ioutil.WriteFile("config.json", []byte(configjson), 0644)
+	}
 	configuration.Config.UseLetsEncrypt = false
-	listener, err := sam.I2PListener("railroad", "127.0.0.1:7656", "railroad")
+	listener, err = sam.I2PListener("railroad", "127.0.0.1:7656", "railroad")
 	if err != nil {
 		panic(err)
 	}
+
 	defer listener.Close()
-	configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+	configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()	
+	if strings.HasSuffix(configuration.Config.Url, "i2p") {
+		configuration.Config.HttpsUrl = configuration.Config.Url
+	} else {
+		log.Println(domainhelp)
+	}
+	
 	configuration.Config.HttpsHostAndPort = listener.Addr().(i2pkeys.I2PAddr).Base32()
 
 	// GOMAXPROCS - Maybe not needed
@@ -132,9 +214,12 @@ func main() {
 				log.Fatal("Error: Couldn't start the I2P server:", err)
 			}
 		}()
-		if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
-			log.Fatal("Error: Couldn't start the HTTP server:", err)
-		}
+		go func() {
+			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
+				log.Fatal("Error: Couldn't start the HTTP server:", err)
+			}
+		}()
+		systray.Run(onReady, onExit)
 	case "All":
 		httpsRouter := httptreemux.New()
 		httpRouter := httptreemux.New()
@@ -163,6 +248,7 @@ func main() {
 		if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 			log.Fatal("Error: Couldn't start the HTTP server:", err)
 		}
+		systray.Run(onReady, onExit)
 	default: // This is configuration.HttpsUsage == "None"
 		httpRouter := httptreemux.New()
 		// Blog and pages as http
@@ -178,8 +264,11 @@ func main() {
 				log.Fatal("Error: Couldn't start the I2P server:", err)
 			}
 		}()
-		if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
-			log.Fatal("Error: Couldn't start the HTTP server:", err)
-		}
+		go func() {
+			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
+				log.Fatal("Error: Couldn't start the HTTP server:", err)
+			}
+		}()
+		systray.Run(onReady, onExit)
 	}
 }
