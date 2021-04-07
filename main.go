@@ -167,6 +167,7 @@ func findMe() string {
 	if err != nil {
 		log.Fatal(err)
 	}
+	Log.Println(dir, filepath.Join(dir, os.Args[0]), os.Args[0])
 	return filepath.Join(dir, os.Args[0])
 }
 
