@@ -25,13 +25,7 @@ If your $GOPATH is set, leave it as-is.
         mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
         git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
         cd $GOPATH/src/i2pgit.org/idk/railroad
-        go build
-        GOOS=windows go build -ldflags -H=windowsgui -o railroad.exe
-        cd ../
-        tar -zcvf railroad.tar.gz railroad
-        wget -O railroad/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
-        wget -O railroad/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
-        zip -r railroad.zip railroad
+        make releases
 
 ## install a package
 
@@ -42,3 +36,10 @@ arrow to the right of the text.
 Download the package for your platform, `zip` for Windows, `tar.gz` for Linux.
 Unzip the package and double-click the `railroad.exe` file for Windows or the
 `railroad` file for Linux.
+
+## install using `make install`
+
+When using make install a wrapper script is installed to set up railroad in
+the user's $HOME/.config/railroad directory. It's installed to
+`/usr/local/bin/railroad`.
+
