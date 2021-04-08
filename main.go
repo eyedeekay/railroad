@@ -145,10 +145,10 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 	if host == "" {
 		host = "127.0.0.1"
 	}
-	timeout := time.Second
+	timeout := time.Second * 5
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
 	if err != nil {
-		if strings.Contains(err.Error(), "connection refused") {
+		if strings.Contains(err.Error(), "refused") {
 			err = nil
 		}
 		log.Println("Connecting error:", err)
@@ -204,7 +204,7 @@ func main() {
 	}
 
 	defer listener.Close()
-
+	
 	if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
 		configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 		log.Println(domainhelp)
