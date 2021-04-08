@@ -33,6 +33,7 @@ install:
 	cp -R built-in /usr/local/lib/railroad/config/built-in
 	install -m755 railroad.sh /usr/local/bin/railroad
 	install -m755 railroad /usr/local/lib/railroad/railroad
+	cp res/desktop/i2prailroad.desktop /usr/share/applications
 
 uninstall:
 	rm -rf /usr/local/bin/railroad \
