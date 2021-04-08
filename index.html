@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Railroad, anonymous blogging based on Journey</title>
+  <link rel="stylesheet" type="text/css" href ="home.css" />
+</head>
+<body>
+<h1>railroad</h1>
+
+<p><img src="journey.png" alt="Journey" title="" /></p>
+
+<p>Really, really easy, individual-oriented I2P blogging with a low barrier to
+entry based on <a href="github.com/kabukky/journey">kabukky/journey</a>.</p>
+
+<p>Enable the SAM API: Go to http://127.0.0.1:7657/configclients. Find the menu
+item called "SAM application bridge." Select "Run at Startup" and press the small
+arrow to the right of the text.</p>
+
+<ul>
+<li>Easy: Markdown-based blogging with Side-by-Side WYSIWYG output for your
+blog's content. Edit live with a rich, intuitive interface.</li>
+<li>Low barrier to Entry: Run on a desktop PC with any operating system. When
+it's running, it shows up as an application in your system tray.</li>
+<li>Individual-oriented: Host it anywhere you can install an I2P router, no
+third-party hosting required. No complicated server setup.</li>
+</ul>
+
+<h2>build from source</h2>
+
+<pre><code>    go get -u i2pgit.org/idk/railroad
+</code></pre>
+
+<h2>build a 'package'</h2>
+
+<p>If your GOPATH is unset, set it to $HOME/go</p>
+
+<pre><code>    export GOPATH=$HOME/go
+</code></pre>
+
+<p>If your $GOPATH is set, leave it as-is.</p>
+
+<pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
+    git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
+    cd $GOPATH/src/i2pgit.org/idk/railroad
+    make releases
+</code></pre>
+
+<h2>install a package</h2>
+
+<p>Enable the SAM API: Go to http://127.0.0.1:7657/configclients. Find the menu
+item called "SAM application bridge." Select "Run at Startup" and press the small
+arrow to the right of the text.</p>
+
+<p><img src="configclients.png" alt="SAM API Screenshot" title="" /></p>
+
+<p>Download the package for your platform, <code>zip</code> for Windows, <code>tar.gz</code> for Linux.
+Unzip the package and double-click the <code>railroad.exe</code> file for Windows or the
+<code>railroad</code> file for Linux.</p>
+
+<h3>build your own deb</h3>
+
+<p>Using <code>checkinstall</code> to generate a deb is done for you:</p>
+
+<pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
+    git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
+    cd $GOPATH/src/i2pgit.org/idk/railroad
+    make checkinstall
+    sudo apt-get install ./i2p-railroad_0.0.01-1_amd64.deb
+</code></pre>
+
+<p>will set up railroad on Debian and Ubuntu for your system.</p>
+
+<h2>install using <code>make install</code></h2>
+
+<p>When using make install a wrapper script is installed to set up railroad in
+the user's $HOME/.config/railroad directory. It's installed to
+<code>/usr/local/bin/railroad</code>.</p>
+</body>
+</html>

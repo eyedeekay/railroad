@@ -1,7 +1,13 @@
 # railroad
 
+![Journey](journey.png)
+
 Really, really easy, individual-oriented I2P blogging with a low barrier to
 entry based on [kabukky/journey](github.com/kabukky/journey).
+
+Enable the SAM API: Go to http://127.0.0.1:7657/configclients. Find the menu
+item called "SAM application bridge." Select "Run at Startup" and press the small
+arrow to the right of the text.
 
  - Easy: Markdown-based blogging with Side-by-Side WYSIWYG output for your
   blog's content. Edit live with a rich, intuitive interface.
@@ -32,6 +38,8 @@ If your $GOPATH is set, leave it as-is.
 Enable the SAM API: Go to http://127.0.0.1:7657/configclients. Find the menu
 item called "SAM application bridge." Select "Run at Startup" and press the small
 arrow to the right of the text.
+
+![SAM API Screenshot](configclients.png)
 
 Download the package for your platform, `zip` for Windows, `tar.gz` for Linux.
 Unzip the package and double-click the `railroad.exe` file for Windows or the

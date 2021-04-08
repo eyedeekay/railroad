@@ -4,13 +4,14 @@ VERSION=0.0.01
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad prep
 	cd $(GOPATH)/src/i2pgit.org/idk/railroad
+	rm -f *.tar.gz *.deb *.zip
 	go build -o railroad
 	CC=/usr/bin/x86_64-w64-mingw32-gcc CGO_ENABLED=1 GOOS=windows go build -ldflags -H=windowsgui -o railroad.exe
 	cd ../ && \
-	tar -zcvf railroad.tar.gz railroad  && \
+	tar --exclude=railroad/.git -zcvf railroad.tar.gz railroad  && \
 	wget -O railroad/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll && \
 	wget -O railroad/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll && \
-	zip -r railroad.zip railroad
+	zip -x=railroad/.git -r railroad.zip railroad
 	mv ../railroad.tar.gz railroad.tar.gz
 	mv ../railroad.zip railroad.zip
 	make checkinstall
@@ -22,9 +23,11 @@ $(GOPATH)/src/i2pgit.org/idk/railroad:
 
 prep:
 	mv railroad.i2p.private ../; true
+	mv .git ../railroad.git
 
 unprep:
 	mv ../railroad.i2p.private .; true
+	mv ../railroad.git .git
 
 install:
 	mkdir -p /usr/local/lib/railroad/config
@@ -57,3 +60,15 @@ checkinstall:
 		--deldoc=yes \
 		--deldesc=yes \
 		--backup=no
+
+index:
+	@echo "<!DOCTYPE html>" > index.html
+	@echo "<html>" >> index.html
+	@echo "<head>" >> index.html
+	@echo "  <title>Railroad, anonymous blogging based on Journey</title>" >> index.html
+	@echo "  <link rel=\"stylesheet\" type=\"text/css\" href =\"home.css\" />" >> index.html
+	@echo "</head>" >> index.html
+	@echo "<body>" >> index.html
+	markdown README.md | tee -a index.html
+	@echo "</body>" >> index.html
+	@echo "</html>" >> index.html
