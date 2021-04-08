@@ -6,7 +6,8 @@ releases: $(GOPATH)/src/i2pgit.org/idk/railroad prep
 	cd $(GOPATH)/src/i2pgit.org/idk/railroad
 	rm -f *.tar.gz *.deb *.zip
 	go build -o railroad
-	CC=x86_64-w64-mingw32-gcc-win32 CGO_ENABLED=1 GOOS=windows go build -ldflags -H=windowsgui -o railroad.exe
+	#CC=x86_64-w64-mingw32-gcc-win32 CGO_ENABLED=1 GOOS=windows go build -ldflags -H=windowsgui -o railroad.exe
+	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad.exe
 	cd ../ && \
 	tar --exclude=railroad/.git -zcvf railroad.tar.gz railroad  && \
 	wget -O railroad/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll && \

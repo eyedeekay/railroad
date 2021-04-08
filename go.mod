@@ -3,11 +3,11 @@ module i2pgit.org/idk/railroad
 go 1.16
 
 require (
-	github.com/atotto/clipboard v0.1.4 // indirect
+	github.com/atotto/clipboard v0.1.4
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/eyedeekay/sam3 v0.32.32
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
-	github.com/getlantern/systray v1.1.0 // indirect
+	github.com/getlantern/systray v1.1.0
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568 // indirect
 	github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3
@@ -16,7 +16,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/russross/blackfriday v1.6.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
-	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e // indirect
+	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e
 	github.com/yuin/gopher-lua v0.0.0-20200816102855-ee81675732da // indirect
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
