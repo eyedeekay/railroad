@@ -69,3 +69,9 @@ will set up railroad on Debian and Ubuntu for your system.
 When using make install a wrapper script is installed to set up railroad in
 the user's $HOME/.config/railroad directory. It's installed to
 `/usr/local/bin/railroad`.
+
+        mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
+        git clone https://i2pgit.org/idk/railroad \
+          $GOPATH/src/i2pgit.org/idk/railroad
+        cd $GOPATH/src/i2pgit.org/idk/railroad
+        sudo make install
