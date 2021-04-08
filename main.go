@@ -59,12 +59,12 @@ func onReady() {
 	systray.SetTooltip("Blog is running on I2P: http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
 	mShowUrl := systray.AddMenuItem("http://"+listener.Addr().(i2pkeys.I2PAddr).Base32(), "copy blog address to clipboard")
 	mEditUrl := systray.AddMenuItem("Edit your blog", "copy blog address to clipboard")
-	if strings.HasSuffix(configuration.Config.Url, "i2p") {
+	if strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
 		mCopyUrl := systray.AddMenuItem("Copy blog address", "copy blog address to clipboard")
 		go func() {
 			<-mCopyUrl.ClickedCh
 			log.Println("Requesting copy short address helper")
-			clipboard.WriteAll(configuration.Config.Url + "/i2paddresshelper=" + listener.Addr().(i2pkeys.I2PAddr).Base32())
+			clipboard.WriteAll(configuration.Config.HttpsUrl + "/i2paddresshelper=" + listener.Addr().(i2pkeys.I2PAddr).Base32())
 			log.Println("Finished copy short address helper")
 		}()
 	}
@@ -83,7 +83,7 @@ func onReady() {
 	go func() {
 		<-mEditUrl.ClickedCh
 		log.Println("Requesting edit")
-		cmd := exec.Command(findMe())
+		cmd := exec.Command(findMe(), os.Args[1:]...)
 		var out []byte
 		var err error
 		if out, err = cmd.CombinedOutput(); err != nil {
@@ -120,15 +120,15 @@ func fileExists(filename string) bool {
 var listener net.Listener
 
 var domainhelp = `You haven't configured an I2P hostname for your site.
-If you want to, edit config.json and change the value of "Url:" to your desired human-readable name, ending in .i2p.
+If you want to, edit config.json and change the value of "HttpsUrl:" to your desired human-readable name, ending in .i2p.
 For example:
 
 {
 	"HttpHostAndPort":"127.0.0.1:8084",
 	"HttpsHostAndPort":"127.0.0.1:8085",
 	"HttpsUsage":"None",
-	"Url":"http://blog.idk.i2p",
-	"HttpsUrl":"https://127.0.0.1:8085",
+	"Url":"http://127.0.0.1:8084",
+	"HttpsUrl":"https://blog.idk.i2p",
 	"UseLetsEncrypt":false
 }
 
@@ -143,12 +143,12 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 		log.Fatal("Invalid address")
 	}
 	if host == "" {
-		host="127.0.0.1"
+		host = "127.0.0.1"
 	}
 	timeout := time.Second
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
 	if err != nil {
-		if strings.Contains(err.Error(), "connection refused"){
+		if strings.Contains(err.Error(), "connection refused") {
 			err = nil
 		}
 		log.Println("Connecting error:", err)
@@ -163,12 +163,12 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 }
 
 func findMe() string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	file, err := filepath.Abs(os.Args[0])
 	if err != nil {
 		log.Fatal(err)
 	}
-	Log.Println(dir, filepath.Join(dir, os.Args[0]), os.Args[0])
-	return filepath.Join(dir, os.Args[0])
+	log.Println(file)
+	return file
 }
 
 func main() {
@@ -176,9 +176,7 @@ func main() {
 	var err error
 
 	if status, addr, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {
-		log.Println("TEST")
 		if status == true {
-			log.Println("TEST1")
 			debug := true
 			webView := webview.New(debug)
 			defer webView.Destroy()
@@ -189,7 +187,7 @@ func main() {
 			webView.Run()
 			return
 		}
-	}else{
+	} else {
 		log.Fatal(err)
 	}
 	// Enforce safe local configuration
@@ -206,12 +204,10 @@ func main() {
 	}
 
 	defer listener.Close()
-	configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
-	if strings.HasSuffix(configuration.Config.Url, "i2p") {
-		configuration.Config.HttpsUrl = configuration.Config.Url
-	} else {
+
+	if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
+		configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 		log.Println(domainhelp)
-		configuration.Config.HttpsHostAndPort = listener.Addr().(i2pkeys.I2PAddr).Base32()
 	}
 
 	save(configuration.Config)
