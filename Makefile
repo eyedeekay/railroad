@@ -13,6 +13,7 @@ releases: $(GOPATH)/src/i2pgit.org/idk/railroad prep
 	zip -r railroad.zip railroad
 	mv ../railroad.tar.gz railroad.tar.gz
 	mv ../railroad.zip railroad.zip
+	make checkinstall
 	make unprep
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
