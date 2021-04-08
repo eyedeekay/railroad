@@ -37,9 +37,20 @@ Download the package for your platform, `zip` for Windows, `tar.gz` for Linux.
 Unzip the package and double-click the `railroad.exe` file for Windows or the
 `railroad` file for Linux.
 
+### build your own deb
+
+Using `checkinstall` to generate a deb is done for you:
+
+        mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
+        git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
+        cd $GOPATH/src/i2pgit.org/idk/railroad
+        make checkinstall
+        sudo apt-get install ./i2p-railroad_0.0.01-1_amd64.deb
+
+will set up railroad on Debian and Ubuntu for your system.
+
 ## install using `make install`
 
 When using make install a wrapper script is installed to set up railroad in
 the user's $HOME/.config/railroad directory. It's installed to
 `/usr/local/bin/railroad`.
-
