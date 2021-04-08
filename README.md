@@ -16,6 +16,11 @@ arrow to the right of the text.
  - Individual-oriented: Host it anywhere you can install an I2P router, no
   third-party hosting required. No complicated server setup.
 
+## Get it:
+
+ - Binary Releases: [Github](https://github.com/eyedeekay/railroad/releases)
+ - Source Code: [i2pgit.org](https://i2pgit.org/idk/railroad)
+
 ## build from source
 
         go get -u i2pgit.org/idk/railroad
