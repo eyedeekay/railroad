@@ -47,7 +47,8 @@ third-party hosting required. No complicated server setup.</li>
 <p>If your $GOPATH is set, leave it as-is.</p>
 
 <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
-    git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
+    git clone https://i2pgit.org/idk/railroad \
+      $GOPATH/src/i2pgit.org/idk/railroad
     cd $GOPATH/src/i2pgit.org/idk/railroad
     make releases
 </code></pre>
@@ -69,7 +70,8 @@ Unzip the package and double-click the <code>railroad.exe</code> file for Window
 <p>Using <code>checkinstall</code> to generate a deb is done for you:</p>
 
 <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
-    git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
+    git clone https://i2pgit.org/idk/railroad \
+      $GOPATH/src/i2pgit.org/idk/railroad
     cd $GOPATH/src/i2pgit.org/idk/railroad
     make checkinstall
     sudo apt-get install ./i2p-railroad_0.0.01-1_amd64.deb

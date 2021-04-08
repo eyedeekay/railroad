@@ -34,7 +34,8 @@ If your GOPATH is unset, set it to $HOME/go
 If your $GOPATH is set, leave it as-is.
 
         mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
-        git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
+        git clone https://i2pgit.org/idk/railroad \
+          $GOPATH/src/i2pgit.org/idk/railroad
         cd $GOPATH/src/i2pgit.org/idk/railroad
         make releases
 
@@ -55,7 +56,8 @@ Unzip the package and double-click the `railroad.exe` file for Windows or the
 Using `checkinstall` to generate a deb is done for you:
 
         mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
-        git clone https://i2pgit.org/idk/railroad $GOPATH/src/i2pgit.org/idk/railroad
+        git clone https://i2pgit.org/idk/railroad \
+          $GOPATH/src/i2pgit.org/idk/railroad
         cd $GOPATH/src/i2pgit.org/idk/railroad
         make checkinstall
         sudo apt-get install ./i2p-railroad_0.0.01-1_amd64.deb
