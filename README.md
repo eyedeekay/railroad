@@ -18,10 +18,14 @@ arrow to the right of the text.
 
 ## Get it:
 
+![Menu](menu.png)
+
  - Binary Releases: [Github](https://github.com/eyedeekay/railroad/releases)
  - Source Code: [i2pgit.org](https://i2pgit.org/idk/railroad)
 
 ## build from source
+
+![Editing a post](edit.png)
 
         go get -u i2pgit.org/idk/railroad
 

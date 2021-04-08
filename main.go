@@ -181,7 +181,7 @@ func main() {
 			webView := webview.New(debug)
 			defer webView.Destroy()
 			webView.SetTitle("Railroad Blog - Administration")
-			webView.SetSize(800, 600, webview.HintNone)
+//			webView.SetSize(800, 600, webview.HintNone)
 			log.Println("http://" + addr + "/admin")
 			webView.Navigate("http://" + addr + "/admin")
 			webView.Run()
