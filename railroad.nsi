@@ -4,7 +4,7 @@ UniCode true
 OutFile "railroad-installer.exe"
  
 # define installation directory
-InstallDir $PROGRAMFILES\journey
+InstallDir $PROGRAMFILES/journey/
 !define APPNAME "Railroad"
 !define LICENSE_TITLE "MIT License"
 PageEx license
@@ -28,7 +28,7 @@ Section
  
     # create a shortcut named "new shortcut" in the start menu programs directory
     # point the new shortcut at the program uninstaller
-    CreateShortcut "$SMPROGRAMS\Blog with Railroad.lnk" "$INSTDIR\railroad.exe"
+    CreateShortcut "$SMPROGRAMS\Blog with Railroad.lnk" "$INSTDIR\railroad.bat"
     CreateShortcut "$SMPROGRAMS\Uninstall Railroad Blog.lnk" "$INSTDIR\uninstall.exe"
 SectionEnd
  
