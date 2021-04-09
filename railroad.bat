@@ -7,6 +7,4 @@ if exist "%LOCALAPPDATA%\railroad" (
   xcopy /s /i /y "%PROGRAMFILES%\railroad" "%LOCALAPPDATA%\railroad"
 )
 
-REM start /D "%LOCALAPPDATA%\railroad" "railroad-blog" 
-
-"%LOCALAPPDATA%\railroad\railroad.exe" 
+start /D "%LOCALAPPDATA%\railroad" "railroad-blog" "%LOCALAPPDATA%\railroad\railroad.exe" 
