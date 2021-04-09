@@ -73,3 +73,6 @@ index:
 	markdown README.md | tee -a index.html
 	@echo "</body>" >> index.html
 	@echo "</html>" >> index.html
+
+nsis:
+	makensis railroad.nsi
