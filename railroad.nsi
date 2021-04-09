@@ -1,7 +1,7 @@
 UniCode true
 
 # define name of installer
-OutFile "railroad-installer.exe"
+OutFile "../railroad-installer.exe"
  
 # define installation directory
 !define APPNAME "Railroad"

@@ -9,10 +9,12 @@ releases: $(GOPATH)/src/i2pgit.org/idk/railroad prep
 	go build -o railroad
 	#CC=x86_64-w64-mingw32-gcc-win32 CGO_ENABLED=1 GOOS=windows go build -ldflags -H=windowsgui -o railroad.exe
 	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad.exe
+	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
+	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
+	makensis railroad.nsi
+	cp ../railroad-installer.exe .
 	cd ../ && \
 	tar --exclude=railroad/.git -zcvf railroad.tar.gz railroad  && \
-	wget -O railroad/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll && \
-	wget -O railroad/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll && \
 	zip -x=railroad/.git -r railroad.zip railroad
 	mv ../railroad.tar.gz railroad.tar.gz
 	mv ../railroad.zip railroad.zip
@@ -75,5 +77,7 @@ index:
 	@echo "</body>" >> index.html
 	@echo "</html>" >> index.html
 
-nsis:
+nsis: prep
 	makensis railroad.nsi
+	cp ../railroad-installer.exe .
+	make unprep
