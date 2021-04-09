@@ -9,4 +9,4 @@ if exist "%LOCALAPPDATA%\railroad" (
 
 REM start /D "%LOCALAPPDATA%\railroad" "railroad-blog" 
 
-"%LOCALAPPDATA%/railroad/railroad.exe" 
+"%LOCALAPPDATA%\railroad\railroad.exe" 
