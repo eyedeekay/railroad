@@ -4,8 +4,9 @@ UniCode true
 OutFile "railroad-installer.exe"
  
 # define installation directory
-InstallDir "$PROGRAMFILES\journey\"
 !define APPNAME "Railroad"
+InstallDir "$PROGRAMFILES\${APPNAME}\"
+
 !define LICENSE_TITLE "MIT License"
 PageEx license
     licensetext "${LICENSE_TITLE}"
