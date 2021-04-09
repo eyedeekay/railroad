@@ -5,7 +5,7 @@ OutFile "railroad-installer.exe"
  
 # define installation directory
 !define APPNAME "Railroad"
-InstallDir "$PROGRAMFILES\${APPNAME}\"
+InstallDir "$PROGRAMFILES64\${APPNAME}\"
 
 !define LICENSE_TITLE "MIT License"
 PageEx license
