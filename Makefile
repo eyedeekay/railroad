@@ -1,4 +1,5 @@
 
+export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
 VERSION=0.0.01
 

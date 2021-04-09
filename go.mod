@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
+	github.com/eyedeekay/checki2cp v0.0.17
 	github.com/eyedeekay/sam3 v0.32.32
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/getlantern/systray v1.1.0
@@ -16,6 +17,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/russross/blackfriday v1.6.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
+	github.com/thejerf/suture v4.0.0+incompatible
 	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e
 	github.com/yuin/gopher-lua v0.0.0-20200816102855-ee81675732da // indirect
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 // indirect

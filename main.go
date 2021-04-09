@@ -15,6 +15,7 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/dimfeld/httptreemux"
+	"github.com/eyedeekay/checki2cp/samcheck"
 	"github.com/eyedeekay/sam3/helper"
 	"github.com/eyedeekay/sam3/i2pkeys"
 	"github.com/getlantern/systray"
@@ -175,13 +176,17 @@ func main() {
 	// Setup
 	var err error
 
+	for !checksam.CheckSAMAvailable("127.0.0.1:7656") {
+		time.Sleep(time.Second * 15)
+	}
+
 	if status, addr, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {
 		if status == true {
 			debug := true
 			webView := webview.New(debug)
 			defer webView.Destroy()
 			webView.SetTitle("Railroad Blog - Administration")
-//			webView.SetSize(800, 600, webview.HintNone)
+			//			webView.SetSize(800, 600, webview.HintNone)
 			log.Println("http://" + addr + "/admin")
 			webView.Navigate("http://" + addr + "/admin")
 			webView.Run()
@@ -204,7 +209,7 @@ func main() {
 	}
 
 	defer listener.Close()
-	
+
 	if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
 		configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 		log.Println(domainhelp)
