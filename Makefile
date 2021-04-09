@@ -1,7 +1,7 @@
 
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.01
+VERSION=0.0.02
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad prep
 	cd $(GOPATH)/src/i2pgit.org/idk/railroad
