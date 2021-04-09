@@ -4,7 +4,7 @@ UniCode true
 OutFile "railroad-installer.exe"
  
 # define installation directory
-InstallDir $PROGRAMFILES/journey
+InstallDir $PROGRAMFILES\journey
 !define APPNAME "Railroad"
 !define LICENSE_TITLE "MIT License"
 PageEx license
@@ -21,7 +21,7 @@ Section
     Exec 'CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.Win32WebViewHost_cw5n1h2txyewy"'
     # set the installation directory as the destination for the following actions
     SetOutPath $INSTDIR
-    File /nonfatal /a /r ".\"
+    File /a /r ".\"
     
     # create the uninstaller
     WriteUninstaller "$INSTDIR\uninstall.exe"
