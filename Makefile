@@ -99,6 +99,6 @@ index:
 	@echo "</body>" >> index.html
 	@echo "</html>" >> index.html
 
-nsis: prep
+nsis:
 	makensis railroad.nsi
 	cp ../railroad-installer.exe .

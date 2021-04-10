@@ -61,13 +61,15 @@ func onReady() {
 	mShowUrl := systray.AddMenuItem("http://"+listener.Addr().(i2pkeys.I2PAddr).Base32(), "copy blog address to clipboard")
 	mEditUrl := systray.AddMenuItem("Edit your blog", "copy blog address to clipboard")
 	if strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
-		mCopyUrl := systray.AddMenuItem("Copy blog address", "copy blog address to clipboard")
-		go func() {
-			<-mCopyUrl.ClickedCh
-			log.Println("Requesting copy short address helper")
-			clipboard.WriteAll(configuration.Config.HttpsUrl + "/i2paddresshelper=" + listener.Addr().(i2pkeys.I2PAddr).Base32())
-			log.Println("Finished copy short address helper")
-		}()
+		if !strings.HasSuffix(configuration.Config.HttpsUrl, "b32.i2p") {
+			mCopyUrl := systray.AddMenuItem("Copy blog address", "copy blog address to clipboard")
+			go func() {
+				<-mCopyUrl.ClickedCh
+				log.Println("Requesting copy short address helper")
+				clipboard.WriteAll(configuration.Config.HttpsUrl + "/i2paddresshelper=" + listener.Addr().(i2pkeys.I2PAddr).Base32())
+				log.Println("Finished copy short address helper")
+			}()
+		}
 	}
 	mQuit := systray.AddMenuItem("Quit", "Quit the whole app")
 

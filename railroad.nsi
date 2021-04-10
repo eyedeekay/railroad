@@ -22,11 +22,19 @@ Section
     Exec 'CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.Win32WebViewHost_cw5n1h2txyewy"'
     # set the installation directory as the destination for the following actions
     SetOutPath $INSTDIR
-    File /a /r ".\"
-    
+    File railroad.exe
+    File railroad.bat
+    File WebView2Loader.dll
+    File webview.dll
+    File README.md
+    File LICENSE.md
+    File config.json
+    File /a /r ".\content\"
+    File /a /r ".\built-in\"
+
     # create the uninstaller
     WriteUninstaller "$INSTDIR\uninstall.exe"
- 
+
     # create a shortcut named "new shortcut" in the start menu programs directory
     # point the new shortcut at the program uninstaller
     CreateShortcut "$SMPROGRAMS\Blog with Railroad.lnk" "$INSTDIR\railroad.bat"
