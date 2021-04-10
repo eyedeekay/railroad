@@ -178,12 +178,19 @@ func main() {
 	// Setup
 	var err error
 
-	if err = os.Setenv("ALL_PROXY", "127.0.0.1:4444"); err != nil {
+	go socksmain()
+
+	if err = os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
 		panic(err)
 	}
-	if err = os.Setenv("HTTP_PROXY", "127.0.0.1:4444"); err != nil {
+	if err = os.Setenv("ALL_PROXY", "socks5://127.0.0.1:8082"); err != nil {
 		panic(err)
 	}
+	time.Sleep(time.Second * 3)
+
+//	if err = os.Setenv("http_proxy", "http://127.0.0.1:8082"); err != nil {
+//		panic(err)
+//	}
 
 	for !checksam.CheckSAMAvailable("127.0.0.1:7656") {
 		time.Sleep(time.Second * 15)
@@ -195,7 +202,7 @@ func main() {
 			webView := webview.New(debug)
 			defer webView.Destroy()
 			webView.SetTitle("Railroad Blog - Administration")
-			//			webView.SetSize(800, 600, webview.HintNone)
+			webView.SetSize(800, 600, webview.HintNone)
 			log.Println("http://" + addr + "/admin")
 			webView.Navigate("http://" + addr + "/admin")
 			webView.Run()
