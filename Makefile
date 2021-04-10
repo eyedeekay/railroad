@@ -3,35 +3,56 @@ export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
 VERSION=0.0.02
 
-releases: $(GOPATH)/src/i2pgit.org/idk/railroad prep
-	cd $(GOPATH)/src/i2pgit.org/idk/railroad
-	rm -f *.tar.gz *.deb *.zip
+releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
+
+linux-releases: linux linzip
+
+windows-releases: windows winzip
+
+linux:
 	go build -o railroad
-	#CC=x86_64-w64-mingw32-gcc-win32 CGO_ENABLED=1 GOOS=windows go build -ldflags -H=windowsgui -o railroad.exe
+	make checkinstall
+
+linzip:
+	rm -rfv $(GOPATH)/src/i2pgit.org/idk/railroad-releases
+	cp -rv $(GOPATH)/src/i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad-releases
+	rm -rf $(GOPATH)/src/i2pgit.org/idk/railroad-releases/.git \
+		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.private \
+		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.public.txt
+	cd ../ && \
+		tar --exclude=railroad/.git -zcvf railroad.tar.gz railroad
+
+windows:
 	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad.exe
 	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 	makensis railroad.nsi
-	cp ../railroad-installer.exe .
+
+
+winzip:
+	rm -rfv $(GOPATH)/src/i2pgit.org/idk/railroad-releases
+	cp -rv $(GOPATH)/src/i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad-releases
+	rm -rf $(GOPATH)/src/i2pgit.org/idk/railroad-releases/.git \
+		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.private \
+		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.public.txt
 	cd ../ && \
-	tar --exclude=railroad/.git -zcvf railroad.tar.gz railroad  && \
-	zip -x=railroad/.git -r railroad.zip railroad
-	mv ../railroad.tar.gz railroad.tar.gz
-	mv ../railroad.zip railroad.zip
-	make checkinstall
-	make unprep
+		zip -x=railroad/.git -r railroad.zip railroad-releases
+
+copy:
+	mv ../railroad.tar.gz .
+	mv ../railroad.zip .
+	mv ../*railroad*.deb .
+	mv ../railroad-installer.exe .
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
 	git clone https://i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad
 
-prep:
-	mv railroad.i2p.private ../; true
-	mv .git ../railroad.git
-
-unprep:
-	mv ../railroad.i2p.private .; true
-	mv ../railroad.git .git
+clean:
+	rm -rf *.private railroad *.public.txt *.tar.gz *.deb *.zip *.exe
+sums:
+	sha256sum *.tar.gz *.zip *.deb *-installer.exe
+	ls -lah *.tar.gz *.zip *.deb *-installer.exe
 
 install:
 	mkdir -p /usr/local/lib/railroad/config
@@ -63,6 +84,7 @@ checkinstall:
 		--nodoc \
 		--deldoc=yes \
 		--deldesc=yes \
+		--pakdir=".." \
 		--backup=no
 
 index:
@@ -80,4 +102,3 @@ index:
 nsis: prep
 	makensis railroad.nsi
 	cp ../railroad-installer.exe .
-	make unprep

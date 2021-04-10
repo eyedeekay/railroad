@@ -176,6 +176,13 @@ func main() {
 	// Setup
 	var err error
 
+	if err = os.Setenv("ALL_PROXY", "127.0.0.1:4444"); err != nil {
+		panic(err)
+	}
+	if err = os.Setenv("HTTP_PROXY", "127.0.0.1:4444"); err != nil {
+		panic(err)
+	}
+
 	for !checksam.CheckSAMAvailable("127.0.0.1:7656") {
 		time.Sleep(time.Second * 15)
 	}
