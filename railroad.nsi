@@ -16,11 +16,15 @@ Page instfiles
 
 # For removing Start Menu shortcut in Windows 7
 RequestExecutionLevel admin
- 
+
+!include i2p-zero.nsi
+
 # start default section
 Section
     Exec 'CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.Win32WebViewHost_cw5n1h2txyewy"'
     # set the installation directory as the destination for the following actions
+    Call buildZero
+    Call installZero
     SetOutPath $INSTDIR
     File railroad.exe
     File railroad.bat
@@ -51,6 +55,8 @@ Section "uninstall"
 
     Delete "$SMPROGRAMS\Blog with Railroad.lnk"
     Delete "$SMPROGRAMS\new shortcut.lnk"
+
+    Call uninstallZero
 
     RMDir $INSTDIR
 # uninstaller section end
