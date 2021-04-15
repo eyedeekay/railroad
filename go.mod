@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
-	github.com/eyedeekay/checki2cp v0.0.17
+	github.com/eyedeekay/checki2cp v0.0.18-0.20210415001943-02b65fb958e5
 	github.com/eyedeekay/sam3 v0.32.33-0.20210313224934-b9e4186119b8
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/getlantern/systray v1.1.0
@@ -27,6 +27,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/fsnotify.v1 v1.4.7 // indirect
+	i2pgit.org/idk/zerocontrol v0.0.0-20210415002655-ac2964c74407
 )
 
 replace github.com/txthinking/socks5 v0.0.0-20210326104807-61b5745ff346 => github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f

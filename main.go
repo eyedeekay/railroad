@@ -30,6 +30,7 @@ import (
 	"github.com/kabukky/journey/templates"
 	"github.com/webview/webview"
 	"i2pgit.org/idk/railroad/https"
+	"i2pgit.org/idk/zerocontrol"
 )
 
 func save(c *configuration.Configuration) error {
@@ -177,6 +178,9 @@ func findMe() string {
 func main() {
 	// Setup
 	var err error
+	if err = zerocontrol.ZeroMain(); err != nil {
+		log.Println(err)
+	}
 
 	go socksmain()
 

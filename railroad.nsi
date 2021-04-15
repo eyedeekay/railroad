@@ -14,6 +14,9 @@ PageEx license
 PageExEnd
 Page instfiles
 
+# Include the logic library for checking file exists.
+!include LogicLib.nsh
+
 # For removing Start Menu shortcut in Windows 7
 RequestExecutionLevel admin
 
