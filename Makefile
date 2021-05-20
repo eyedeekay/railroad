@@ -26,8 +26,7 @@ windows:
 	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad.exe
 	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
-	makensis railroad.nsi
-
+	make nsis
 
 winzip:
 	rm -rfv $(GOPATH)/src/i2pgit.org/idk/railroad-releases

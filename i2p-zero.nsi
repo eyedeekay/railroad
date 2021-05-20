@@ -39,7 +39,7 @@ function installZero
 
 functionEnd
 
-function uninstallZero
+function un.installZero
 	Delete "$SMPROGRAMS\Run I2P-Zero.lnk"
 	RMDir $INSTDIR
 

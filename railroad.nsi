@@ -59,7 +59,7 @@ Section "uninstall"
     Delete "$SMPROGRAMS\Blog with Railroad.lnk"
     Delete "$SMPROGRAMS\new shortcut.lnk"
 
-    Call uninstallZero
+    Call un.installZero
 
     RMDir $INSTDIR
 # uninstaller section end

@@ -5,4 +5,4 @@ railroad.exe
 railroad.tar.gz
 railroad.zip
 *.deb
-railroad-installer.exe
+railroad-installer.exe./content/data/journey.db

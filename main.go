@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"flag"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -175,7 +176,10 @@ func findMe() string {
 	return file
 }
 
+var socksPort = flag.String("socksport", "8082", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
+
 func main() {
+	flag.Parse()
 	// Setup
 	var err error
 	if err = zerocontrol.ZeroMain(); err != nil {
@@ -187,12 +191,12 @@ func main() {
 	if err = os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
 		panic(err)
 	}
-	if err = os.Setenv("ALL_PROXY", "socks5://127.0.0.1:8082"); err != nil {
+	if err = os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
 		panic(err)
 	}
 	time.Sleep(time.Second * 3)
 
-//	if err = os.Setenv("http_proxy", "http://127.0.0.1:8082"); err != nil {
+//	if err = os.Setenv("http_proxy", "http://127.0.0.1:"+*socksPort); err != nil {
 //		panic(err)
 //	}
 
