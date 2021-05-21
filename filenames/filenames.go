@@ -1,8 +1,8 @@
 package filenames
 
 import (
-	"i2pgit.org/idk/railroad/common"
 	"github.com/kardianos/osext"
+	"i2pgit.org/idk/railroad/common"
 	"log"
 	"os"
 	"path/filepath"

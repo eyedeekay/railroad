@@ -2,12 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
-	"flag"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -23,14 +23,14 @@ import (
 	"github.com/getlantern/systray/example/icon"
 	"github.com/kabukky/journey/configuration"
 	"github.com/kabukky/journey/database"
-	"i2pgit.org/idk/railroad/filenames"
 	"github.com/kabukky/journey/flags"
 	"github.com/kabukky/journey/plugins"
 	"github.com/kabukky/journey/server"
 	"github.com/kabukky/journey/structure/methods"
-	"i2pgit.org/idk/railroad/templates"
 	"github.com/webview/webview"
+	"i2pgit.org/idk/railroad/filenames"
 	"i2pgit.org/idk/railroad/https"
+	"i2pgit.org/idk/railroad/templates"
 	"i2pgit.org/idk/zerocontrol"
 )
 
@@ -196,9 +196,9 @@ func main() {
 	}
 	time.Sleep(time.Second * 3)
 
-//	if err = os.Setenv("http_proxy", "http://127.0.0.1:"+*socksPort); err != nil {
-//		panic(err)
-//	}
+	//	if err = os.Setenv("http_proxy", "http://127.0.0.1:"+*socksPort); err != nil {
+	//		panic(err)
+	//	}
 
 	for !checksam.CheckSAMAvailable("127.0.0.1:7656") {
 		time.Sleep(time.Second * 15)

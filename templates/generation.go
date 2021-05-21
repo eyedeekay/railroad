@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"errors"
 	"github.com/kabukky/journey/database"
-	"i2pgit.org/idk/railroad/filenames"
-	"i2pgit.org/idk/railroad/common"
 	"github.com/kabukky/journey/helpers"
 	"github.com/kabukky/journey/plugins"
 	"github.com/kabukky/journey/structure"
 	"github.com/kabukky/journey/structure/methods"
 	"github.com/kabukky/journey/watcher"
+	"i2pgit.org/idk/railroad/common"
+	"i2pgit.org/idk/railroad/filenames"
 	"io/ioutil"
 	"log"
 	"os"
@@ -153,7 +153,7 @@ func findBlock(data []byte, helperName []byte, unescaped bool, startPos int) ([]
 			// Change children, omit else helper
 			elseHelper.Children = children[(index + 1):]
 			// Change Position in children of else helper
-			for indexElse, _ := range elseHelper.Children {
+			for indexElse := range elseHelper.Children {
 				elseHelper.Children[indexElse].Position = elseHelper.Children[indexElse].Position - elseHelper.Position
 			}
 			children = children[:index]

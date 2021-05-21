@@ -89,7 +89,7 @@ func contentForFunc(helper *structure.Helper, values *structure.RequestData) []b
 func blockFunc(helper *structure.Helper, values *structure.RequestData) []byte {
 	if len(helper.Arguments) != 0 {
 		// Loop through the collected contentFor helpers and execute the appropriate one
-		for index, _ := range values.ContentForHelpers {
+		for index := range values.ContentForHelpers {
 			if len(values.ContentForHelpers[index].Arguments) != 0 {
 				if values.ContentForHelpers[index].Arguments[0].Name == helper.Arguments[0].Name {
 					return executeHelper(&values.ContentForHelpers[index], values, values.CurrentHelperContext)
@@ -812,7 +812,7 @@ func foreachFunc(helper *structure.Helper, values *structure.RequestData) []byte
 		switch helper.Arguments[0].Name {
 		case "posts":
 			var buffer bytes.Buffer
-			for index, _ := range values.Posts {
+			for index := range values.Posts {
 				//if values.Posts[index].Id != 0 { // If post is not empty (Commented out for now. This was only neccessary in previous versions, when the array length was always the postsPerPage length)
 				values.CurrentPostIndex = index
 				buffer.Write(executeHelper(helper, values, 1)) // context = post
@@ -821,7 +821,7 @@ func foreachFunc(helper *structure.Helper, values *structure.RequestData) []byte
 			return buffer.Bytes()
 		case "tags":
 			var buffer bytes.Buffer
-			for index, _ := range values.Posts[values.CurrentPostIndex].Tags {
+			for index := range values.Posts[values.CurrentPostIndex].Tags {
 				//if values.Posts[values.CurrentPostIndex].Tags[index].Id != 0 { // If tag is not empty (Commented out for now. Not neccessary.)
 				values.CurrentTagIndex = index
 				buffer.Write(executeHelper(helper, values, 2)) // context = tag
@@ -830,7 +830,7 @@ func foreachFunc(helper *structure.Helper, values *structure.RequestData) []byte
 			return buffer.Bytes()
 		case "navigation":
 			var buffer bytes.Buffer
-			for index, _ := range values.Blog.NavigationItems {
+			for index := range values.Blog.NavigationItems {
 				values.CurrentNavigationIndex = index
 				buffer.Write(executeHelper(helper, values, 4)) // context = navigation
 			}
