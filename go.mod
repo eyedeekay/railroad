@@ -10,10 +10,10 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/getlantern/systray v1.1.0
 	github.com/gorilla/securecookie v1.1.1 // indirect
-	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568 // indirect
+	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568
 	github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3
 	github.com/kabukky/journey v0.2.0
-	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
+	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/phayes/freeport v0.0.0-20180830031419-95f893ade6f2
