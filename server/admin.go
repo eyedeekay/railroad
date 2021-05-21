@@ -12,17 +12,17 @@ import (
 	"time"
 
 	"github.com/dimfeld/httptreemux"
-	"github.com/kabukky/journey/authentication"
-	"github.com/kabukky/journey/configuration"
-	"github.com/kabukky/journey/conversion"
-	"github.com/kabukky/journey/database"
-	"github.com/kabukky/journey/date"
-	"github.com/kabukky/journey/filenames"
-	"github.com/kabukky/journey/slug"
-	"github.com/kabukky/journey/structure"
-	"github.com/kabukky/journey/structure/methods"
-	"github.com/kabukky/journey/templates"
 	"github.com/satori/go.uuid"
+	"i2pgit.org/idk/railroad/authentication"
+	"i2pgit.org/idk/railroad/configuration"
+	"i2pgit.org/idk/railroad/conversion"
+	"i2pgit.org/idk/railroad/database"
+	"i2pgit.org/idk/railroad/date"
+	"i2pgit.org/idk/railroad/filenames"
+	"i2pgit.org/idk/railroad/slug"
+	"i2pgit.org/idk/railroad/structure"
+	"i2pgit.org/idk/railroad/structure/methods"
+	"i2pgit.org/idk/railroad/templates"
 )
 
 type JsonPost struct {
@@ -536,7 +536,7 @@ func patchApiBlogHandler(w http.ResponseWriter, r *http.Request, _ map[string]st
 			json.PostsPerPage = 1
 		}
 		// Remove blog url in front of navigation urls
-		for index, _ := range json.NavigationItems {
+		for index := range json.NavigationItems {
 			if strings.HasPrefix(json.NavigationItems[index].Url, json.Url) {
 				json.NavigationItems[index].Url = strings.Replace(json.NavigationItems[index].Url, json.Url, "", 1)
 				// If we removed the blog url, there should be a / in front of the url
@@ -751,7 +751,7 @@ func logInUser(name string, w http.ResponseWriter) {
 
 func postsToJson(posts []structure.Post) *[]JsonPost {
 	jsonPosts := make([]JsonPost, len(posts))
-	for index, _ := range posts {
+	for index := range posts {
 		jsonPosts[index] = *postToJson(&posts[index])
 	}
 	return &jsonPosts
@@ -771,7 +771,7 @@ func postToJson(post *structure.Post) *JsonPost {
 	jsonPost.Image = string(post.Image)
 	jsonPost.Date = post.Date
 	tags := make([]string, len(post.Tags))
-	for index, _ := range post.Tags {
+	for index := range post.Tags {
 		tags[index] = string(post.Tags[index].Name)
 	}
 	jsonPost.Tags = strings.Join(tags, ",")

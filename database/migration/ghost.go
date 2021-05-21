@@ -3,9 +3,9 @@ package migration
 import (
 	"database/sql"
 	"errors"
-	"github.com/kabukky/journey/date"
-	"github.com/kabukky/journey/filenames"
-	"github.com/kabukky/journey/helpers"
+	"i2pgit.org/idk/railroad/date"
+	"i2pgit.org/idk/railroad/filenames"
+	"i2pgit.org/idk/railroad/helpers"
 	"log"
 	"os"
 	"path/filepath"

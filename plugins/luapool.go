@@ -3,8 +3,8 @@
 package plugins
 
 import (
-	"github.com/kabukky/journey/structure"
 	"github.com/yuin/gopher-lua"
+	"i2pgit.org/idk/railroad/structure"
 	"sync"
 )
 
@@ -41,7 +41,7 @@ func (pl *lStatePool) Get(helper *structure.Helper, values *structure.RequestDat
 
 func (pl *lStatePool) New() map[string]*lua.LState {
 	stateMap := make(map[string]*lua.LState, 0)
-	for key, _ := range LuaPool.files {
+	for key := range LuaPool.files {
 		L := lua.NewState()
 		stateMap[key] = L
 	}

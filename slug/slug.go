@@ -1,7 +1,7 @@
 package slug
 
 import (
-	"github.com/kabukky/journey/database"
+	"i2pgit.org/idk/railroad/database"
 	"regexp"
 	"strconv"
 	"strings"

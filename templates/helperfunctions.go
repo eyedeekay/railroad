@@ -1,7 +1,7 @@
 package templates
 
 import (
-	"github.com/kabukky/journey/structure"
+	"i2pgit.org/idk/railroad/structure"
 )
 
 var helperFuctions = map[string]func(*structure.Helper, *structure.RequestData) []byte{

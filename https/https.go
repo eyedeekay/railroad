@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/kabukky/httpscerts"
-	"github.com/kabukky/journey/configuration"
-	"github.com/kabukky/journey/filenames"
+	"i2pgit.org/idk/railroad/configuration"
+	"i2pgit.org/idk/railroad/filenames"
 )
 
 func checkCertificates() {

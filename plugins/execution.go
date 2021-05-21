@@ -3,8 +3,8 @@
 package plugins
 
 import (
-	"github.com/kabukky/journey/structure"
 	"github.com/yuin/gopher-lua"
+	"i2pgit.org/idk/railroad/structure"
 	"log"
 )
 

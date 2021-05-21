@@ -3,10 +3,10 @@ package templates
 import (
 	"bytes"
 	"github.com/kabukky/feeds"
-	"github.com/kabukky/journey/database"
-	"github.com/kabukky/journey/date"
-	"github.com/kabukky/journey/structure"
-	"github.com/kabukky/journey/structure/methods"
+	"i2pgit.org/idk/railroad/database"
+	"i2pgit.org/idk/railroad/date"
+	"i2pgit.org/idk/railroad/structure"
+	"i2pgit.org/idk/railroad/structure/methods"
 	"net/http"
 )
 

@@ -1,8 +1,8 @@
 package watcher
 
 import (
-	"github.com/kabukky/journey/helpers"
 	"gopkg.in/fsnotify.v1"
+	"i2pgit.org/idk/railroad/helpers"
 	"log"
 	"os"
 	"path/filepath"

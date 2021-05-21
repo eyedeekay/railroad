@@ -3,13 +3,13 @@ package database
 import (
 	"database/sql"
 
-	"github.com/kabukky/journey/database/migration"
-	"github.com/kabukky/journey/date"
-	"github.com/kabukky/journey/filenames"
-	"github.com/kabukky/journey/helpers"
-	"github.com/kabukky/journey/structure"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/satori/go.uuid"
+	"i2pgit.org/idk/railroad/database/migration"
+	"i2pgit.org/idk/railroad/date"
+	"i2pgit.org/idk/railroad/filenames"
+	"i2pgit.org/idk/railroad/helpers"
+	"i2pgit.org/idk/railroad/structure"
 )
 
 // Handler for read access

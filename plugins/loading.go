@@ -4,9 +4,9 @@ package plugins
 
 import (
 	"errors"
-	"github.com/kabukky/journey/filenames"
-	"github.com/kabukky/journey/structure"
 	"github.com/yuin/gopher-lua"
+	"i2pgit.org/idk/railroad/filenames"
+	"i2pgit.org/idk/railroad/structure"
 	"log"
 	"os"
 	"path/filepath"

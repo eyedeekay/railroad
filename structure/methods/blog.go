@@ -2,11 +2,11 @@ package methods
 
 import (
 	"encoding/json"
-	"github.com/kabukky/journey/configuration"
-	"github.com/kabukky/journey/database"
-	"github.com/kabukky/journey/date"
-	"github.com/kabukky/journey/slug"
-	"github.com/kabukky/journey/structure"
+	"i2pgit.org/idk/railroad/configuration"
+	"i2pgit.org/idk/railroad/database"
+	"i2pgit.org/idk/railroad/date"
+	"i2pgit.org/idk/railroad/slug"
+	"i2pgit.org/idk/railroad/structure"
 	"log"
 )
 
@@ -61,7 +61,7 @@ func GenerateBlog() error {
 	blog.Url = []byte(configuration.Config.Url)
 	blog.AssetPath = assetPath
 	// Create navigation slugs
-	for index, _ := range blog.NavigationItems {
+	for index := range blog.NavigationItems {
 		blog.NavigationItems[index].Slug = slug.Generate(blog.NavigationItems[index].Label, "navigation")
 	}
 	Blog = blog

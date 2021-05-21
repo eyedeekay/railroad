@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
-	"github.com/kabukky/journey/structure"
+	"i2pgit.org/idk/railroad/structure"
 	"time"
 )
 

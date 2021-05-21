@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/kabukky/journey/filenames"
+	"i2pgit.org/idk/railroad/filenames"
 )
 
 // Configuration: settings that are neccesary for server configuration
