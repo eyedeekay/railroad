@@ -34,4 +34,4 @@ replace github.com/txthinking/socks5 v0.0.0-20210326104807-61b5745ff346 => githu
 
 replace github.com/txthinking/x v0.0.0-20210326105829-476fab902fbe => github.com/eyedeekay/x v0.0.0-20210312211721-5efa05df800e
 
-replace github.com/kabukky/journey => i2pgit.org/idk/railroad v0.0.0-20210521044614-35c6d4f3d753
+replace github.com/kabukky/journey => i2pgit.org/idk/railroad v0.0.0-20210521045210-b070dce05e4f
