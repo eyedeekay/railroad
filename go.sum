@@ -82,8 +82,6 @@ github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568 h1:VWc2wnokzqe0l2lW1
 github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568/go.mod h1:x0Ti9biSLRX6JqX2SWBS58Iz4C3oF902BN/L3tubZHg=
 github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3 h1:Iy7Ifq2ysilWU4QlCx/97OoI4xT1IV7i8byT/EyIT/M=
 github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3/go.mod h1:BYpt4ufZiIGv2nXn4gMxnfKV306n3mWXgNu/d2TqdTU=
-github.com/kabukky/journey v0.2.0 h1:AuLLugUPTraGV8z7qki0/zFJTrRn7zvRmMj4bK+qmEw=
-github.com/kabukky/journey v0.2.0/go.mod h1:e9uUcF9pBxHM2RqNQbAmLegjQqULoS1a+I9rHWFPnHw=
 github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 h1:iQTw/8FWTuc7uiaSepXwyf3o52HaUYcV+Tu66S3F5GA=
 github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0/go.mod h1:1NbS8ALrpOvjt0rHPNLyCIeMtbizbir8U//inJ+zuB8=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
@@ -225,11 +223,7 @@ gopkg.in/fsnotify.v1 v1.4.7/go.mod h1:Tz8NjZHkW78fSQdbUxIjBTcgA1z1m8ZHf0WmKUhAMy
 gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 honnef.co/go/tools v0.0.1-2020.1.6/go.mod h1:pyyisuGw24ruLjrr1ddx39WE0y9OooInRzEYLhQB2YY=
-i2pgit.org/idk/railroad v0.0.0-20210521044614-35c6d4f3d753 h1:b7GGFvNM19ZMsDotT2ehzPs6yReMaKCFrKWmdNLnaGA=
-i2pgit.org/idk/railroad v0.0.0-20210521044614-35c6d4f3d753/go.mod h1:3Jxx/eAEPUVYSxMD5avy+9vhUp1/gtTp1mxL+3UwJKg=
-i2pgit.org/idk/railroad v0.0.0-20210521045210-b070dce05e4f h1:LSf3b0421gS3MxO8HmPbeho+8S97A/rvvdSfSHwzBrY=
-i2pgit.org/idk/railroad v0.0.0-20210521045210-b070dce05e4f/go.mod h1:zGMQdElhd8dTWMaKxOEhB5IeCS0A1A3alQIQKUUUMRE=
-i2pgit.org/idk/railroad v0.0.0-20210521045638-9a9fc77a8b37 h1:u11bPsnDo+42DC6ummADoPkPpqxz2CuVgtF5aqJ79ds=
-i2pgit.org/idk/railroad v0.0.0-20210521045638-9a9fc77a8b37/go.mod h1:4xoG7vTvvqcmQ/C/+fPYGLLQzFLrkuExk06zmzggn/w=
 i2pgit.org/idk/zerocontrol v0.0.0-20210415002655-ac2964c74407 h1:QC9E7lwdPZ5q9Lj1gwVlbVKKc508kuR3dFxv4ZEmWA4=
 i2pgit.org/idk/zerocontrol v0.0.0-20210415002655-ac2964c74407/go.mod h1:iIdXfyGZN6ENp/63zs31fnZCS96l6phZViNXvjlg86w=
+i2pgit.org/idk/zerocontrol v0.0.0-20210622210412-ce9e644219f0 h1:6nGNSxGrlkyif79Zo9JnxHVTjOpyBMHXYrIjD/s6nRc=
+i2pgit.org/idk/zerocontrol v0.0.0-20210622210412-ce9e644219f0/go.mod h1:iIdXfyGZN6ENp/63zs31fnZCS96l6phZViNXvjlg86w=
