@@ -101,3 +101,6 @@ index:
 nsis:
 	makensis railroad.nsi
 	cp ../railroad-installer.exe .
+
+fmt:
+	find . -name '*.go' -exec gofmt -w -s {} \;
