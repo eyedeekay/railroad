@@ -60,11 +60,12 @@ func onReady() {
 	systray.SetIcon(icon.Data)
 	systray.SetTitle("Railroad Blog")
 	systray.SetTooltip("Blog is running on I2P: http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
-	mShowUrl := systray.AddMenuItem("http://"+listener.Addr().(i2pkeys.I2PAddr).Base32(), "copy blog address to clipboard")
-	mEditUrl := systray.AddMenuItem("Edit your blog", "copy blog address to clipboard")
+	host := "http://" + strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0]
+	mShowUrl := systray.AddMenuItem(host, "copy blog address to clipboard")
+	mEditUrl := systray.AddMenuItem("Edit your blog", "Edit your blog in it's own webview")
 	if strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
 		if !strings.HasSuffix(configuration.Config.HttpsUrl, "b32.i2p") {
-			mCopyUrl := systray.AddMenuItem("Copy blog address", "copy blog address to clipboard")
+			mCopyUrl := systray.AddMenuItem("Copy blog address helper", "copy blog addresshelper to clipboard")
 			go func() {
 				<-mCopyUrl.ClickedCh
 				log.Println("Requesting copy short address helper")
@@ -186,7 +187,13 @@ func main() {
 		log.Println(err)
 	}
 
-	go socksmain()
+	if status, _, err := portCheck("127.0.0.1:8082"); err != nil {
+		go socksmain()
+	} else {
+		if status == false {
+			go socksmain()
+		}
+	}
 
 	if err = os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
 		panic(err)
