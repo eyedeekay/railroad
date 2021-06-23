@@ -222,6 +222,7 @@ func main() {
 	if err = zerocontrol.ZeroMain(); err != nil {
 		log.Println(err)
 	}
+	defer zerocontrol.Close()
 
 	if status, _, err := portCheck("127.0.0.1:" + *socksPort); err != nil {
 		go socksmain()

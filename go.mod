@@ -26,7 +26,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/fsnotify.v1 v1.4.7
-	i2pgit.org/idk/zerocontrol v0.0.0-20210622231054-455aafb63f52
+	i2pgit.org/idk/zerocontrol v0.0.0-20210623032146-5971d9953e23
 )
 
 replace github.com/txthinking/socks5 v0.0.0-20210326104807-61b5745ff346 => github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f
