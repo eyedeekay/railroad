@@ -1,3 +1,5 @@
+// +build !osxalt
+
 package main
 
 import (
@@ -169,6 +171,14 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 }
 
 func findMe() string {
+	if runtime.GOOS == "darwin" {
+		file, err := filepath.Abs(os.Args[0] + "-ui")
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(file)
+		return file
+	}
 	file, err := filepath.Abs(os.Args[0])
 	if err != nil {
 		log.Fatal(err)
@@ -213,7 +223,7 @@ func main() {
 		log.Println(err)
 	}
 
-	if status, _, err := portCheck("127.0.0.1:"+*socksPort); err != nil {
+	if status, _, err := portCheck("127.0.0.1:" + *socksPort); err != nil {
 		go socksmain()
 	} else {
 		if status == false {

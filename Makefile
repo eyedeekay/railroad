@@ -102,10 +102,15 @@ nsis:
 	makensis railroad.nsi
 	cp ../railroad-installer.exe .
 
+osx:
+	go build -o railroad
+	go build -tags osxalt -o railroad-ui
+
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
 	go build -o railroad.app/Contents/MacOS/railroad
+	go build -tags osxalt -o railroad.app/Contents/MacOS/railroad-ui
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
