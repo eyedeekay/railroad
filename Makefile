@@ -103,7 +103,8 @@ nsis:
 	cp ../railroad-installer.exe .
 
 macapp:
-	mkdir -p railroad.app/Contents/MacOS/
+	mkdir -p railroad.app/Contents/MacOS/content
+	cp -r content/* railroad.app/Contents/MacOS/content/
 	go build -o railroad.app/Contents/MacOS/railroad
 
 fmt:
