@@ -178,16 +178,29 @@ func findMe() string {
 }
 
 var socksPort = flag.String("socksport", "8082", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
+var uiOnly = flag.Bool("uionly", false, "Launch the UI blindly, with no checks to make sure the blog is running")
 
 func main() {
 	flag.Parse()
+	if *uiOnly {
+		debug := true
+		addr := configuration.Config.HttpHostAndPort
+		webView = webview.New(debug)
+		defer webView.Destroy()
+		webView.SetTitle("Railroad Blog - Administration")
+		webView.SetSize(800, 600, webview.HintNone)
+		log.Println("http://" + addr + "/admin")
+		webView.Navigate("http://" + addr + "/admin")
+		webView.Run()
+		return
+	}
 	// Setup
 	var err error
 	if err = zerocontrol.ZeroMain(); err != nil {
 		log.Println(err)
 	}
 
-	if status, _, err := portCheck("127.0.0.1:8082"); err != nil {
+	if status, _, err := portCheck("127.0.0.1:" + *socksPort); err != nil {
 		go socksmain()
 	} else {
 		if status == false {
@@ -214,7 +227,7 @@ func main() {
 	if status, addr, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {
 		if status == true {
 			debug := true
-			webView := webview.New(debug)
+			webView = webview.New(debug)
 			defer webView.Destroy()
 			webView.SetTitle("Railroad Blog - Administration")
 			webView.SetSize(800, 600, webview.HintNone)
