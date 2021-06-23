@@ -89,7 +89,7 @@ func onReady() {
 	go func() {
 		<-mEditUrl.ClickedCh
 		log.Println("Requesting edit")
-		cmd := exec.Command(findMe(), os.Args[1:]...)
+		cmd := exec.Command(findMe(), "-uionly=true")
 		var out []byte
 		var err error
 		if out, err = cmd.CombinedOutput(); err != nil {
@@ -111,7 +111,7 @@ func onExit() {
 	// clean up here
 }
 
-var webView webview.WebView
+//var webView webview.WebView
 
 var url string
 
@@ -183,9 +183,15 @@ var uiOnly = flag.Bool("uionly", false, "Launch the UI blindly, with no checks t
 func main() {
 	flag.Parse()
 	if *uiOnly {
+		if err := os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
+			panic(err)
+		}
+		if err := os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
+			panic(err)
+		}
 		debug := true
 		addr := configuration.Config.HttpHostAndPort
-		webView = webview.New(debug)
+		webView := webview.New(debug)
 		defer webView.Destroy()
 		webView.SetTitle("Railroad Blog - Administration")
 		webView.SetSize(800, 600, webview.HintNone)
@@ -227,7 +233,7 @@ func main() {
 	if status, addr, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {
 		if status == true {
 			debug := true
-			webView = webview.New(debug)
+			webView := webview.New(debug)
 			defer webView.Destroy()
 			webView.SetTitle("Railroad Blog - Administration")
 			webView.SetSize(800, 600, webview.HintNone)
