@@ -104,7 +104,7 @@ nsis:
 
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/
-	go build railroad.app/Contents/MacOS/railroad
+	go build -o railroad.app/Contents/MacOS/railroad
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
