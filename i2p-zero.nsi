@@ -28,7 +28,7 @@ functionEnd
 function installZero
 	${If} ${FileExists} "${I2P64INSTDIR}\I2P.exe"
 		SetOutPath "${ZEROINSTDIR}"
-	${If} ${FileExists} "${I2P32INSTDIR}\I2P.exe"
+	${ElseIf} ${FileExists} "${I2P32INSTDIR}\I2P.exe"
 		SetOutPath "${ZEROINSTDIR}"
 	${Else}
 		SetOutPath "${ZEROINSTDIR}"

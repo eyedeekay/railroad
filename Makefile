@@ -1,7 +1,9 @@
 
+REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.02
+VERSION=0.0.031
+LAST_VERSION=0.0.03
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
 
@@ -20,7 +22,7 @@ linzip:
 		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.private \
 		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.public.txt
 	cd ../ && \
-		tar --exclude=railroad/.git -zcvf railroad.tar.gz railroad
+		tar --exclude=railroad/.git -zcvf railroad-$(VERSION).tar.gz railroad
 
 windows:
 	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad.exe
@@ -35,13 +37,13 @@ winzip:
 		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.private \
 		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.public.txt
 	cd ../ && \
-		zip -x=railroad/.git -r railroad.zip railroad-releases
+		zip -x=railroad/.git -r railroad-$(VERSION).zip railroad-releases
 
 copy:
-	mv ../railroad.tar.gz .
-	mv ../railroad.zip .
-	mv ../*railroad*.deb .
-	mv ../railroad-installer.exe .
+	cp -v ../railroad-$(VERSION).tar.gz .
+	cp -v ../railroad-$(VERSION).zip .
+	cp -v ../i2p-railroad_$(VERSION)-1_amd64.deb .
+	cp -v ../railroad-installer.exe railroad-installer-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
@@ -101,6 +103,11 @@ index:
 nsis:
 	makensis railroad.nsi
 	cp ../railroad-installer.exe .
+	cp ../railroad-installer.exe ../railroad-installer-$(VERSION).exe
+
+zip:
+	cd ../ && \
+		zip railroad.zip -r railroad
 
 osx:
 	go build -o railroad
@@ -114,3 +121,19 @@ macapp:
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
+
+check:
+	ls "../railroad-$(VERSION).zip" \
+	"../railroad-installer-$(VERSION).exe" \
+	"../railroad-$(VERSION).tar.gz" \
+	"../i2p-railroad_$(VERSION)-1_amd64.deb"
+
+release-upload: check
+	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u eyedeekay -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
+#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "$(REPO_NAME)(Windows Zip)" -f "../railroad-$(VERSION).zip"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "$(REPO_NAME)(Windows Installer)" -f "../railroad-installer-$(VERSION).exe"
+#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "$(REPO_NAME)(Linux .tar.gz)" -f "../railroad-$(VERSION).tar.gz"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "$(REPO_NAME)(Debian/Ubuntu Linux .deb)" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
+#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
+#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
+#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""

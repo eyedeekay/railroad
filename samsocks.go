@@ -81,7 +81,7 @@ func socksmain() {
 	}()
 
 	for {
-
+		time.Sleep(time.Minute)
 	}
 
 }

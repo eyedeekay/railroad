@@ -3,7 +3,8 @@
 ![Journey](journey.png)
 
 Really, really easy, individual-oriented I2P blogging with a low barrier to
-entry based on [kabukky/journey](github.com/kabukky/journey).
+entry formerly based on [kabukky/journey](github.com/kabukky/journey), now
+completely forked.
 
 Enable the SAM API: Go to http://127.0.0.1:7657/configclients. Find the menu
 item called "SAM application bridge." Select "Run at Startup" and press the small
