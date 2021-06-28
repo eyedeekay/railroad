@@ -19,6 +19,8 @@ github.com/dsnet/compress v0.0.1/go.mod h1:Aw8dCMJ7RioblQeTqt88akK31OvO8Dhf5Jflh
 github.com/dsnet/golib v0.0.0-20171103203638-1ea166775780/go.mod h1:Lj+Z9rebOhdfkVLjJ8T6VcRQv3SXugXy999NBtR9aFY=
 github.com/eyedeekay/checki2cp v0.0.18-0.20210415001943-02b65fb958e5 h1:pYjtdbzP3TDFliCllfGXHtceqboUhL78Gz7IUc2n+w0=
 github.com/eyedeekay/checki2cp v0.0.18-0.20210415001943-02b65fb958e5/go.mod h1:kdHq1LqZxi2qarfyospSHrh4Aju5SydX+2AzlJKhSJM=
+github.com/eyedeekay/checki2cp v0.0.19 h1:pn/BKpB3oWFPb3i9aJgAdpRfnmNLjxYKdVC7h/UBJ+s=
+github.com/eyedeekay/checki2cp v0.0.19/go.mod h1:kdHq1LqZxi2qarfyospSHrh4Aju5SydX+2AzlJKhSJM=
 github.com/eyedeekay/go-fpw v0.0.0-20200512022837-c8b4dcdc74d4/go.mod h1:RyCx7KuH+5ryvIpUF7SpxiChLtjeuPbVFCIzf8shIFc=
 github.com/eyedeekay/go-i2cp v0.0.0-20190716135428-6d41bed718b0 h1:rnn9OlD/3+tATEZNuiMR1C84O5CX8bZL2qqgttprKrw=
 github.com/eyedeekay/go-i2cp v0.0.0-20190716135428-6d41bed718b0/go.mod h1:+P0fIhkqIYjo7exMJRTlSteRMbRyHbiBiKw+YlPWk+c=
@@ -225,3 +227,5 @@ gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 honnef.co/go/tools v0.0.1-2020.1.6/go.mod h1:pyyisuGw24ruLjrr1ddx39WE0y9OooInRzEYLhQB2YY=
 i2pgit.org/idk/zerocontrol v0.0.0-20210623032146-5971d9953e23 h1:RgdBomFcSPP8PCHmMBDbMEPWlKP7Nfn0Wb+DdWjivqs=
 i2pgit.org/idk/zerocontrol v0.0.0-20210623032146-5971d9953e23/go.mod h1:iIdXfyGZN6ENp/63zs31fnZCS96l6phZViNXvjlg86w=
+i2pgit.org/idk/zerocontrol v0.0.0-20210628200748-c91da0ca4fc2 h1:U4ZmY/r/+2ZAorZqpMQElsffKCoGIaEadhGtH5aN82o=
+i2pgit.org/idk/zerocontrol v0.0.0-20210628200748-c91da0ca4fc2/go.mod h1:uSiWuMReGj+eFQTC4WU7jASmp9j8cn4eoGeXBMOE8c0=
