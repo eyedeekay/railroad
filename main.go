@@ -81,32 +81,33 @@ func onReady() {
 	// Sets the icon of a menu item. Only available on Mac and Windows.
 	mQuit.SetIcon(icon.Data)
 
-	//	for {
-	go func() {
-		<-mQuit.ClickedCh
-		log.Println("Requesting quit")
-		systray.Quit()
-		log.Println("Finished quitting")
-	}()
-	go func() {
-		<-mEditUrl.ClickedCh
-		log.Println("Requesting edit")
-		cmd := exec.Command(findMe(), "-uionly=true")
-		var out []byte
-		var err error
-		if out, err = cmd.CombinedOutput(); err != nil {
-			log.Fatal("COMMAND", err)
-		}
-		log.Println(string(out))
-		log.Println("Finished requesting edit")
-	}()
-	go func() {
-		<-mShowUrl.ClickedCh
-		log.Println("Requesting copy base32")
-		clipboard.WriteAll("http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
-		log.Println("Finished copy base32")
-	}()
-	//	}
+	for {
+		go func() {
+			<-mQuit.ClickedCh
+			log.Println("Requesting quit")
+			systray.Quit()
+			log.Println("Finished quitting")
+		}()
+		go func() {
+			<-mEditUrl.ClickedCh
+			log.Println("Requesting edit")
+			cmd := exec.Command(findMe(), "-uionly=true")
+			var out []byte
+			var err error
+			if out, err = cmd.CombinedOutput(); err != nil {
+				log.Fatal("COMMAND", err)
+			}
+			log.Println(string(out))
+			log.Println("Finished requesting edit")
+		}()
+		go func() {
+			<-mShowUrl.ClickedCh
+			log.Println("Requesting copy base32")
+			clipboard.WriteAll("http://" + strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0])
+			log.Println("Finished copy base32")
+		}()
+		time.Sleep(time.Second)
+	}
 }
 
 func onExit() {
