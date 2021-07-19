@@ -156,7 +156,7 @@ plugin-linux: linux
 		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
 		-license=MIT \
 		-res=plugin-config
-	cp -v *.su3 ../railroad-linux.su3
+	cp -v railroad.su3 ../railroad-linux.su3
 	unzip -o railroad.zip -d railroad-zip
 
 plugin-windows: windows
@@ -174,6 +174,12 @@ plugin-windows: windows
 		-license=MIT \
 		-targetos="windows" \
 		-res=plugin-config
-	cp -v *.su3 ../railroad-windows.su3
+	cp -v railroad.su3 ../railroad-windows.su3
 	unzip -o railroad.zip -d railroad-zip-win
 
+export sumrrlinux=`sha256sum "../railroad-linux.su3"`
+export sumrrwindows=`sha256sum "../railroad-windows.su3"`
+
+upload-plugins:
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrlinux)" -n "brb-linux.su3" -f "../brb-linux.su3"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrwindows)" -n "brb-windows.su3" -f "../brb-windows.su3"
