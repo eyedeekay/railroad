@@ -6,3 +6,7 @@ railroad.tar.gz
 railroad.zip
 *.deb
 railroad-installer.exe./content/data/journey.db
+*.crt
+*.crl
+*.key
+*.pem

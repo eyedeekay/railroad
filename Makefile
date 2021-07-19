@@ -13,6 +13,8 @@ windows-releases: windows winzip
 
 linux:
 	go build -o railroad
+	
+linux-release: linux
 	make checkinstall
 
 linzip:
@@ -137,3 +139,41 @@ release-upload: check
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
+
+plugins: plugin-linux plugin-windows
+
+plugin-linux: linux
+	i2p.plugin.native -name=railroad \
+		-signer=hankhill19580@gmail.com \
+		-version "$(VERSION)" \
+		-author=hankhill19580@gmail.com \
+		-autostart=true \
+		-clientname=railroad \
+		-consolename="Railroad Blog" \
+		-delaystart="1" \
+		-desc="`cat desc)`" \
+		-exename=railroad \
+		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
+		-license=MIT \
+		-res=plugin-config
+	cp -v *.su3 ../railroad-linux.su3
+	unzip -o railroad.zip -d railroad-zip
+
+plugin-windows: windows
+	i2p.plugin.native -name=railroad \
+		-signer=hankhill19580@gmail.com \
+		-version "$(VERSION)" \
+		-author=hankhill19580@gmail.com \
+		-autostart=true \
+		-clientname=railroad.exe \
+		-consolename="Railroad Blog" \
+		-delaystart="1" \
+		-desc="`cat desc)`" \
+		-exename=railroad.exe \
+		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
+		-license=MIT \
+		-targetos="windows" \
+		-res=plugin-config
+	cp -v *.su3 ../railroad-windows.su3
+	unzip -o railroad.zip -d railroad-zip-win
+
