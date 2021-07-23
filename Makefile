@@ -61,7 +61,7 @@ sums:
 	ls -lah *.tar.gz *.zip *.deb *-installer.exe
 
 install:
-	mkdir -p /usr/local/lib/railroad/config
+	mkdir -p /usr/local/lib/railroad /usr/local/lib/railroad/config
 	rm -rf /usr/local/lib/railroad/config/content \
 		/usr/local/lib/railroad/config/built-in
 	cp -R content /usr/local/lib/railroad/config/content
@@ -85,7 +85,7 @@ checkinstall:
 		--pkgrelease=1 \
 		--pkgsource="https://i2pgit.org/idk/railroad" \
 		--maintainer="hankhill19580@gmail.com" \
-		--requires="libgtk-3-dev,libappindicator3-dev,libwebkit2gtk-4.0-dev,xclip,wl-clipboard,i2p,i2p-router" \
+		--requires="libgtk-3-dev,libappindicator3-dev,libwebkit2gtk-4.0-dev,xclip,wl-clipboardr" \
 		--suggests="i2p,i2p-router,syndie,tor,tsocks" \
 		--nodoc \
 		--deldoc=yes \
