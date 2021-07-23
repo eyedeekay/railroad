@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.032
-LAST_VERSION=0.0.031
+VERSION=0.0.033
+LAST_VERSION=0.0.032
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
 
@@ -26,7 +26,9 @@ linzip:
 	cd ../ && \
 		tar --exclude=railroad/.git -zcvf railroad-$(VERSION).tar.gz railroad
 
-windows:
+windows: railroad.exe
+
+railroad.exe:
 	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad.exe
 	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
@@ -52,7 +54,8 @@ $(GOPATH)/src/i2pgit.org/idk/railroad:
 	git clone https://i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad
 
 clean:
-	rm -rf *.private railroad *.public.txt *.tar.gz *.deb *.zip *.exe
+	rm -rf *.private railroad *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll
+
 sums:
 	sha256sum *.tar.gz *.zip *.deb *-installer.exe
 	ls -lah *.tar.gz *.zip *.deb *-installer.exe
@@ -102,7 +105,7 @@ index:
 	@echo "</body>" >> index.html
 	@echo "</html>" >> index.html
 
-nsis:
+nsis: pc
 	makensis railroad.nsi
 	cp ../railroad-installer.exe .
 	cp ../railroad-installer.exe ../railroad-installer-$(VERSION).exe
@@ -140,7 +143,15 @@ release-upload: check
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
-plugins: plugin-linux plugin-windows
+plugins: pc plugin-linux plugin-windows
+
+pc: plugin-config/WebView2Loader.dll plugin-config/webview.dll
+
+plugin-config/WebView2Loader.dll:
+	wget -O plugin-config/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
+
+plugin-config/webview.dll:
+	wget -O plugin-config/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
 plugin-linux: linux
 	i2p.plugin.native -name=railroad \

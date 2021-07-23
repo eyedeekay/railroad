@@ -31,8 +31,8 @@ Section
     SetOutPath $INSTDIR
     File railroad.exe
     File railroad.bat
-    File WebView2Loader.dll
-    File webview.dll
+    File plugin-config/WebView2Loader.dll
+    File plugin-config/webview.dll
     File README.md
     File LICENSE.md
     File config.json
