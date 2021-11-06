@@ -18,12 +18,12 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/dimfeld/httptreemux"
-	"github.com/eyedeekay/checki2cp/samcheck"
-	"github.com/eyedeekay/sam3/helper"
+	checksam "github.com/eyedeekay/checki2cp/samcheck"
+	sam "github.com/eyedeekay/sam3/helper"
 	"github.com/eyedeekay/sam3/i2pkeys"
 	"github.com/getlantern/systray"
 	"github.com/webview/webview"
-	"i2pgit.org/idk/railroad/common"
+	flags "i2pgit.org/idk/railroad/common"
 	"i2pgit.org/idk/railroad/configuration"
 	"i2pgit.org/idk/railroad/database"
 	"i2pgit.org/idk/railroad/filenames"
@@ -95,9 +95,10 @@ func onReady() {
 			var out []byte
 			var err error
 			if out, err = cmd.CombinedOutput(); err != nil {
-				log.Fatal("COMMAND", err)
+				log.Println("COMMAND", err)
+			} else {
+				log.Println(string(out))
 			}
-			log.Println(string(out))
 			log.Println("Finished requesting edit")
 		}()
 		go func() {
