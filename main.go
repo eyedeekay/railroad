@@ -226,14 +226,6 @@ func main() {
 	}
 	defer zerocontrol.Close()
 
-	if status, _, err := portCheck("127.0.0.1:" + *socksPort); err != nil {
-		go socksmain()
-	} else {
-		if status == false {
-			go socksmain()
-		}
-	}
-
 	if err = os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
 		panic(err)
 	}
@@ -248,6 +240,15 @@ func main() {
 
 	for !checksam.CheckSAMAvailable("127.0.0.1:7656") {
 		time.Sleep(time.Second * 15)
+		log.Println("Waiting for SAM")
+	}
+
+	if status, _, err := portCheck("127.0.0.1:" + *socksPort); err != nil {
+		go socksmain()
+	} else {
+		if status == false {
+			go socksmain()
+		}
 	}
 
 	if status, _, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {

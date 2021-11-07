@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/eyedeekay/sam3/helper"
+	sam "github.com/eyedeekay/sam3/helper"
 	"github.com/eyedeekay/sam3/i2pkeys"
 	"github.com/phayes/freeport"
 	"github.com/txthinking/socks5"

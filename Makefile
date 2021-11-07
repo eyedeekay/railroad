@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.033
-LAST_VERSION=0.0.032
+VERSION=0.0.034
+LAST_VERSION=0.0.033
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
 
@@ -161,10 +161,13 @@ plugin-linux: linux
 		-autostart=true \
 		-clientname=railroad \
 		-consolename="Railroad Blog" \
+		-consoleurl="http://127.0.0.1:8084" \
+		-name="railroadBlog" \
 		-delaystart="1" \
-		-desc="`cat desc)`" \
+		-desc="`cat desc`" \
 		-exename=railroad \
-		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
+		-icondata=icon/icon.png \
+		-command="railroad -socksport 8082" \
 		-license=MIT \
 		-res=plugin-config
 	cp -v railroad.su3 ../railroad-linux.su3
@@ -178,10 +181,13 @@ plugin-windows: windows
 		-autostart=true \
 		-clientname=railroad.exe \
 		-consolename="Railroad Blog" \
+		-consoleurl="http://127.0.0.1:8084" \
+		-name="railroadBlog" \
 		-delaystart="1" \
-		-desc="`cat desc)`" \
+		-desc="`cat desc`" \
 		-exename=railroad.exe \
-		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
+		-icondata=icon/icon.png \
+		-command="railroad -socksport 8082" \
 		-license=MIT \
 		-targetos="windows" \
 		-res=plugin-config
