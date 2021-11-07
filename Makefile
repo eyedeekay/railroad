@@ -170,8 +170,8 @@ plugin-linux: linux
 		-command="railroad -socksport 8082" \
 		-license=MIT \
 		-res=plugin-config
-	cp -v railroad.su3 ../railroad-linux.su3
-	unzip -o railroad.zip -d railroad-zip
+	cp -v railroadBlog.su3 ../railroad-linux.su3
+	unzip -o railroadBlog.zip -d railroad-zip
 
 plugin-windows: windows
 	i2p.plugin.native -name=railroad \
@@ -191,8 +191,8 @@ plugin-windows: windows
 		-license=MIT \
 		-targetos="windows" \
 		-res=plugin-config
-	cp -v railroad.su3 ../railroad-windows.su3
-	unzip -o railroad.zip -d railroad-zip-win
+	cp -v railroadBlog.su3 ../railroad-windows.su3
+	unzip -o railroadBlog.zip -d railroad-zip-win
 
 export sumrrlinux=`sha256sum "../railroad-linux.su3"`
 export sumrrwindows=`sha256sum "../railroad-windows.su3"`
