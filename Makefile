@@ -145,10 +145,16 @@ release-upload: check
 
 plugins: pc plugin-linux plugin-windows
 
-pc: plugin-config/lib plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll plugin-config/lib/shellservice.jar
+pc: plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll plugin-config/lib/shellservice.jar
 
 plugin-config/lib:
 	mkdir -p plugin-config/lib/
+
+plugin-config/lib/content:
+	cp -r content plugin-config/lib/content
+
+plugin-config/lib/built-in:
+	cp -r built-in plugin-config/lib/built-in
 
 plugin-config/lib/shellservice.jar:
 	cp "$(HOME)/Workspace/GIT_WORK/i2p.i2p/build/shellservice.jar" plugin-config/lib/shellservice.jar
@@ -181,7 +187,7 @@ plugin-pkg:
 		-desc="`cat desc`" \
 		-exename=railroad-$(GOOS) \
 		-icondata=icon/icon.png \
-		-command="railroad-$(GOOS) -socksport 8082" \
+		-command="railroad-$(GOOS) -custompath \$$PLUGIN/" \
 		-license=MIT \
 		-res=plugin-config/
 	cp -v railroad-$(GOOS).su3 ../railroad-$(GOOS).su3

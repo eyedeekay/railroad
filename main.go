@@ -213,6 +213,7 @@ func LaunchView() error {
 }
 
 func main() {
+	flag.StringVar(&flags.CustomPath, "custompath", "", "Change to custom path for running the blog")
 	flag.Parse()
 	if *uiOnly {
 		err := LaunchView()
