@@ -20,11 +20,10 @@ linux:
 linux-release: linux
 	make checkinstall
 
-linzip:
+linzip: clean
 	tar --exclude=./*.crt --exclude=./*.crl --exclude=./*.pem \
 		--exclude=./*.private --exclude=./*.public.txt \
-		--exclude="./.git/*" \
-		--exclude=railroad/.git -zcvf ../railroad-$(VERSION).tar.gz .
+		--exclude="./.git/*" -zcvf ../railroad-$(VERSION).tar.gz .
 
 windows: railroad-windows.exe
 
@@ -34,7 +33,7 @@ railroad-windows.exe:
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 	make nsis
 
-winzip:
+winzip: clean
 	zip -x=./*.crt -x=./*.crl -x=./*.pem \
 		-x=./*.private -x=./*.public.txt \
 		-x="./.git/*" -r ../railroad-$(VERSION).zip .
