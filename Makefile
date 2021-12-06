@@ -11,37 +11,30 @@ linux-releases: linux linzip
 
 windows-releases: windows winzip
 
-linux:
-	go build -o railroad
+binary:
+	go build -o railroad-$(GOOS)
 	
 linux-release: linux
 	make checkinstall
 
 linzip:
-	rm -rfv $(GOPATH)/src/i2pgit.org/idk/railroad-releases
-	cp -rv $(GOPATH)/src/i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad-releases
-	rm -rf $(GOPATH)/src/i2pgit.org/idk/railroad-releases/.git \
-		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.private \
-		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.public.txt
-	cd ../ && \
-		tar --exclude=railroad/.git -zcvf railroad-$(VERSION).tar.gz railroad
+	tar --exclude=./*.crt --exclude=./*.crl --exclude=./*.pem \
+		--exclude=./*.private --exclude=./*.public.txt \
+		--exclude="./.git/*" \
+		--exclude=railroad/.git -zcvf ../railroad-$(VERSION).tar.gz .
 
-windows: railroad.exe
+windows: railroad-windows.exe
 
-railroad.exe:
-	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad.exe
+railroad-windows.exe:
+	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad-windows.exe
 	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 	make nsis
 
 winzip:
-	rm -rfv $(GOPATH)/src/i2pgit.org/idk/railroad-releases
-	cp -rv $(GOPATH)/src/i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad-releases
-	rm -rf $(GOPATH)/src/i2pgit.org/idk/railroad-releases/.git \
-		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.private \
-		$(GOPATH)/src/i2pgit.org/idk/railroad-releases/*.public.txt
-	cd ../ && \
-		zip -x=railroad/.git -r railroad-$(VERSION).zip railroad-releases
+	zip -x=./*.crt -x=./*.crl -x=./*.pem \
+		-x=./*.private -x=./*.public.txt \
+		-x="./.git/*" -r ../railroad-$(VERSION).zip .
 
 copy:
 	cp -v ../railroad-$(VERSION).tar.gz .
@@ -54,7 +47,7 @@ $(GOPATH)/src/i2pgit.org/idk/railroad:
 	git clone https://i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad
 
 clean:
-	rm -rf *.private railroad *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll
+	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll
 
 sums:
 	sha256sum *.tar.gz *.zip *.deb *-installer.exe
@@ -67,11 +60,11 @@ install:
 	cp -R content /usr/local/lib/railroad/config/content
 	cp -R built-in /usr/local/lib/railroad/config/built-in
 	install -m755 railroad.sh /usr/local/bin/railroad
-	install -m755 railroad /usr/local/lib/railroad/railroad
+	install -m755 railroad-$(GOOS) /usr/local/lib/railroad/railroad
 	cp res/desktop/i2prailroad.desktop /usr/share/applications
 
 uninstall:
-	rm -rf /usr/local/bin/railroad \
+	rm -rf /usr/local/bin/railroad-$(GOOS) \
 		/usr/local/lib/railroad/
 
 checkinstall:
@@ -79,7 +72,7 @@ checkinstall:
 		--default \
 		--install=no \
 		--fstrans=yes \
-		--pkgname=i2p-railroad \
+		--pkgname=i2p-railroad-$(GOOS) \
 		--pkgversion=$(VERSION) \
 		--pkggroup=net \
 		--pkgrelease=1 \
@@ -115,23 +108,28 @@ zip:
 		zip railroad.zip -r railroad
 
 osx:
-	go build -o railroad
-	go build -tags osxalt -o railroad-ui
+	go build -o railroad-$(GOOS)
+	go build -tags osxalt -o railroad-$(GOOS)-ui
 
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
-	go build -o railroad.app/Contents/MacOS/railroad
-	go build -tags osxalt -o railroad.app/Contents/MacOS/railroad-ui
+	go build -o railroad-$(GOOS).app/Contents/MacOS/railroad
+	go build -tags osxalt -o railroad-$(GOOS).app/Contents/MacOS/railroad-ui
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
 
 check:
 	ls "../railroad-$(VERSION).zip" \
-	"../railroad-installer-$(VERSION).exe" \
-	"../railroad-$(VERSION).tar.gz" \
-	"../i2p-railroad_$(VERSION)-1_amd64.deb"
+		"../railroad-installer-$(VERSION).exe" \
+		"../railroad-$(VERSION).tar.gz" \
+		"../i2p-railroad_$(VERSION)-1_amd64.deb"
+
+export sumrrlinux=`sha256sum "../railroad-linux.su3"`
+export sumrrwindows=`sha256sum "../railroad-windows.su3"`
+
+upload-plugins:
 
 release-upload: check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u eyedeekay -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
@@ -139,8 +137,8 @@ release-upload: check
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "$(REPO_NAME)(Windows Installer)" -f "../railroad-installer-$(VERSION).exe"
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "$(REPO_NAME)(Linux .tar.gz)" -f "../railroad-$(VERSION).tar.gz"
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "$(REPO_NAME)(Debian/Ubuntu Linux .deb)" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
-#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
-#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrlinux)" -n "brb-linux.su3" -f "../brb-linux.su3"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrwindows)" -n "brb-windows.su3" -f "../brb-windows.su3"
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
 plugins: pc plugin-linux plugin-windows
@@ -153,50 +151,30 @@ plugin-config/WebView2Loader.dll:
 plugin-config/webview.dll:
 	wget -O plugin-config/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
-plugin-linux: linux
-	i2p.plugin.native -name=railroad \
+plugin-linux:
+	GOOS=linux make binary
+	GOOS=linux make plugin-pkg
+
+plugin-windows:
+	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ make binary
+	GOOS=windows make plugin-pkg
+
+plugin-pkg:
+	i2p.plugin.native -name=railroad-$(GOOS) \
 		-signer=hankhill19580@gmail.com \
 		-version "$(VERSION)" \
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
-		-clientname=railroad \
+		-clientname=railroad-$(GOOS) \
 		-consolename="Railroad Blog" \
 		-consoleurl="http://127.0.0.1:8084" \
-		-name="railroad" \
+		-name="railroad-$(GOOS)" \
 		-delaystart="1" \
 		-desc="`cat desc`" \
-		-exename=railroad \
+		-exename=railroad-$(GOOS) \
 		-icondata=icon/icon.png \
-		-command="railroad -socksport 8082" \
+		-command="railroad-$(GOOS) -socksport 8082" \
 		-license=MIT \
 		-res=plugin-config
-	cp -v railroad.su3 ../railroad-linux.su3
-	unzip -o railroad.zip -d railroad-zip
-
-plugin-windows: windows
-	i2p.plugin.native -name=railroad \
-		-signer=hankhill19580@gmail.com \
-		-version "$(VERSION)" \
-		-author=hankhill19580@gmail.com \
-		-autostart=true \
-		-clientname=railroad.exe \
-		-consolename="Railroad Blog" \
-		-consoleurl="http://127.0.0.1:8084" \
-		-name="railroad" \
-		-delaystart="1" \
-		-desc="`cat desc`" \
-		-exename=railroad.exe \
-		-icondata=icon/icon.png \
-		-command="railroad -socksport 8082" \
-		-license=MIT \
-		-targetos="windows" \
-		-res=plugin-config
-	cp -v railroad.su3 ../railroad-windows.su3
-	unzip -o railroad.zip -d railroad-zip-win
-
-export sumrrlinux=`sha256sum "../railroad-linux.su3"`
-export sumrrwindows=`sha256sum "../railroad-windows.su3"`
-
-upload-plugins:
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrlinux)" -n "brb-linux.su3" -f "../brb-linux.su3"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrwindows)" -n "brb-windows.su3" -f "../brb-windows.su3"
+	cp -v railroad-$(GOOS).su3 ../railroad-$(GOOS).su3
+	unzip -o railroad-$(GOOS).zip -d railroad-$(GOOS)-zip
