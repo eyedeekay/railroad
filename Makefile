@@ -14,6 +14,9 @@ windows-releases: windows winzip
 binary:
 	go build -o railroad-$(GOOS)
 	
+linux:
+	GOOS=linux make binary
+
 linux-release: linux
 	make checkinstall
 
@@ -143,13 +146,19 @@ release-upload: check
 
 plugins: pc plugin-linux plugin-windows
 
-pc: plugin-config/WebView2Loader.dll plugin-config/webview.dll
+pc: plugin-config/lib plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll plugin-config/lib/shellservice.jar
 
-plugin-config/WebView2Loader.dll:
-	wget -O plugin-config/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
+plugin-config/lib:
+	mkdir -p plugin-config/lib/
 
-plugin-config/webview.dll:
-	wget -O plugin-config/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
+plugin-config/lib/shellservice.jar:
+	cp "$(HOME)/Workspace/GIT_WORK/i2p.i2p/build/shellservice.jar" plugin-config/lib/shellservice.jar
+
+plugin-config/lib/WebView2Loader.dll:
+	wget -O plugin-config/lib/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
+
+plugin-config/lib/webview.dll:
+	wget -O plugin-config/lib/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
 plugin-linux:
 	GOOS=linux make binary
@@ -175,6 +184,6 @@ plugin-pkg:
 		-icondata=icon/icon.png \
 		-command="railroad-$(GOOS) -socksport 8082" \
 		-license=MIT \
-		-res=plugin-config
+		-res=plugin-config/
 	cp -v railroad-$(GOOS).su3 ../railroad-$(GOOS).su3
 	unzip -o railroad-$(GOOS).zip -d railroad-$(GOOS)-zip
