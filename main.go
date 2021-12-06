@@ -220,8 +220,13 @@ func main() {
 			log.Fatal(err)
 		}
 	}
+
 	// Setup
 	var err error
+	err = os.Chdir(flags.CustomPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err = zerocontrol.ZeroMain(); err != nil {
 		log.Println(err)
 	}

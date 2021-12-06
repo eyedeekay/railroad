@@ -29,7 +29,7 @@ Section
     Call buildZero
     Call installZero
     SetOutPath $INSTDIR
-    File railroad.exe
+    File railroad-windows.exe
     File railroad.bat
     File plugin-config/WebView2Loader.dll
     File plugin-config/webview.dll
