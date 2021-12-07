@@ -41,7 +41,7 @@ winzip: clean
 copy:
 	cp -v ../railroad-$(VERSION).tar.gz .
 	cp -v ../railroad-$(VERSION).zip .
-	cp -v ../i2p-railroad-_0.0.034-1_amd64.deb .
+	cp -v ../i2p-railroad_$(VERSION)-1_amd64.deb .
 	cp -v ../railroad-installer.exe railroad-installer-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
@@ -74,7 +74,7 @@ checkinstall: linux
 		--default \
 		--install=no \
 		--fstrans=yes \
-		--pkgname=i2p-railroad-$(GOOS) \
+		--pkgname=i2p-railroad \
 		--pkgversion=$(VERSION) \
 		--pkggroup=net \
 		--pkgrelease=1 \
@@ -123,7 +123,7 @@ fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
 
 check:
-	ls "../railroad-$(VERSION).zip" \
+	ls -lah "../railroad-$(VERSION).zip" \
 		"../railroad-installer-$(VERSION).exe" \
 		"../railroad-$(VERSION).tar.gz" \
 		"../i2p-railroad_$(VERSION)-1_amd64.deb"
@@ -141,7 +141,7 @@ release: clean linzip winzip releases plugins release-upload
 
 release-upload: check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u eyedeekay -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "$(REPO_NAME)(Windows Zip)" -f "../railroad-$(VERSION).zip"
+	#gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "$(REPO_NAME)(Windows Zip)" -f "../railroad-$(VERSION).zip"
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "$(REPO_NAME)(Windows Installer)" -f "../railroad-installer-$(VERSION).exe"
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "$(REPO_NAME)(Linux .tar.gz)" -f "../railroad-$(VERSION).tar.gz"
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "$(REPO_NAME)(Debian/Ubuntu Linux .deb)" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
