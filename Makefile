@@ -141,12 +141,12 @@ release: clean linzip winzip releases plugins release-upload
 
 release-upload: check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u eyedeekay -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "$(REPO_NAME)(Windows Zip)" -f "../railroad-$(VERSION).zip"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "$(REPO_NAME)(Windows Installer)" -f "../railroad-installer-$(VERSION).exe"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "$(REPO_NAME)(Linux .tar.gz)" -f "../railroad-$(VERSION).tar.gz"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "$(REPO_NAME)(Debian/Ubuntu Linux .deb)" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrlinux)" -n "brb-linux.su3" -f "../brb-linux.su3"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t v$(VERSION) -l "$(sumrrwindows)" -n "brb-windows.su3" -f "../brb-windows.su3"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-installer-$(VERSION).exe" -f "../railroad-installer-$(VERSION).exe"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "../railroad-linux.su3"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "../railroad-windows.su3"
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
 plugins: pc plugin-linux plugin-windows
