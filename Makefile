@@ -41,7 +41,7 @@ winzip: clean
 copy:
 	cp -v ../railroad-$(VERSION).tar.gz .
 	cp -v ../railroad-$(VERSION).zip .
-	cp -v ../i2p-railroad_$(VERSION)-1_amd64.deb .
+	cp -v ../i2p-railroad-_0.0.034-1_amd64.deb .
 	cp -v ../railroad-installer.exe railroad-installer-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
@@ -69,8 +69,8 @@ uninstall:
 	rm -rf /usr/local/bin/railroad-$(GOOS) \
 		/usr/local/lib/railroad/
 
-checkinstall:
-	checkinstall \
+checkinstall: linux
+	GOOS=linux checkinstall \
 		--default \
 		--install=no \
 		--fstrans=yes \
