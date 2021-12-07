@@ -141,7 +141,7 @@ release: clean linzip winzip releases plugins release-upload
 
 release-upload: check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u eyedeekay -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
-	#gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "$(REPO_NAME)(Windows Zip)" -f "../railroad-$(VERSION).zip"
+	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "$(REPO_NAME)(Windows Zip)" -f "../railroad-$(VERSION).zip"
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "$(REPO_NAME)(Windows Installer)" -f "../railroad-installer-$(VERSION).exe"
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "$(REPO_NAME)(Linux .tar.gz)" -f "../railroad-$(VERSION).tar.gz"
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "$(REPO_NAME)(Debian/Ubuntu Linux .deb)" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
