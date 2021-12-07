@@ -1,4 +1,7 @@
-### 0.0.34
+### 0.0.035
+ - add services(systemd, sysv)
+
+### 0.0.034
  - package as an I2P plugin
  - remove disqus from default theme
 
