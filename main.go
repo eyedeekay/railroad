@@ -34,7 +34,7 @@ import (
 	"i2pgit.org/idk/railroad/server"
 	"i2pgit.org/idk/railroad/structure/methods"
 	"i2pgit.org/idk/railroad/templates"
-	"i2pgit.org/idk/zerocontrol"
+	//"i2pgit.org/idk/zerocontrol"
 )
 
 func save(c *configuration.Configuration) error {
@@ -192,6 +192,7 @@ func findMe() string {
 
 var socksPort = flag.String("socksport", "8082", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
 var uiOnly = flag.Bool("uionly", false, "Launch the UI blindly, with no checks to make sure the blog is running")
+var notray = flag.Bool("notray", false, "Don't launch the systray icon")
 
 func LaunchView() error {
 	if err := os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
@@ -228,10 +229,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err = zerocontrol.ZeroMain(); err != nil {
-		log.Println(err)
-	}
-	defer zerocontrol.Close()
+	//if err = zerocontrol.ZeroMain(); err != nil {
+	//	log.Println(err)
+	//}
+	//defer zerocontrol.Close()
 
 	if err = os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
 		panic(err)
@@ -362,24 +363,42 @@ func main() {
 		server.InitializeAdmin(httpsRouter)
 		// Start https server
 		log.Println("Starting https server on port " + httpsPort + "...")
-		go func() {
-			if err := https.StartServer(listener, httpsRouter); err != nil {
-				log.Fatal("Error: Couldn't start the HTTPS server:", err)
-			}
-		}()
-		// Start http server
-		log.Println("Starting http server on port " + httpPort + "...")
-		go func() {
-			if err := http.Serve(listener, httpRouter); err != nil {
-				log.Fatal("Error: Couldn't start the I2P server:", err)
-			}
-		}()
-		go func() {
+		if !*notray {
+			go func() {
+				if err := https.StartServer(listener, httpsRouter); err != nil {
+					log.Fatal("Error: Couldn't start the HTTPS server:", err)
+				}
+			}()
+			// Start http server
+			log.Println("Starting http server on port " + httpPort + "...")
+			go func() {
+				if err := http.Serve(listener, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the I2P server:", err)
+				}
+			}()
+			go func() {
+				if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the HTTP server:", err)
+				}
+			}()
+			systray.Run(onReady, onExit)
+		} else {
+			go func() {
+				if err := https.StartServer(listener, httpsRouter); err != nil {
+					log.Fatal("Error: Couldn't start the HTTPS server:", err)
+				}
+			}()
+			// Start http server
+			log.Println("Starting http server on port " + httpPort + "...")
+			go func() {
+				if err := http.Serve(listener, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the I2P server:", err)
+				}
+			}()
 			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 				log.Fatal("Error: Couldn't start the HTTP server:", err)
 			}
-		}()
-		systray.Run(onReady, onExit)
+		}
 	case "All":
 		httpsRouter := httptreemux.New()
 		httpRouter := httptreemux.New()
@@ -400,15 +419,28 @@ func main() {
 		}()
 		// Start http server
 		log.Println("Starting http server on port " + httpPort + "...")
-		go func() {
-			if err := http.Serve(listener, httpRouter); err != nil {
-				log.Fatal("Error: Couldn't start the I2P server:", err)
+		if !*notray {
+			go func() {
+				if err := http.Serve(listener, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the I2P server:", err)
+				}
+			}()
+			go func() {
+				if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the HTTP server:", err)
+				}
+			}()
+			systray.Run(onReady, onExit)
+		} else {
+			go func() {
+				if err := http.Serve(listener, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the I2P server:", err)
+				}
+			}()
+			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
+				log.Fatal("Error: Couldn't start the HTTP server:", err)
 			}
-		}()
-		if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
-			log.Fatal("Error: Couldn't start the HTTP server:", err)
 		}
-		systray.Run(onReady, onExit)
 	default: // This is configuration.HttpsUsage == "None"
 		httpRouter := httptreemux.New()
 		// Blog and pages as http
@@ -424,11 +456,17 @@ func main() {
 				log.Fatal("Error: Couldn't start the I2P server:", err)
 			}
 		}()
-		go func() {
+		if !*notray {
+			go func() {
+				if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the HTTP server:", err)
+				}
+			}()
+			systray.Run(onReady, onExit)
+		} else {
 			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 				log.Fatal("Error: Couldn't start the HTTP server:", err)
 			}
-		}()
-		systray.Run(onReady, onExit)
+		}
 	}
 }

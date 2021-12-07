@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.034
-LAST_VERSION=0.0.033
+VERSION=0.0.035
+LAST_VERSION=0.0.034
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
 
@@ -55,21 +55,34 @@ sums:
 	sha256sum *.tar.gz *.zip *.deb *-installer.exe
 	ls -lah *.tar.gz *.zip *.deb *-installer.exe
 
+preinstall-pak:
+	@echo "adduser --system --group --home /var/lib/railroad --disabled-login --disabled-password railroad" > preinstall-pak
+
 install:
-	mkdir -p /usr/local/lib/railroad /usr/local/lib/railroad/config
-	rm -rf /usr/local/lib/railroad/config/content \
-		/usr/local/lib/railroad/config/built-in
-	cp -R content /usr/local/lib/railroad/config/content
-	cp -R built-in /usr/local/lib/railroad/config/built-in
-	install -m755 railroad.sh /usr/local/bin/railroad
-	install -m755 railroad-$(GOOS) /usr/local/lib/railroad/railroad
+	mkdir -p /var/lib/$(REPO_NAME)/ /var/lib/$(REPO_NAME)/icon/
+	rm -rf /var/lib/$(REPO_NAME)/content \
+		/var/lib/$(REPO_NAME)/built-in
+	cp -R content /var/lib/$(REPO_NAME)/content
+	cp -R built-in /var/lib/$(REPO_NAME)/built-in
+	install -m755 railroad.sh /usr/bin/railroad
+	install -m755 railroad-linux /var/lib/$(REPO_NAME)/railroad
 	cp res/desktop/i2prailroad.desktop /usr/share/applications
+	install -m644 etc/default/$(REPO_NAME) /etc/default/$(REPO_NAME)
+	install -m755 etc/init.d/$(REPO_NAME) /etc/init.d/$(REPO_NAME)
+	mkdir -p /etc/systemd/system/$(REPO_NAME).d/
+	install -g railroad -o railroad -d /var/lib/$(REPO_NAME)/
+	cp -r content /var/lib/$(REPO_NAME)/content
+	cp -r built-in /var/lib/$(REPO_NAME)/built-in
+	cp icon/icon.png /var/lib/$(REPO_NAME)/icon/icon.png
+	chown -R railroad:railroad /var/lib/$(REPO_NAME)/
+	install -m644 etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).conf /etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).conf
+	install -m644 etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).service /etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).service
 
 uninstall:
 	rm -rf /usr/local/bin/railroad-$(GOOS) \
-		/usr/local/lib/railroad/
+		/var/lib/$(REPO_NAME)/
 
-checkinstall: linux
+checkinstall: linux preinstall-pak
 	GOOS=linux checkinstall \
 		--default \
 		--install=no \

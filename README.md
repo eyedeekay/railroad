@@ -21,6 +21,8 @@ arrow to the right of the text.
 
 ![Menu](menu.png)
 
+ - Windows I2P Plugin: [http://idk.i2p/railroad/railroad-windows.su3](http://idk.i2p/railroad/railroad-windows.su3)
+ - Linux I2P Plugin: [http://idk.i2p/railroad/railroad-linux.su3](http://idk.i2p/railroad/railroad-linux.su3)
  - Binary Releases: [Github](https://github.com/eyedeekay/railroad/releases)
  - Source Code: [i2pgit.org](https://i2pgit.org/idk/railroad)
 

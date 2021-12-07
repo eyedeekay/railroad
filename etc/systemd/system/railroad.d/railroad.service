@@ -1,0 +1,16 @@
+[Unit]
+Description=I2P Blog Service
+After=network.target
+StartLimitIntervalSec=0
+Requires=i2p.service
+
+[Service]
+User=railroad
+RuntimeDirectory=/var/lib/railroad/
+WorkingDirectory=/var/lib/railroad/
+ExecStart=/var/lib/railroad/railroad -custompath /var/lib/railroad -notray
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
