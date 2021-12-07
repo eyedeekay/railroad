@@ -149,6 +149,15 @@ release-upload: check
 	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "../railroad-windows.su3"
 #	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
+upload-su3s: release-upload
+
+download-su3s:
+	GOOS=windows make download-single-su3
+	GOOS=linux make download-single-su3
+
+download-single-su3:
+	wget -N -c "https://github.com/eyedeekay/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
+
 plugins: pc plugin-linux plugin-windows
 
 pc: plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll plugin-config/lib/shellservice.jar
