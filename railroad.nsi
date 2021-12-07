@@ -20,7 +20,7 @@ Page instfiles
 # For removing Start Menu shortcut in Windows 7
 RequestExecutionLevel admin
 
-!include i2p-zero.nsi
+# !include i2p-zero.nsi
 
 # start default section
 Section
