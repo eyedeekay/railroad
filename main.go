@@ -89,6 +89,7 @@ func onReady() {
 			systray.Quit()
 			log.Println("Finished quitting")
 		}()
+		time.Sleep(time.Second)
 		go func() {
 			<-mEditUrl.ClickedCh
 			log.Println("Requesting edit")
@@ -102,6 +103,7 @@ func onReady() {
 			}
 			log.Println("Finished requesting edit")
 		}()
+		time.Sleep(time.Second)
 		go func() {
 			<-mShowUrl.ClickedCh
 			log.Println("Requesting copy base32")
