@@ -60,8 +60,6 @@ preinstall-pak:
 
 install:
 	mkdir -p /var/lib/$(REPO_NAME)/ /var/lib/$(REPO_NAME)/icon/
-	rm -rf /var/lib/$(REPO_NAME)/content \
-		/var/lib/$(REPO_NAME)/built-in
 	cp -R content /var/lib/$(REPO_NAME)/content
 	cp -R built-in /var/lib/$(REPO_NAME)/built-in
 	install -m755 railroad.sh /usr/bin/railroad
@@ -79,11 +77,13 @@ install:
 	install -m644 etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).service /etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).service
 
 uninstall:
-	rm -rf /usr/local/bin/railroad-$(GOOS) \
-		/var/lib/$(REPO_NAME)/
+	rm -rf /usr/bin/railroad \
+		/var/lib/$(REPO_NAME)/ \
+		/etc/systemd/system/$(REPO_NAME).d/ \
+		/etc/init.d/$(REPO_NAME)
 
 checkinstall: linux preinstall-pak
-	GOOS=linux checkinstall \
+	fakeroot checkinstall \
 		--default \
 		--install=no \
 		--fstrans=yes \

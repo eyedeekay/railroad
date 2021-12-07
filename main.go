@@ -242,10 +242,6 @@ func main() {
 	}
 	time.Sleep(time.Second * 3)
 
-	//	if err = os.Setenv("http_proxy", "http://127.0.0.1:"+*socksPort); err != nil {
-	//		panic(err)
-	//	}
-
 	for !checksam.CheckSAMAvailable("127.0.0.1:7656") {
 		time.Sleep(time.Second * 15)
 		log.Println("Waiting for SAM")
