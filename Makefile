@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.035
-LAST_VERSION=0.0.034
+VERSION=0.0.036
+LAST_VERSION=0.0.035
 USER_GH=eyedeekay
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
