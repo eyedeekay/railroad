@@ -4,6 +4,7 @@ export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
 VERSION=0.0.035
 LAST_VERSION=0.0.034
+USER_GH=eyedeekay
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
 
@@ -17,7 +18,14 @@ binary:
 linux:
 	GOOS=linux make binary
 
-linux-release: linux
+rb:
+	/usr/lib/go-1.15/bin/go build -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
+
+docker:
+	docker build -t $(USER_GH)/$(REPO_NAME):$(VERSION) .
+	docker run -it -v $(PWD):/home/user/go/src/i2pgit.org/idk/$(REPO_NAME) $(USER_GH)/$(REPO_NAME):$(VERSION)
+
+linux-release: docker
 	make checkinstall
 
 linzip: clean
@@ -153,14 +161,14 @@ upload-plugins:
 release: clean linzip winzip releases plugins release-upload
 
 release-upload: check
-	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u eyedeekay -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-installer-$(VERSION).exe" -f "../railroad-installer-$(VERSION).exe"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "../railroad-linux.su3"
-	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "../railroad-windows.su3"
-#	gothub upload -R -u eyedeekay -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
+	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-installer-$(VERSION).exe" -f "../railroad-installer-$(VERSION).exe"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "../railroad-linux.su3"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "../railroad-windows.su3"
+#	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
 upload-su3s: release-upload
 
@@ -169,7 +177,7 @@ download-su3s:
 	GOOS=linux make download-single-su3
 
 download-single-su3:
-	wget -N -c "https://github.com/eyedeekay/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
+	wget -N -c "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
 
 plugins: pc plugin-linux plugin-windows
 
@@ -194,7 +202,7 @@ plugin-config/lib/webview.dll:
 	wget -O plugin-config/lib/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
 plugin-linux:
-	GOOS=linux make binary
+	GOOS=linux make docker
 	GOOS=linux make plugin-pkg
 
 plugin-windows:
@@ -215,6 +223,8 @@ plugin-pkg:
 		-desc="`cat desc`" \
 		-exename=railroad-$(GOOS) \
 		-icondata=icon/icon.png \
+		-updateurl="http://idk.i2p/railroad/railroad-$(GOOS).su3" \
+		-website="http://idk.i2p/railroad/" \
 		-command="railroad-$(GOOS) -custompath \$$PLUGIN/" \
 		-license=MIT \
 		-res=plugin-config/

@@ -36,7 +36,7 @@ require (
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/fsnotify.v1 v1.4.7
-	i2pgit.org/idk/zerocontrol v0.0.0-20210628213827-21f0aa3e9f20
+	i2pgit.org/idk/zerocontrol v0.0.0-20210628213827-21f0aa3e9f20 // indirect
 )
 
 replace github.com/txthinking/socks5 => github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f
