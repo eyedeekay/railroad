@@ -225,6 +225,13 @@ func main() {
 		}
 	}
 
+	for {
+		if checksam.CheckSAMAvailable("127.0.0.1:7656") {
+			break
+		}
+		time.Sleep(time.Second * 10)
+	}
+
 	// Setup
 	var err error
 	err = os.Chdir(flags.CustomPath)

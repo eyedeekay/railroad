@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/atotto/clipboard v0.1.4
+	github.com/boltdb/bolt v1.3.1
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/eyedeekay/checki2cp v0.0.21
 	github.com/eyedeekay/sam3 v0.32.33-0.20210313224934-b9e4186119b8

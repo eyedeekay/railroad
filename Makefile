@@ -6,6 +6,8 @@ VERSION=0.0.036
 LAST_VERSION=0.0.035
 USER_GH=eyedeekay
 
+ARG=-v -tags netgo -ldflags '-w -extldflags "-static"'
+
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
 
 linux-releases: linux linzip
@@ -13,13 +15,13 @@ linux-releases: linux linzip
 windows-releases: windows winzip
 
 binary:
-	go build -o railroad-$(GOOS)
+	go build $(ARG) -o railroad-$(GOOS)
 	
 linux:
 	GOOS=linux make binary
 
 rb:
-	/usr/lib/go-1.15/bin/go build -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
+	/usr/lib/go-1.15/bin/go build $(ARG) -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
 
 docker:
 	docker build -t $(USER_GH)/$(REPO_NAME):$(VERSION) .
@@ -37,6 +39,7 @@ windows: railroad-windows.exe
 
 railroad-windows.exe:
 	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad-windows.exe
+	cp railroad-windows.exe railroad-windows
 	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 	make nsis
@@ -47,17 +50,17 @@ winzip: clean
 		-x="./.git/*" -r ../railroad-$(VERSION).zip .
 
 copy:
-	cp -v ../railroad-$(VERSION).tar.gz .
-	cp -v ../railroad-$(VERSION).zip .
-	cp -v ../i2p-railroad_$(VERSION)-1_amd64.deb .
-	cp -v ../railroad-installer.exe railroad-installer-$(VERSION).exe
+	#cp -v ./railroad-$(VERSION).tar.gz ..
+	#cp -v ./railroad-$(VERSION).zip ..
+	#cp -v ./i2p-railroad_$(VERSION)-1_amd64.deb ..
+	#cp -v ./railroad-installer.exe railroad-installer-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
 	git clone https://i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad
 
 clean:
-	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero
+	rm -rf *.private plugin railroad railroad-* *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero
 
 sums:
 	sha256sum *.tar.gz *.zip *.deb *-installer.exe
@@ -131,14 +134,14 @@ zip:
 		zip railroad.zip -r railroad
 
 osx:
-	go build -o railroad-$(GOOS)
-	go build -tags osxalt -o railroad-$(GOOS)-ui
+	go build $(ARG) -o railroad-$(GOOS)
+	go build $(ARG) -tags osxalt -o railroad-$(GOOS)-ui
 
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
-	go build -o railroad-$(GOOS).app/Contents/MacOS/railroad
-	go build -tags osxalt -o railroad-$(GOOS).app/Contents/MacOS/railroad-ui
+	go build $(ARG) -o railroad-$(GOOS).app/Contents/MacOS/railroad
+	go build $(ARG) -tags osxalt -o railroad-$(GOOS).app/Contents/MacOS/railroad-ui
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
@@ -160,12 +163,12 @@ upload-plugins:
 
 release: clean linzip winzip releases plugins release-upload
 
-release-upload: check
+release-upload: #check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-installer-$(VERSION).exe" -f "../railroad-installer-$(VERSION).exe"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
+#	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
+#	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-installer-$(VERSION).exe" -f "../railroad-installer-$(VERSION).exe"
+#	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
+#	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "../railroad-linux.su3"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "../railroad-windows.su3"
 #	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
@@ -206,7 +209,7 @@ plugin-linux:
 	GOOS=linux make plugin-pkg
 
 plugin-windows:
-	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ make binary
+	make windows
 	GOOS=windows make plugin-pkg
 
 plugin-pkg:

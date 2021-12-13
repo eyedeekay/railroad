@@ -1,10 +1,11 @@
 package database
 
 import (
-	"database/sql"
+	"time"
 
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/satori/go.uuid"
+	//_ "github.com/mattn/go-sqlite3"
+	"github.com/boltdb/bolt"
+	uuid "github.com/satori/go.uuid"
 	"i2pgit.org/idk/railroad/database/migration"
 	"i2pgit.org/idk/railroad/date"
 	"i2pgit.org/idk/railroad/filenames"
@@ -13,7 +14,7 @@ import (
 )
 
 // Handler for read access
-var readDB *sql.DB
+var readDB *bolt.DB
 
 var stmtInitialization = `CREATE TABLE IF NOT EXISTS
 	posts (
@@ -134,7 +135,10 @@ func Initialize() error {
 	}
 	// Open or create database file
 	var err error
-	readDB, err = sql.Open("sqlite3", filenames.DatabaseFilename)
+	readDB, err = bolt.Open(filenames.DatabaseFilename, 0644,
+		&bolt.Options{
+			Timeout: 1 * time.Second,
+		})
 	if err != nil {
 		return err
 	}
