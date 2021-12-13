@@ -34,7 +34,6 @@ import (
 	"i2pgit.org/idk/railroad/server"
 	"i2pgit.org/idk/railroad/structure/methods"
 	"i2pgit.org/idk/railroad/templates"
-	//"i2pgit.org/idk/zerocontrol"
 )
 
 func save(c *configuration.Configuration) error {
@@ -223,6 +222,13 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+	}
+
+	for {
+		if checksam.CheckSAMAvailable("127.0.0.1:7656") {
+			break
+		}
+		time.Sleep(time.Second * 10)
 	}
 
 	// Setup
