@@ -25,6 +25,11 @@ arrow to the right of the text.
 
 ![Menu](menu.png)
 
+The first time you run `railroad` you'll need to set up an account. Go to
+[http://localhost:7672/admin/login/](http://localhost:7672/admin/login/) and
+fill in your username and password. Restart the plugin and your site will
+become available.
+
  - Windows I2P Plugin: [http://idk.i2p/railroad/railroad-windows.su3](http://idk.i2p/railroad/railroad-windows.su3)
  - Linux I2P Plugin: [http://idk.i2p/railroad/railroad-linux.su3](http://idk.i2p/railroad/railroad-linux.su3)
 
