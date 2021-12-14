@@ -58,20 +58,21 @@ var configjson = `{
 	"UseLetsEncrypt":false
 }`
 
+var host string
+
 func onReady() {
 	systray.SetIcon(icon.Data)
 	systray.SetTitle("Railroad Blog")
-	systray.SetTooltip("Blog is running on I2P: http://" + listener.Addr().(i2pkeys.I2PAddr).Base32())
-	host := "http://" + strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0]
-	mShowUrl := systray.AddMenuItem(host, "copy blog address to clipboard")
+	systray.SetTooltip("Blog is running on I2P: http://" + host)
+	mShowUrl := systray.AddMenuItem("Copy Address", "copy blog address to clipboard")
 	mEditUrl := systray.AddMenuItem("Edit your blog", "Edit your blog in it's own webview")
 	if strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
 		if !strings.HasSuffix(configuration.Config.HttpsUrl, "b32.i2p") {
 			mCopyUrl := systray.AddMenuItem("Copy blog address helper", "copy blog addresshelper to clipboard")
 			go func() {
 				<-mCopyUrl.ClickedCh
-				log.Println("Requesting copy short address helper")
-				clipboard.WriteAll(configuration.Config.HttpsUrl + "/i2paddresshelper=" + listener.Addr().(i2pkeys.I2PAddr).Base32())
+				log.Println("Requesting copy short address helper:", configuration.Config.HttpsUrl+"/i2paddresshelper="+host)
+				clipboard.WriteAll(configuration.Config.HttpsUrl + "/i2paddresshelper=" + host)
 				log.Println("Finished copy short address helper")
 			}()
 		}
@@ -107,8 +108,8 @@ func onReady() {
 		go func() {
 			<-mShowUrl.ClickedCh
 			log.Println("Waiting for password = ", passStat())
-			log.Println("Requesting copy base32")
-			clipboard.WriteAll("http://" + strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0])
+			log.Println("Requesting copy base32", host)
+			clipboard.WriteAll("http://" + host)
 			log.Println("Finished copy base32")
 		}()
 		time.Sleep(time.Second * 3)
@@ -119,10 +120,6 @@ func onExit() {
 	// clean up here
 }
 
-//var webView webview.WebView
-
-var url string
-
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
@@ -130,8 +127,6 @@ func fileExists(filename string) bool {
 	}
 	return !info.IsDir()
 }
-
-var listener net.Listener
 
 var domainhelp = `You haven't configured an I2P hostname for your site.
 If you want to, edit config.json and change the value of "HttpsUrl:" to your desired human-readable name, ending in .i2p.
@@ -232,16 +227,32 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 	_, err := database.RetrieveUser(1)
 	if err != nil {
 		fmt.Println("Error retrieving user, probably unset.")
+		listener, err := sam.I2PListener("railroad"+aftername, "127.0.0.1:7656", "railroad"+aftername)
+		if err != nil {
+			panic(err)
+		}
+		host = strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0]
+		if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
+			configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+			log.Println(domainhelp)
+		}
+		save(configuration.Config)
+		listener.Close()
+		time.Sleep(time.Second * 10)
 	} else {
 		fmt.Println("User exists, ready to go.")
 		listener, err := sam.I2PListener("railroad"+aftername, "127.0.0.1:7656", "railroad"+aftername)
 		if err != nil {
 			panic(err)
 		}
-		//defer listener.Close()
+		host = strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0]
+		if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
+			configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+			log.Println(domainhelp)
+		}
+		save(configuration.Config)
 		return true, listener, err
 	}
-	time.Sleep(time.Second * 5)
 	return false, nil, nil
 }
 
@@ -303,13 +314,6 @@ func main() {
 		configuration.Config.HttpsHostAndPort = "127.0.0.1:8085"
 	}
 	configuration.Config.UseLetsEncrypt = false
-
-	if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
-		configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
-		log.Println(domainhelp)
-	}
-
-	save(configuration.Config)
 
 	// GOMAXPROCS - Maybe not needed
 	runtime.GOMAXPROCS(runtime.NumCPU())

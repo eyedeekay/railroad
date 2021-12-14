@@ -148,7 +148,9 @@ check:
 	ls -lah "../railroad-$(VERSION).zip" \
 		"../railroad-installer-$(VERSION).exe" \
 		"../railroad-$(VERSION).tar.gz" \
-		"../i2p-railroad_$(VERSION)-1_amd64.deb"
+		"../i2p-railroad_$(VERSION)-1_amd64.deb" \
+		"./railroad-linux.su3" \
+		"./railroad-windows.su3"
 
 export sumrrlinux=`sha256sum "./railroad-linux.su3"`
 export sumrrwindows=`sha256sum "./railroad-windows.su3"`
