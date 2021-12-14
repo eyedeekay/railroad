@@ -6,6 +6,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -46,7 +47,6 @@ func save(c *configuration.Configuration) error {
 
 func httpsRedirect(w http.ResponseWriter, r *http.Request, _ map[string]string) {
 	http.Redirect(w, r, configuration.Config.HttpsUrl+r.RequestURI, http.StatusMovedPermanently)
-	return
 }
 
 var configjson = `{
@@ -91,6 +91,7 @@ func onReady() {
 		time.Sleep(time.Second)
 		go func() {
 			<-mEditUrl.ClickedCh
+			log.Println("Waiting for password = ", waitPass())
 			log.Println("Requesting edit")
 			cmd := exec.Command(findMe(), "-uionly=true")
 			var out []byte
@@ -105,11 +106,12 @@ func onReady() {
 		time.Sleep(time.Second)
 		go func() {
 			<-mShowUrl.ClickedCh
+			log.Println("Waiting for password = ", waitPass())
 			log.Println("Requesting copy base32")
 			clipboard.WriteAll("http://" + strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0])
 			log.Println("Finished copy base32")
 		}()
-		time.Sleep(time.Second)
+		time.Sleep(time.Second * 3)
 	}
 }
 
@@ -214,6 +216,18 @@ func LaunchView() error {
 	return nil
 }
 
+func waitPass() bool {
+	_, err := database.RetrieveUser(1)
+	if err != nil {
+		fmt.Println("Error retrieving user, probably unset.")
+	} else {
+		fmt.Println("User exists, ready to go.")
+		return true
+	}
+	time.Sleep(time.Second * 5)
+	return false
+}
+
 func main() {
 	flag.StringVar(&flags.CustomPath, "custompath", "", "Change to custom path for running the blog")
 	flag.Parse()
@@ -224,23 +238,12 @@ func main() {
 		}
 	}
 
-	for {
-		if checksam.CheckSAMAvailable("127.0.0.1:7656") {
-			break
-		}
-		time.Sleep(time.Second * 10)
-	}
-
 	// Setup
 	var err error
 	err = os.Chdir(flags.CustomPath)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//if err = zerocontrol.ZeroMain(); err != nil {
-	//	log.Println(err)
-	//}
-	//defer zerocontrol.Close()
 
 	if err = os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
 		panic(err)
@@ -251,6 +254,7 @@ func main() {
 	time.Sleep(time.Second * 3)
 
 	for !checksam.CheckSAMAvailable("127.0.0.1:7656") {
+		log.Println("Checking SAM")
 		time.Sleep(time.Second * 15)
 		log.Println("Waiting for SAM")
 	}
@@ -258,13 +262,13 @@ func main() {
 	if status, _, err := portCheck("127.0.0.1:" + *socksPort); err != nil {
 		go socksmain()
 	} else {
-		if status == false {
+		if !status {
 			go socksmain()
 		}
 	}
 
 	if status, _, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {
-		if status == true {
+		if status {
 			err := LaunchView()
 			if err != nil {
 				log.Fatal(err)
@@ -286,7 +290,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	defer listener.Close()
 
 	if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
@@ -369,18 +372,24 @@ func main() {
 		log.Println("Starting https server on port " + httpsPort + "...")
 		if !*notray {
 			go func() {
-				if err := https.StartServer(listener, httpsRouter); err != nil {
-					log.Fatal("Error: Couldn't start the HTTPS server:", err)
+				for waitPass() {
+					log.Println("Starting https server on I2P " + httpsPort + "...")
+					if err := https.StartServer(listener, httpsRouter); err != nil {
+						log.Fatal("Error: Couldn't start the HTTPS server:", err)
+					}
 				}
 			}()
 			// Start http server
-			log.Println("Starting http server on port " + httpPort + "...")
 			go func() {
-				if err := http.Serve(listener, httpRouter); err != nil {
-					log.Fatal("Error: Couldn't start the I2P server:", err)
+				for waitPass() {
+					log.Println("Starting http server on I2P " + httpPort + "...")
+					if err := http.Serve(listener, httpRouter); err != nil {
+						log.Fatal("Error: Couldn't start the I2P server:", err)
+					}
 				}
 			}()
 			go func() {
+				log.Println("Starting http server on port " + httpPort + "...")
 				if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 					log.Fatal("Error: Couldn't start the HTTP server:", err)
 				}
@@ -388,17 +397,23 @@ func main() {
 			systray.Run(onReady, onExit)
 		} else {
 			go func() {
-				if err := https.StartServer(listener, httpsRouter); err != nil {
-					log.Fatal("Error: Couldn't start the HTTPS server:", err)
+				for waitPass() {
+					log.Println("Starting https server on I2P " + httpsPort + "...")
+					if err := https.StartServer(listener, httpsRouter); err != nil {
+						log.Fatal("Error: Couldn't start the HTTPS server:", err)
+					}
 				}
 			}()
 			// Start http server
-			log.Println("Starting http server on port " + httpPort + "...")
 			go func() {
-				if err := http.Serve(listener, httpRouter); err != nil {
-					log.Fatal("Error: Couldn't start the I2P server:", err)
+				for waitPass() {
+					log.Println("Starting http server on I2P " + httpPort + "...")
+					if err := http.Serve(listener, httpRouter); err != nil {
+						log.Fatal("Error: Couldn't start the I2P server:", err)
+					}
 				}
 			}()
+			log.Println("Starting http server on port " + httpPort + "...")
 			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 				log.Fatal("Error: Couldn't start the HTTP server:", err)
 			}
@@ -415,21 +430,26 @@ func main() {
 		httpRouter.GET("/", httpsRedirect)
 		httpRouter.GET("/*path", httpsRedirect)
 		// Start https server
-		log.Println("Starting https server on port " + httpsPort + "...")
 		go func() {
-			if err := https.StartServer(listener, httpsRouter); err != nil {
-				log.Fatal("Error: Couldn't start the HTTPS server:", err)
+			for waitPass() {
+				log.Println("Starting https server on I2P " + httpsPort + "...")
+				if err := https.StartServer(listener, httpsRouter); err != nil {
+					log.Fatal("Error: Couldn't start the HTTPS server:", err)
+				}
 			}
 		}()
 		// Start http server
-		log.Println("Starting http server on port " + httpPort + "...")
 		if !*notray {
 			go func() {
-				if err := http.Serve(listener, httpRouter); err != nil {
-					log.Fatal("Error: Couldn't start the I2P server:", err)
+				for waitPass() {
+					log.Println("Starting http server on I2P " + httpPort + "...")
+					if err := http.Serve(listener, httpRouter); err != nil {
+						log.Fatal("Error: Couldn't start the I2P server:", err)
+					}
 				}
 			}()
 			go func() {
+				log.Println("Starting http server on port " + httpPort + "...")
 				if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 					log.Fatal("Error: Couldn't start the HTTP server:", err)
 				}
@@ -437,10 +457,14 @@ func main() {
 			systray.Run(onReady, onExit)
 		} else {
 			go func() {
-				if err := http.Serve(listener, httpRouter); err != nil {
-					log.Fatal("Error: Couldn't start the I2P server:", err)
+				for waitPass() {
+					log.Println("Starting http server on I2P " + httpPort + "...")
+					if err := http.Serve(listener, httpRouter); err != nil {
+						log.Fatal("Error: Couldn't start the I2P server:", err)
+					}
 				}
 			}()
+			log.Println("Starting http server on port " + httpPort + "...")
 			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 				log.Fatal("Error: Couldn't start the HTTP server:", err)
 			}
@@ -456,18 +480,23 @@ func main() {
 		log.Println("Starting server without HTTPS support. Please enable HTTPS in " + filenames.ConfigFilename + " to improve security.")
 		log.Println("Starting http server on port " + httpPort + "...")
 		go func() {
-			if err := http.Serve(listener, httpRouter); err != nil {
-				log.Fatal("Error: Couldn't start the I2P server:", err)
+			for waitPass() {
+				log.Println("Starting http server on I2P " + httpPort + "...")
+				if err := http.Serve(listener, httpRouter); err != nil {
+					log.Fatal("Error: Couldn't start the I2P server:", err)
+				}
 			}
 		}()
 		if !*notray {
 			go func() {
+				log.Println("Starting http server on port " + httpPort + "...")
 				if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 					log.Fatal("Error: Couldn't start the HTTP server:", err)
 				}
 			}()
 			systray.Run(onReady, onExit)
 		} else {
+			log.Println("Starting http server on port " + httpPort + "...")
 			if err := http.ListenAndServe(httpPort, httpRouter); err != nil {
 				log.Fatal("Error: Couldn't start the HTTP server:", err)
 			}

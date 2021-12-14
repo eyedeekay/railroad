@@ -12,8 +12,8 @@ linux-releases: linux linzip
 
 windows-releases: windows winzip
 
-binary:
-	go build -o railroad-$(GOOS)
+#binary:
+#	go build -o railroad-$(GOOS)
 	
 linux:
 	GOOS=linux make binary
@@ -37,6 +37,7 @@ windows: railroad-windows.exe
 
 railroad-windows.exe:
 	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad-windows.exe
+	cp railroad-windows.exe railroad-windows
 	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 	make nsis
@@ -206,7 +207,7 @@ plugin-linux:
 	GOOS=linux make plugin-pkg
 
 plugin-windows:
-	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ make binary
+	make railroad-windows.exe
 	GOOS=windows make plugin-pkg
 
 plugin-pkg:

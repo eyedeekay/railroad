@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/dimfeld/httptreemux"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"i2pgit.org/idk/railroad/authentication"
 	"i2pgit.org/idk/railroad/configuration"
 	"i2pgit.org/idk/railroad/conversion"
