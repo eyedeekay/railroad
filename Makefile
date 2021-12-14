@@ -16,10 +16,10 @@ linux-releases: linux linzip
 windows-releases: windows winzip
 	
 linux:
-	GOOS=linux go build -o railroad-$(GOOS)
+	GOOS=linux go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
 
 rb:
-	/usr/lib/go-1.15/bin/go build -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
+	/usr/lib/go-1.15/bin/go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
 
 docker:
 	docker build -t $(USER_GH)/$(REPO_NAME):$(VERSION) .
@@ -132,14 +132,14 @@ zip:
 		zip railroad.zip -r railroad
 
 osx:
-	go build -o railroad-$(GOOS)
-	go build -tags osxalt -o railroad-$(GOOS)-ui
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS)-ui
 
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
 	go build -o railroad-$(GOOS).app/Contents/MacOS/railroad
-	go build -tags osxalt -o railroad-$(GOOS).app/Contents/MacOS/railroad-ui
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS).app/Contents/MacOS/railroad-ui
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
