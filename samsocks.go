@@ -26,7 +26,7 @@ const version = "0.0.01"
 func socksmain() {
 	// Create a SOCKS5 server
 	addr := "127.0.0.1"
-	port := 8082
+	port := 7674
 	name := "rr-sam-socks-" + randomid()
 	username := ""
 	password := ""

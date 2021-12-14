@@ -109,7 +109,7 @@ func (c *Configuration) load() error {
 
 func (c *Configuration) create() error {
 	// TODO: Change default port
-	c = &Configuration{HttpHostAndPort: ":8084", HttpsHostAndPort: ":8085", HttpsUsage: "None", Url: "127.0.0.1:8084", HttpsUrl: "127.0.0.1:8085"}
+	c = &Configuration{HttpHostAndPort: ":7672", HttpsHostAndPort: ":7673", HttpsUsage: "None", Url: "127.0.0.1:7672", HttpsUrl: "127.0.0.1:7673"}
 	err := c.save()
 	if err != nil {
 		log.Println("Error: couldn't create " + filenames.ConfigFilename)

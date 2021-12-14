@@ -228,7 +228,7 @@ plugin-pkg:
 		-autostart=true \
 		-clientname=railroad-$(GOOS) \
 		-consolename="Railroad Blog" \
-		-consoleurl="http://127.0.0.1:8084" \
+		-consoleurl="http://127.0.0.1:7672" \
 		-name="railroad-$(GOOS)" \
 		-delaystart="1" \
 		-desc="`cat desc`" \

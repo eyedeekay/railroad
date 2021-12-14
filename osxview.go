@@ -11,11 +11,11 @@ import (
 	"os"
 )
 
-var socksPort = flag.String("socksport", "8082", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
+var socksPort = flag.String("socksport", "7674", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
 var uiOnly = flag.Bool("uionly", true, "Launch the UI blindly, with no checks to make sure the blog is running")
 
 func main() {
-	if err := os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
+	if err := os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
 		log.Fatal(err)
 	}
 	if err := os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {

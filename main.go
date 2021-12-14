@@ -50,11 +50,11 @@ func httpsRedirect(w http.ResponseWriter, r *http.Request, _ map[string]string) 
 }
 
 var configjson = `{
-	"HttpHostAndPort":"127.0.0.1:8084",
-	"HttpsHostAndPort":"127.0.0.1:8085",
+	"HttpHostAndPort":"127.0.0.1:7672",
+	"HttpsHostAndPort":"127.0.0.1:7673",
 	"HttpsUsage":"None",
-	"Url":"http://127.0.0.1:8084",
-	"HttpsUrl":"https://127.0.0.1:8085",
+	"Url":"http://127.0.0.1:7672",
+	"HttpsUrl":"https://127.0.0.1:7673",
 	"UseLetsEncrypt":false
 }`
 
@@ -133,10 +133,10 @@ If you want to, edit config.json and change the value of "HttpsUrl:" to your des
 For example:
 
 {
-	"HttpHostAndPort":"127.0.0.1:8084",
-	"HttpsHostAndPort":"127.0.0.1:8085",
+	"HttpHostAndPort":"127.0.0.1:7672",
+	"HttpsHostAndPort":"127.0.0.1:7673",
 	"HttpsUsage":"None",
-	"Url":"http://127.0.0.1:8084",
+	"Url":"http://127.0.0.1:7672",
 	"HttpsUrl":"https://blog.idk.i2p",
 	"UseLetsEncrypt":false
 }
@@ -188,12 +188,12 @@ func findMe() string {
 	return file
 }
 
-var socksPort = flag.String("socksport", "8082", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
+var socksPort = flag.String("socksport", "7674", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
 var uiOnly = flag.Bool("uionly", false, "Launch the UI blindly, with no checks to make sure the blog is running")
 var notray = flag.Bool("notray", false, "Don't launch the systray icon")
 
 func LaunchView() error {
-	if err := os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
+	if err := os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
 		return err
 	}
 	if err := os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
@@ -273,7 +273,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err = os.Setenv("NO_PROXY", "127.0.0.1:8084"); err != nil {
+	if err = os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
 		panic(err)
 	}
 	if err = os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
@@ -307,11 +307,11 @@ func main() {
 		log.Fatal(err)
 	}
 	// Enforce safe local configuration
-	if configuration.Config.HttpHostAndPort == ":8084" {
-		configuration.Config.HttpHostAndPort = "127.0.0.1:8084"
+	if configuration.Config.HttpHostAndPort == ":7672" {
+		configuration.Config.HttpHostAndPort = "127.0.0.1:7672"
 	}
-	if configuration.Config.HttpsHostAndPort == ":8085" {
-		configuration.Config.HttpsHostAndPort = "127.0.0.1:8085"
+	if configuration.Config.HttpsHostAndPort == ":7673" {
+		configuration.Config.HttpsHostAndPort = "127.0.0.1:7673"
 	}
 	configuration.Config.UseLetsEncrypt = false
 
