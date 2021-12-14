@@ -6,6 +6,10 @@ Really, really easy, individual-oriented I2P blogging with a low barrier to
 entry formerly based on [kabukky/journey](github.com/kabukky/journey), now
 completely forked.
 
+The first time you run Railroad you'll need to set a password, then re-start
+the application. You can do this by visiting the WebView(via the traymenu) or
+by visiting [http://localhost:8084/admin/login](http://localhost:8084/admin/login).
+
 Enable the SAM API: Go to http://127.0.0.1:7657/configclients. Find the menu
 item called "SAM application bridge." Select "Run at Startup" and press the small
 arrow to the right of the text.
@@ -23,6 +27,7 @@ arrow to the right of the text.
 
  - Windows I2P Plugin: [http://idk.i2p/railroad/railroad-windows.su3](http://idk.i2p/railroad/railroad-windows.su3)
  - Linux I2P Plugin: [http://idk.i2p/railroad/railroad-linux.su3](http://idk.i2p/railroad/railroad-linux.su3)
+
  - Binary Releases: [Github](https://github.com/eyedeekay/railroad/releases)
  - Source Code: [i2pgit.org](https://i2pgit.org/idk/railroad)
 

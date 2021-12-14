@@ -11,12 +11,9 @@ releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-rel
 linux-releases: linux linzip
 
 windows-releases: windows winzip
-
-#binary:
-#	go build -o railroad-$(GOOS)
 	
 linux:
-	GOOS=linux make binary
+	GOOS=linux go build -o railroad-$(GOOS)
 
 rb:
 	/usr/lib/go-1.15/bin/go build -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
@@ -58,7 +55,7 @@ $(GOPATH)/src/i2pgit.org/idk/railroad:
 	git clone https://i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad
 
 clean:
-	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero
+	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero plugin vendor
 
 sums:
 	sha256sum *.tar.gz *.zip *.deb *-installer.exe
@@ -91,7 +88,7 @@ uninstall:
 		/etc/systemd/system/$(REPO_NAME).d/ \
 		/etc/init.d/$(REPO_NAME)
 
-checkinstall: linux preinstall-pak
+checkinstall: docker preinstall-pak
 	fakeroot checkinstall \
 		--default \
 		--install=no \
@@ -159,7 +156,9 @@ export sumexe=`sha256sum "../railroad-installer-$(VERSION).exe"`
 
 upload-plugins:
 
-release: clean linzip winzip releases plugins release-upload
+all: clean linzip winzip checkinstall releases plugins
+
+release: all release-upload
 
 release-upload: check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true

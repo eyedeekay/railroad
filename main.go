@@ -91,7 +91,7 @@ func onReady() {
 		time.Sleep(time.Second)
 		go func() {
 			<-mEditUrl.ClickedCh
-			log.Println("Waiting for password = ", waitPass())
+			log.Println("Waiting for password = ", passStat())
 			log.Println("Requesting edit")
 			cmd := exec.Command(findMe(), "-uionly=true")
 			var out []byte
@@ -106,7 +106,7 @@ func onReady() {
 		time.Sleep(time.Second)
 		go func() {
 			<-mShowUrl.ClickedCh
-			log.Println("Waiting for password = ", waitPass())
+			log.Println("Waiting for password = ", passStat())
 			log.Println("Requesting copy base32")
 			clipboard.WriteAll("http://" + strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0])
 			log.Println("Finished copy base32")
@@ -216,7 +216,7 @@ func LaunchView() error {
 	return nil
 }
 
-func waitPass() bool {
+func passStat() bool {
 	_, err := database.RetrieveUser(1)
 	if err != nil {
 		fmt.Println("Error retrieving user, probably unset.")
@@ -226,6 +226,23 @@ func waitPass() bool {
 	}
 	time.Sleep(time.Second * 5)
 	return false
+}
+
+func waitPass(aftername string) (bool, net.Listener, error) {
+	_, err := database.RetrieveUser(1)
+	if err != nil {
+		fmt.Println("Error retrieving user, probably unset.")
+	} else {
+		fmt.Println("User exists, ready to go.")
+		listener, err := sam.I2PListener("railroad"+aftername, "127.0.0.1:7656", "railroad"+aftername)
+		if err != nil {
+			panic(err)
+		}
+		//defer listener.Close()
+		return true, listener, err
+	}
+	time.Sleep(time.Second * 5)
+	return false, nil, nil
 }
 
 func main() {
@@ -286,11 +303,6 @@ func main() {
 		configuration.Config.HttpsHostAndPort = "127.0.0.1:8085"
 	}
 	configuration.Config.UseLetsEncrypt = false
-	listener, err = sam.I2PListener("railroad", "127.0.0.1:7656", "railroad")
-	if err != nil {
-		panic(err)
-	}
-	defer listener.Close()
 
 	if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
 		configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
@@ -372,7 +384,11 @@ func main() {
 		log.Println("Starting https server on port " + httpsPort + "...")
 		if !*notray {
 			go func() {
-				for waitPass() {
+				for con, listener, err := waitPass("-https"); con; con, listener, err = waitPass("-https") {
+					if err != nil {
+						panic(err)
+					}
+					defer listener.Close()
 					log.Println("Starting https server on I2P " + httpsPort + "...")
 					if err := https.StartServer(listener, httpsRouter); err != nil {
 						log.Fatal("Error: Couldn't start the HTTPS server:", err)
@@ -381,7 +397,11 @@ func main() {
 			}()
 			// Start http server
 			go func() {
-				for waitPass() {
+				for con, listener, err := waitPass(""); con; con, listener, err = waitPass("") {
+					if err != nil {
+						panic(err)
+					}
+					defer listener.Close()
 					log.Println("Starting http server on I2P " + httpPort + "...")
 					if err := http.Serve(listener, httpRouter); err != nil {
 						log.Fatal("Error: Couldn't start the I2P server:", err)
@@ -397,7 +417,11 @@ func main() {
 			systray.Run(onReady, onExit)
 		} else {
 			go func() {
-				for waitPass() {
+				for con, listener, err := waitPass("-https"); con; con, listener, err = waitPass("-https") {
+					if err != nil {
+						panic(err)
+					}
+					defer listener.Close()
 					log.Println("Starting https server on I2P " + httpsPort + "...")
 					if err := https.StartServer(listener, httpsRouter); err != nil {
 						log.Fatal("Error: Couldn't start the HTTPS server:", err)
@@ -406,7 +430,11 @@ func main() {
 			}()
 			// Start http server
 			go func() {
-				for waitPass() {
+				for con, listener, err := waitPass(""); con; con, listener, err = waitPass("") {
+					if err != nil {
+						panic(err)
+					}
+					defer listener.Close()
 					log.Println("Starting http server on I2P " + httpPort + "...")
 					if err := http.Serve(listener, httpRouter); err != nil {
 						log.Fatal("Error: Couldn't start the I2P server:", err)
@@ -431,7 +459,11 @@ func main() {
 		httpRouter.GET("/*path", httpsRedirect)
 		// Start https server
 		go func() {
-			for waitPass() {
+			for con, listener, err := waitPass("-https"); con; con, listener, err = waitPass("-https") {
+				if err != nil {
+					panic(err)
+				}
+				defer listener.Close()
 				log.Println("Starting https server on I2P " + httpsPort + "...")
 				if err := https.StartServer(listener, httpsRouter); err != nil {
 					log.Fatal("Error: Couldn't start the HTTPS server:", err)
@@ -441,7 +473,11 @@ func main() {
 		// Start http server
 		if !*notray {
 			go func() {
-				for waitPass() {
+				for con, listener, err := waitPass(""); con; con, listener, err = waitPass("") {
+					if err != nil {
+						panic(err)
+					}
+					defer listener.Close()
 					log.Println("Starting http server on I2P " + httpPort + "...")
 					if err := http.Serve(listener, httpRouter); err != nil {
 						log.Fatal("Error: Couldn't start the I2P server:", err)
@@ -457,7 +493,11 @@ func main() {
 			systray.Run(onReady, onExit)
 		} else {
 			go func() {
-				for waitPass() {
+				for con, listener, err := waitPass(""); con; con, listener, err = waitPass("") {
+					if err != nil {
+						panic(err)
+					}
+					defer listener.Close()
 					log.Println("Starting http server on I2P " + httpPort + "...")
 					if err := http.Serve(listener, httpRouter); err != nil {
 						log.Fatal("Error: Couldn't start the I2P server:", err)
@@ -480,7 +520,11 @@ func main() {
 		log.Println("Starting server without HTTPS support. Please enable HTTPS in " + filenames.ConfigFilename + " to improve security.")
 		log.Println("Starting http server on port " + httpPort + "...")
 		go func() {
-			for waitPass() {
+			for con, listener, err := waitPass(""); con; con, listener, err = waitPass("") {
+				if err != nil {
+					panic(err)
+				}
+				defer listener.Close()
 				log.Println("Starting http server on I2P " + httpPort + "...")
 				if err := http.Serve(listener, httpRouter); err != nil {
 					log.Fatal("Error: Couldn't start the I2P server:", err)
