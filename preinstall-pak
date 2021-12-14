@@ -1,0 +1,1 @@
+adduser --system --group --home /var/lib/railroad --disabled-login --disabled-password railroad

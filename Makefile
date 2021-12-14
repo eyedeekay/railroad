@@ -2,9 +2,12 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.036
-LAST_VERSION=0.0.035
+VERSION=0.0.037
+LAST_VERSION=0.0.036
 USER_GH=eyedeekay
+
+GOOS?=$(shell uname -s | tr A-Z a-z)
+GOARCH?="amd64"
 
 releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
 
@@ -54,7 +57,7 @@ $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
 	git clone https://i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad
 
-clean:
+clean: pc-clean
 	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero plugin vendor
 
 sums:
@@ -99,7 +102,7 @@ checkinstall: docker preinstall-pak
 		--pkgrelease=1 \
 		--pkgsource="https://i2pgit.org/idk/railroad" \
 		--maintainer="hankhill19580@gmail.com" \
-		--requires="libgtk-3-dev,libappindicator3-dev,libwebkit2gtk-4.0-dev,xclip,wl-clipboardr" \
+		--requires="libgtk-3-dev,libappindicator3-dev,libwebkit2gtk-4.0-dev,xclip,wl-clipboard" \
 		--suggests="i2p,i2p-router,syndie,tor,tsocks" \
 		--nodoc \
 		--deldoc=yes \
@@ -119,7 +122,7 @@ index:
 	@echo "</body>" >> index.html
 	@echo "</html>" >> index.html
 
-nsis: pc
+nsis: pc-windows
 	makensis railroad.nsi
 	cp ../railroad-installer.exe .
 	cp ../railroad-installer.exe ../railroad-installer-$(VERSION).exe
@@ -147,8 +150,8 @@ check:
 		"../railroad-$(VERSION).tar.gz" \
 		"../i2p-railroad_$(VERSION)-1_amd64.deb"
 
-export sumrrlinux=`sha256sum "../railroad-linux.su3"`
-export sumrrwindows=`sha256sum "../railroad-windows.su3"`
+export sumrrlinux=`sha256sum "./railroad-linux.su3"`
+export sumrrwindows=`sha256sum "./railroad-windows.su3"`
 export sumdeb=`sha256sum "../i2p-railroad_$(VERSION)-1_amd64.deb"`
 export sumzip=`sha256sum "../railroad-$(VERSION).zip"`
 export sumtar=`sha256sum "../railroad-$(VERSION).tar.gz"`
@@ -166,8 +169,8 @@ release-upload: check
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-installer-$(VERSION).exe" -f "../railroad-installer-$(VERSION).exe"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "../railroad-linux.su3"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "../railroad-windows.su3"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "./railroad-linux.su3"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "./railroad-windows.su3"
 #	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
 upload-su3s: release-upload
@@ -179,9 +182,13 @@ download-su3s:
 download-single-su3:
 	wget -N -c "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
 
-plugins: pc plugin-linux plugin-windows
+plugins: pc-linux plugin-linux pc-windows plugin-windows
 
-pc: plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll plugin-config/lib/shellservice.jar
+pc-clean:
+	rm -rf plugin-config
+
+pc-windows: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll plugin-config/lib/shellservice.jar
+pc-linux: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/shellservice.jar
 
 plugin-config/lib:
 	mkdir -p plugin-config/lib/
@@ -202,11 +209,13 @@ plugin-config/lib/webview.dll:
 	wget -O plugin-config/lib/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
 plugin-linux:
-	GOOS=linux make docker
+	make docker
+	make pc-linux
 	GOOS=linux make plugin-pkg
 
 plugin-windows:
 	make railroad-windows.exe
+	make pc-windows
 	GOOS=windows make plugin-pkg
 
 plugin-pkg:

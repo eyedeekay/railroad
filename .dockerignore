@@ -12,5 +12,3 @@ railroad-installer.exe
 *.key
 *.pem
 railroad-*-*
-content/data/journey.db
-.i2cp.conf
