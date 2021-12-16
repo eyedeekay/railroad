@@ -194,6 +194,7 @@ pc-linux: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib
 
 plugin-config/lib:
 	mkdir -p plugin-config/lib/
+	cp LICENSE.md plugin-config/LICENSE
 
 plugin-config/lib/content:
 	cp -r content plugin-config/lib/content
