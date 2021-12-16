@@ -1,4 +1,7 @@
 ### 0.0.039
+ - include license file in plugin
+
+### 0.0.039
  - fix websiteURL in plugin.config
 
 ### 0.0.038
