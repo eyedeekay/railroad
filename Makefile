@@ -202,8 +202,8 @@ plugin-config/lib/content:
 plugin-config/lib/built-in:
 	cp -r built-in plugin-config/lib/built-in
 
-plugin-config/lib/shellservice.jar:
-	cp "$(HOME)/build/shellservice.jar" plugin-config/lib/shellservice.jar
+#plugin-config/lib/shellservice.jar:
+#	cp "$(HOME)/build/shellservice.jar" plugin-config/lib/shellservice.jar
 
 plugin-config/lib/WebView2Loader.dll:
 	wget -O plugin-config/lib/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
