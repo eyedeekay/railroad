@@ -182,7 +182,7 @@ download-su3s:
 	GOOS=linux make download-single-su3
 
 download-single-su3:
-	wget -N -c "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
+	wget-ds "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
 
 plugins: pc-linux plugin-linux pc-windows plugin-windows
 
