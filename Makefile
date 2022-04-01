@@ -221,9 +221,12 @@ plugin-windows:
 	make pc-windows
 	GOOS=windows make plugin-pkg
 
+SIGNER_DIR=$(HOME)/i2p-go-keys/
+
 plugin-pkg:
 	i2p.plugin.native -name=railroad-$(GOOS) \
 		-signer=hankhill19580@gmail.com \
+		-signer-dir=$(SIGNER_DIR) \
 		-version "$(VERSION)" \
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
