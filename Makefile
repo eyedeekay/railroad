@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.040
-LAST_VERSION=0.0.039
+VERSION=0.0.041
+LAST_VERSION=0.0.040
 USER_GH=eyedeekay
 
 GOOS?=$(shell uname -s | tr A-Z a-z)
