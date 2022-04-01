@@ -25,7 +25,7 @@ docker:
 	docker build -t $(USER_GH)/$(REPO_NAME):$(VERSION) .
 	docker run -it -v $(PWD):/home/user/go/src/i2pgit.org/idk/$(REPO_NAME) $(USER_GH)/$(REPO_NAME):$(VERSION)
 
-linux-release: docker
+linux-release: linux
 	make checkinstall
 
 linzip: clean
