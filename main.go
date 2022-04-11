@@ -23,7 +23,7 @@ import (
 	checksam "github.com/eyedeekay/checki2cp/samcheck"
 	sam "github.com/eyedeekay/sam3/helper"
 	"github.com/eyedeekay/sam3/i2pkeys"
-	"github.com/getlantern/systray"
+	"fyne.io/systray"
 	"github.com/webview/webview"
 	flags "i2pgit.org/idk/railroad/common"
 	"i2pgit.org/idk/railroad/configuration"
