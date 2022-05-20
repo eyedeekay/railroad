@@ -36,7 +36,7 @@ linzip: clean
 windows: railroad-windows.exe
 
 railroad-windows.exe:
-	xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad-windows.exe
+	xgo --docker-repo crazymax/xgo --targets=windows/amd64 . && mv railroad-windows-4.0-amd64.exe railroad-windows.exe
 	cp railroad-windows.exe railroad-windows
 	wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
@@ -189,8 +189,8 @@ plugins: pc-linux plugin-linux pc-windows plugin-windows
 pc-clean:
 	rm -rf plugin-config
 
-pc-windows: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll plugin-config/lib/shellservice.jar
-pc-linux: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/shellservice.jar
+pc-windows: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll
+pc-linux: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in
 
 plugin-config/lib:
 	mkdir -p plugin-config/lib/
@@ -201,9 +201,6 @@ plugin-config/lib/content:
 
 plugin-config/lib/built-in:
 	cp -r built-in plugin-config/lib/built-in
-
-#plugin-config/lib/shellservice.jar:
-#	cp "$(HOME)/build/shellservice.jar" plugin-config/lib/shellservice.jar
 
 plugin-config/lib/WebView2Loader.dll:
 	wget -O plugin-config/lib/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
