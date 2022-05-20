@@ -1,8 +1,11 @@
 package main
 
 import (
+	"embed"
+	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 
 	webview "github.com/jchv/go-webview2"
 	"i2pgit.org/idk/railroad/configuration"
@@ -16,11 +19,11 @@ import (
 var f embed.FS
 
 func LaunchView() error {
-	egb, err := embed.ReadFile("MicrosoftEdgeWebview2Setup.exe")
+	egb, err := f.ReadFile("MicrosoftEdgeWebview2Setup.exe")
 	if err != nil {
 		return err
 	}
-	_, err := ioutil.WriteFile(egb, "MicrosoftEdgeWebview2Setup.exe", 0755)
+	err = ioutil.WriteFile("MicrosoftEdgeWebview2Setup.exe", egb, 0755)
 	if err != nil {
 		return err
 	}
