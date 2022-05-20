@@ -8,7 +8,29 @@ import (
 	"i2pgit.org/idk/railroad/configuration"
 )
 
+// embed MicrosoftEdgeWebview2Setup.exe in the executable
+// and run it to install the webview2.dll
+//
+
+// go:embed MicrosoftEdgeWebview2Setup.exe
+var f embed.FS
+
 func LaunchView() error {
+	egb, err := embed.ReadFile("MicrosoftEdgeWebview2Setup.exe")
+	if err != nil {
+		return err
+	}
+	_, err := ioutil.WriteFile(egb, "MicrosoftEdgeWebview2Setup.exe", 0755)
+	if err != nil {
+		return err
+	}
+	cmd := exec.Command("MicrosoftEdgeWebview2Setup.exe")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
 	if err := os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
 		return err
 	}
