@@ -17,7 +17,19 @@ func LaunchView() error {
 	}
 	debug := true
 	addr := configuration.Config.HttpHostAndPort
-	webView := webview.New(debug)
+	webView := webview.NewWithOptions(webview2.WebViewOptions{
+		Debug:     true,
+		AutoFocus: true,
+		WindowOptions: webview2.WindowOptions{
+			Title:  "Railroad Blog - Administration",
+			Width:  800,
+			Height: 600,
+			Center: true,
+		},
+	})
+	if w == nil {
+		log.Fatalln("Failed to load webview.")
+	}
 	defer webView.Destroy()
 	webView.SetTitle("Railroad Blog - Administration")
 	webView.SetSize(800, 600, webview.HintNone)
