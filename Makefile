@@ -58,7 +58,7 @@ $(GOPATH)/src/i2pgit.org/idk/railroad:
 	git clone https://i2pgit.org/idk/railroad $(GOPATH)/src/i2pgit.org/idk/railroad
 
 clean: pc-clean
-	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip *.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero plugin vendor
+	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip railroad*.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero plugin vendor
 
 sums:
 	sha256sum *.tar.gz *.zip *.deb *-installer.exe
