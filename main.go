@@ -256,8 +256,19 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 	return false, nil, nil
 }
 
+func defaultDir() string {
+
+	// get the path to this executable and return the directory
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	return exPath
+}
+
 func main() {
-	flag.StringVar(&flags.CustomPath, "custompath", "", "Change to custom path for running the blog")
+	flag.StringVar(&flags.CustomPath, "custompath", defaultDir(), "Change to custom path for running the blog")
 	flag.Parse()
 	if *uiOnly {
 		err := LaunchView()
