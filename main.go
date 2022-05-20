@@ -58,6 +58,7 @@ var configjson = `{
 }`
 
 var host string
+var directory string
 
 func onReady() {
 	systray.SetIcon(icon.Data)
@@ -251,6 +252,7 @@ func main() {
 
 	// Setup
 	var err error
+	directory = flags.CustomPath
 	err = os.Chdir(flags.CustomPath)
 	if err != nil {
 		log.Fatal(err)
