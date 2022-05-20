@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/inkeliz/gowebview"
 	"i2pgit.org/idk/railroad/configuration"
