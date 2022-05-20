@@ -16,23 +16,6 @@ import (
 var f embed.FS
 
 func LaunchView() error {
-	egbdir, err := f.ReadDir(".")
-	if err != nil {
-		return err
-	}
-	log.Println("egbdir", egbdir)
-	for _, e := range egbdir {
-		log.Println("found:", e.Name())
-		if e.Name() == "MicrosoftEdgeWebview2Setup.exe" {
-			cmd := exec.Command(e.Name())
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
-			err := cmd.Run()
-			if err != nil {
-				return err
-			}
-		}
-	}
 	if err := os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
 		return err
 	}
@@ -52,7 +35,24 @@ func LaunchView() error {
 		},
 	})
 	if webView == nil {
-		log.Fatalln("Failed to load webview.")
+		egbdir, err := f.ReadDir(".")
+		if err != nil {
+			return err
+		}
+		log.Println("egbdir", egbdir)
+		for _, e := range egbdir {
+			log.Println("found:", e.Name())
+			if e.Name() == "MicrosoftEdgeWebview2Setup.exe" {
+				cmd := exec.Command(e.Name())
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				err := cmd.Run()
+				if err != nil {
+					return err
+				}
+			}
+		}
+
 	}
 	defer webView.Destroy()
 	webView.SetTitle("Railroad Blog - Administration")
