@@ -21,7 +21,7 @@ require (
 	github.com/txthinking/runnergroup v0.0.0-20210608031112-152c7c4432bf // indirect
 	github.com/txthinking/socks5 v0.0.0-20211121111206-e03c1217a50b
 	github.com/txthinking/x v0.0.0-20210326105829-476fab902fbe // indirect
-	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e
+	github.com/webview/webview v0.0.0-20220519192405-e8ffd3682584
 	github.com/yuin/gopher-lua v0.0.0-20210529063254-f4c35e4016d9
 	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
@@ -34,3 +34,5 @@ replace github.com/txthinking/socks5 => github.com/eyedeekay/socks5 v0.0.0-20210
 replace github.com/txthinking/x => github.com/eyedeekay/x v0.0.0-20210312211721-5efa05df800e
 
 replace github.com/kabukky/journey => i2pgit.org/idk/railroad v0.0.0-20210521045638-9a9fc77a8b37
+
+replace fyne.io/systray v1.9.0 => fyne.io/systray v1.9.1-0.20220508132247-214b548ccb52
