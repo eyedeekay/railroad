@@ -27,7 +27,7 @@ func LaunchView() error {
 			Center: true,
 		},
 	})
-	if w == nil {
+	if webView == nil {
 		log.Fatalln("Failed to load webview.")
 	}
 	defer webView.Destroy()
