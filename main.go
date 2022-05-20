@@ -258,11 +258,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err = os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
-		panic(err)
-	}
-	if err = os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
-		panic(err)
+	if runtime.GOOS != "windows" {
+		if err = os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
+			panic(err)
+		}
+		if err = os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
+			panic(err)
+		}
 	}
 	time.Sleep(time.Second * 3)
 

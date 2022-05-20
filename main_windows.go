@@ -9,12 +9,13 @@ import (
 )
 
 func LaunchView() error {
+	/* Ignore this on Windows since we're not using a WebView anymore and Windows hates this.
 	if err := os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
 		return err
 	}
 	if err := os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
 		return err
-	}
+	}*/
 	addr := "http://" + configuration.Config.HttpHostAndPort + "/admin"
 	sizeConfig := &gowebview.Point{X: 800, Y: 600}
 	windowconfig := &gowebview.WindowConfig{
