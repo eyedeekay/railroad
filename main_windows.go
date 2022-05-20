@@ -20,7 +20,7 @@ func LaunchView() error {
 	windowconfig := &gowebview.WindowConfig{
 		Title: "Railroad Blog - Administration",
 		Size:  sizeConfig,
-		Path:  directory,
+		//Path:  directory,
 	}
 	httpProxy := &gowebview.HTTPProxy{
 		IP:   "127.0.0.1",
