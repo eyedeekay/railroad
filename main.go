@@ -24,7 +24,6 @@ import (
 	checksam "github.com/eyedeekay/checki2cp/samcheck"
 	"github.com/eyedeekay/i2pkeys"
 	sam "github.com/eyedeekay/sam3/helper"
-	"github.com/webview/webview"
 	flags "i2pgit.org/idk/railroad/common"
 	"i2pgit.org/idk/railroad/configuration"
 	"i2pgit.org/idk/railroad/database"
@@ -183,25 +182,6 @@ func findMe() string {
 var socksPort = flag.String("socksport", "7674", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
 var uiOnly = flag.Bool("uionly", false, "Launch the UI blindly, with no checks to make sure the blog is running")
 var notray = flag.Bool("notray", false, "Don't launch the systray icon")
-
-func LaunchView() error {
-	if err := os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
-		return err
-	}
-	if err := os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
-		return err
-	}
-	debug := true
-	addr := configuration.Config.HttpHostAndPort
-	webView := webview.New(debug)
-	defer webView.Destroy()
-	webView.SetTitle("Railroad Blog - Administration")
-	webView.SetSize(800, 600, webview.HintNone)
-	log.Println("http://" + addr + "/admin")
-	webView.Navigate("http://" + addr + "/admin")
-	webView.Run()
-	return nil
-}
 
 func passStat() bool {
 	_, err := database.RetrieveUser(1)
