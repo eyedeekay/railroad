@@ -203,10 +203,10 @@ plugin-config/lib/built-in:
 	cp -r built-in plugin-config/lib/built-in
 
 plugin-config/lib/WebView2Loader.dll:
-	wget -O plugin-config/lib/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
+	#get -O plugin-config/lib/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 
 plugin-config/lib/webview.dll:
-	wget -O plugin-config/lib/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
+	#wget -O plugin-config/lib/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
 plugin-linux:
 	make docker
