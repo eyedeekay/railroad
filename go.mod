@@ -7,7 +7,8 @@ require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/eyedeekay/checki2cp v0.0.21
-	github.com/eyedeekay/sam3 v0.32.33-0.20210313224934-b9e4186119b8
+	github.com/eyedeekay/i2pkeys v0.0.0-20220310055120-b97558c06ac8
+	github.com/eyedeekay/sam3 v0.33.2
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gorilla/securecookie v1.1.1
 	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568

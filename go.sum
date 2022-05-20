@@ -1,6 +1,4 @@
 cloud.google.com/go v0.16.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-fyne.io/systray v1.9.0 h1:KqnfKHXMU19XmVv87vd84nTJWp7Yz4plXjvWHh3cjAI=
-fyne.io/systray v1.9.0/go.mod h1:N4ZU0i34X+n8soFRlBNkmJTunw9wD+9jIP19fSZpjSI=
 fyne.io/systray v1.9.1-0.20220508132247-214b548ccb52 h1:YRCPoWDqDLHaGYm3OX56vhxUPUJTGmtrG7Ae74aEvvs=
 fyne.io/systray v1.9.1-0.20220508132247-214b548ccb52/go.mod h1:N4ZU0i34X+n8soFRlBNkmJTunw9wD+9jIP19fSZpjSI=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
@@ -23,13 +21,16 @@ github.com/eyedeekay/checki2cp v0.0.21/go.mod h1:75sGwBgnacHmxxx8RQ7BIeS0gu5Pw91
 github.com/eyedeekay/go-fpw v0.0.0-20200512022837-c8b4dcdc74d4/go.mod h1:RyCx7KuH+5ryvIpUF7SpxiChLtjeuPbVFCIzf8shIFc=
 github.com/eyedeekay/go-i2cp v0.0.0-20190716135428-6d41bed718b0/go.mod h1:+P0fIhkqIYjo7exMJRTlSteRMbRyHbiBiKw+YlPWk+c=
 github.com/eyedeekay/go-i2pcontrol v0.0.0-20200110011336-510cca77e350/go.mod h1:bhIQsVpbNNXMtcoZ9UF4hLQleOjaCgKGXiRRhNc8TOA=
-github.com/eyedeekay/goSam v0.32.31-0.20210122211817-f97683379f23 h1:AHm/EzBilSQH+RFgEuslnlCpVQd88MQWx7KHW/VIQlc=
 github.com/eyedeekay/goSam v0.32.31-0.20210122211817-f97683379f23/go.mod h1:UgJnih/LpotwKriwVPOEa6yPDM2NDdVrKfLtS5DOLPE=
+github.com/eyedeekay/i2pkeys v0.0.0-20220310052025-204d4ae6dcae/go.mod h1:W9KCm9lqZ+Ozwl3dwcgnpPXAML97+I8Jiht7o5A8YBM=
+github.com/eyedeekay/i2pkeys v0.0.0-20220310055120-b97558c06ac8 h1:9QLD6ZWn1Evc0bT971aArjkit94+s5FMc2stDfEpen4=
+github.com/eyedeekay/i2pkeys v0.0.0-20220310055120-b97558c06ac8/go.mod h1:W9KCm9lqZ+Ozwl3dwcgnpPXAML97+I8Jiht7o5A8YBM=
 github.com/eyedeekay/ramp v0.0.0-20190429201811-305b382042ab/go.mod h1:h7mvUAMgZ/rtRDUOkvKTK+8LnDMeUhJSoa5EPdB51fc=
 github.com/eyedeekay/sam3 v0.32.2/go.mod h1:Y3igFVzN4ybqkkpfUWULGhw7WRp8lieq0ORXbLBbcZM=
+github.com/eyedeekay/sam3 v0.32.32 h1:9Ea1Ere5O8Clx8zYxKnvhrWy7R96Q4FvxlPskYf8VW0=
 github.com/eyedeekay/sam3 v0.32.32/go.mod h1:qRA9KIIVxbrHlkj+ZB+OoxFGFgdKeGp1vSgPw26eOVU=
-github.com/eyedeekay/sam3 v0.32.33-0.20210313224934-b9e4186119b8 h1:sxy06MxWPMHW5Qyg9WawHo8L7hFHYn5vSRPRJnYMbec=
-github.com/eyedeekay/sam3 v0.32.33-0.20210313224934-b9e4186119b8/go.mod h1:F4dHMuZ8McQsPedJdxITByRCO/krMv/a66ERA74Wa1w=
+github.com/eyedeekay/sam3 v0.33.2 h1:WP+fD4oPxiE0cA+gTKRNiZo3SrGI2+5FkzrnU/6Mmz4=
+github.com/eyedeekay/sam3 v0.33.2/go.mod h1:sPtlI4cRm7wD0UywOzLPvvdY1G++vBSK3n+jiIGqWlU=
 github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f h1:PO5KVy68Ql6RgIqhxP6tncg3hkhMO7Bk3Qj1oQPYpPQ=
 github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f/go.mod h1:4z7p1AUoklFHhYx1kgZgaDz/tUNZ1GTwv69CbaJbys8=
 github.com/eyedeekay/x v0.0.0-20210312211721-5efa05df800e h1:rXJ26d2+IMY1qcC1QL9czj6WJh+LNWiYZu67xcMCiZk=
@@ -132,8 +133,6 @@ github.com/txthinking/runnergroup v0.0.0-20210608031112-152c7c4432bf h1:7PflaKRt
 github.com/txthinking/runnergroup v0.0.0-20210608031112-152c7c4432bf/go.mod h1:CLUSJbazqETbaR+i0YAhXBICV9TrKH93pziccMhmhpM=
 github.com/ulikunitz/xz v0.5.6/go.mod h1:2bypXElzHzzJZwzH67Y6wb67pO62Rzfn7BSiF4ABRW8=
 github.com/ulikunitz/xz v0.5.10/go.mod h1:nbz6k7qbPmH4IRqmfOplQw/tblSgqTqBwxkY0oWt/14=
-github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e h1:z780M7mCrdt6KiICeW9SGirvQjxDlrVU+n99FO93nbI=
-github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
 github.com/webview/webview v0.0.0-20220519192405-e8ffd3682584 h1:PRdXvCgRWq/rVBes/6h4Myx41PdKlHy053wKMfIpwuo=
 github.com/webview/webview v0.0.0-20220519192405-e8ffd3682584/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
 github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8/go.mod h1:HUYIGzjTL3rfEspMxjDjgmT5uz5wzYJKVo23qUhYTos=

@@ -2,7 +2,6 @@ package main
 
 import (
 	sam "github.com/eyedeekay/sam3/helper"
-	"github.com/eyedeekay/sam3/i2pkeys"
 	"github.com/phayes/freeport"
 	"github.com/txthinking/socks5"
 
@@ -58,7 +57,7 @@ func socksmain() {
 			log.Println("SOCKS5 proxy will start on:", addr, ":", port)
 		}
 	}
-	i2pkeys.FakePort = true
+	//i2pkeys.FakePort = true
 
 	primary, err := sam.I2PPrimarySession(name, samaddress+":"+strconv.Itoa(samport), "")
 	if err != nil {
