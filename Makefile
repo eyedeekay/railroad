@@ -138,8 +138,8 @@ osx:
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
-	go build -o railroad-$(GOOS).app/Contents/MacOS/railroad
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS).app/Contents/MacOS/railroad-ui
+	go build -o railroad.app/Contents/MacOS/railroad
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad.app/Contents/MacOS/railroad-ui
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
