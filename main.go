@@ -172,14 +172,6 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 }
 
 func findMe() string {
-	if runtime.GOOS == "darwin" {
-		file, err := filepath.Abs(os.Args[0] + "-ui")
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println(file)
-		return file
-	}
 	file, err := filepath.Abs(os.Args[0])
 	if err != nil {
 		log.Fatal(err)
