@@ -17,10 +17,10 @@ func LaunchView() error {
 	}
 	debug := true
 	addr := configuration.Config.HttpHostAndPort
-	webView := webview.NewWithOptions(webview2.WebViewOptions{
+	webView := webview.NewWithOptions(webview.WebViewOptions{
 		Debug:     true,
 		AutoFocus: true,
-		WindowOptions: webview2.WindowOptions{
+		WindowOptions: webview.WindowOptions{
 			Title:  "Railroad Blog - Administration",
 			Width:  800,
 			Height: 600,
