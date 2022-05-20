@@ -12,6 +12,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gorilla/securecookie v1.1.1
 	github.com/inkeliz/gowebview v1.0.1 // indirect
+	github.com/jchv/go-webview2 v0.0.0-20220506072306-ae3fc72a5edd // indirect
 	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568
 	github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
