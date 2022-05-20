@@ -21,6 +21,11 @@ arrow to the right of the text.
  - Individual-oriented: Host it anywhere you can install an I2P router, no
   third-party hosting required. No complicated server setup.
 
+**Windows Users:** On Windows this application depends on the presence of WebView2
+libraries. If they aren't present, the application will attempt to automatically
+download and install them. This is normal. If you do not want the application to
+do it, then you should do it yourself: https://developer.microsoft.com/en-us/microsoft-edge/webview2/.
+
 ## Get it:
 
 ![Menu](menu.png)
