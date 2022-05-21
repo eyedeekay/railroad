@@ -19,7 +19,7 @@ linux:
 	GOOS=linux go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
 
 rb:
-	/usr/lib/go-1.15/bin/go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
+	/usr/lib/go-1.16/bin/go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
 
 docker:
 	docker build -t $(USER_GH)/$(REPO_NAME):$(VERSION) .
