@@ -52,7 +52,7 @@ func LaunchView() error {
 				}
 			}
 		}
-
+		log.Fatalln("Failed to load webview.")
 	}
 	defer webView.Destroy()
 	webView.SetTitle("Railroad Blog - Administration")
