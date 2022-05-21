@@ -257,6 +257,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if err := unpack(); err != nil {
+		log.Fatal(err)
+	}
 
 	if runtime.GOOS != "windows" {
 		if err = os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {

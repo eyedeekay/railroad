@@ -35,6 +35,8 @@ github.com/eyedeekay/sam3 v0.33.2 h1:WP+fD4oPxiE0cA+gTKRNiZo3SrGI2+5FkzrnU/6Mmz4
 github.com/eyedeekay/sam3 v0.33.2/go.mod h1:sPtlI4cRm7wD0UywOzLPvvdY1G++vBSK3n+jiIGqWlU=
 github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f h1:PO5KVy68Ql6RgIqhxP6tncg3hkhMO7Bk3Qj1oQPYpPQ=
 github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f/go.mod h1:4z7p1AUoklFHhYx1kgZgaDz/tUNZ1GTwv69CbaJbys8=
+github.com/eyedeekay/unembed v0.0.0-20220521004712-ee8cdb2e6373 h1:kAaroJj8t90U65Ot8GCRcsJbQpVfEsopJ5cS6n7lJQk=
+github.com/eyedeekay/unembed v0.0.0-20220521004712-ee8cdb2e6373/go.mod h1:A6dZU88muI132XMrmdM0+cc2yIuwmhwgRfyrU54DjPc=
 github.com/eyedeekay/x v0.0.0-20210312211721-5efa05df800e h1:rXJ26d2+IMY1qcC1QL9czj6WJh+LNWiYZu67xcMCiZk=
 github.com/eyedeekay/x v0.0.0-20210312211721-5efa05df800e/go.mod h1:scKi5GHoaJRuBXXge2ubKHWKrLbp1VD4HogJ2MLf6xc=
 github.com/fsnotify/fsnotify v1.4.3-0.20170329110642-4da3e2cfbabc/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
