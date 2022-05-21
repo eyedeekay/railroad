@@ -38,7 +38,7 @@ windows: railroad-windows.exe
 railroad-windows.exe:
 	GOOS=windows go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-windows.exe
 	#xgo --docker-repo crazymax/xgo --ldflags="-H windowsgui" --targets=windows/amd64 . && mv ../railroad-windows-4.0-amd64.exe railroad-windows.exe
-	#cp railroad-windows.exe railroad-windows
+	cp railroad-windows.exe railroad-windows
 	#wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
 	#wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
