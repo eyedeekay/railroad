@@ -62,7 +62,7 @@ clean: pc-clean
 
 sums:
 	sha256sum *.tar.gz *.zip *.deb *-windows.exe
-	ls -lah *.tar.gz *.zip *.deb *-installer.exe
+	ls -lah *.tar.gz *.zip *.deb *-windows.exe
 
 preinstall-pak:
 	@echo "adduser --system --group --home /var/lib/railroad --disabled-login --disabled-password railroad" > preinstall-pak
