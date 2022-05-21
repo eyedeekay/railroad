@@ -9,10 +9,9 @@ require (
 	github.com/eyedeekay/checki2cp v0.0.21
 	github.com/eyedeekay/i2pkeys v0.0.0-20220310055120-b97558c06ac8
 	github.com/eyedeekay/sam3 v0.33.2
-	github.com/eyedeekay/unembed v0.0.0-20220521004712-ee8cdb2e6373
+	github.com/eyedeekay/unembed v0.0.0-20220521030224-e33fac302930
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gorilla/securecookie v1.1.1
-	github.com/inkeliz/gowebview v1.0.1 // indirect
 	github.com/jchv/go-webview2 v0.0.0-20220506072306-ae3fc72a5edd
 	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568
 	github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3
