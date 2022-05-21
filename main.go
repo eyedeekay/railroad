@@ -209,6 +209,7 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 			configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 			log.Println(domainhelp)
 		}
+		configuration.Config.Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 		save(configuration.Config)
 		listener.Close()
 		time.Sleep(time.Second * 10)
@@ -223,6 +224,7 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 			configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 			log.Println(domainhelp)
 		}
+		configuration.Config.Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 		save(configuration.Config)
 		return true, listener, err
 	}
