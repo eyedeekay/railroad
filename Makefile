@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.043
-LAST_VERSION=0.0.042
+VERSION=0.0.044
+LAST_VERSION=0.0.043
 USER_GH=eyedeekay
 
 GOOS?=$(shell uname -s | tr A-Z a-z)
@@ -124,7 +124,7 @@ index:
 
 nsis: pc-windows
 	makensis railroad.nsi
-	cp ./railroad-windows.exe ../railroad-installer-$(VERSION).exe
+	cp ./railroad-windows.exe ../railroad-windows-$(VERSION).exe
 
 zip:
 	cd ../ && \
@@ -145,7 +145,7 @@ fmt:
 
 check:
 	ls -lah "../railroad-$(VERSION).zip" \
-		"../railroad-installer-$(VERSION).exe" \
+		"./railroad-windows-$(VERSION).exe" \
 		"../railroad-$(VERSION).tar.gz" \
 		"../i2p-railroad_$(VERSION)-1_amd64.deb" \
 		"./railroad-linux.su3" \
@@ -156,7 +156,7 @@ export sumrrwindows=`sha256sum "./railroad-windows.su3"`
 export sumdeb=`sha256sum "../i2p-railroad_$(VERSION)-1_amd64.deb"`
 export sumzip=`sha256sum "../railroad-$(VERSION).zip"`
 export sumtar=`sha256sum "../railroad-$(VERSION).tar.gz"`
-export sumexe=`sha256sum "../railroad-windows-$(VERSION).exe"`
+export sumexe=`sha256sum "./railroad-windows-$(VERSION).exe"`
 
 upload-plugins:
 
@@ -167,7 +167,7 @@ release: all release-upload
 release-upload: check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-installer-$(VERSION).exe" -f "../railroad-installer-$(VERSION).exe"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-windows-$(VERSION).exe" -f "./railroad-windows-$(VERSION).exe"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "./railroad-linux.su3"
