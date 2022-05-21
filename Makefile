@@ -15,8 +15,8 @@ linux-releases: linux linzip
 
 windows-releases: windows winzip
 	
-linux:
-	GOOS=linux go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
+linux: docker
+#	GOOS=linux go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
 
 rb:
 	/usr/lib/go-1.16/bin/go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
@@ -51,7 +51,7 @@ copy:
 	cp -v ../railroad-$(VERSION).tar.gz .
 	cp -v ../railroad-$(VERSION).zip .
 	cp -v ../i2p-railroad_$(VERSION)-1_amd64.deb .
-	cp -v ../railroad-installer.exe railroad-installer-$(VERSION).exe
+	cp -v ./railroad-windows.exe railroad-windows-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
@@ -61,7 +61,7 @@ clean: pc-clean
 	rm -rf *.private railroad railroad-* *.public.txt *.tar.gz *.deb *.zip railroad*.exe plugin-config/WebView2Loader.dll plugin-config/webview.dll I2P-Zero plugin vendor
 
 sums:
-	sha256sum *.tar.gz *.zip *.deb *-installer.exe
+	sha256sum *.tar.gz *.zip *.deb *-windows.exe
 	ls -lah *.tar.gz *.zip *.deb *-installer.exe
 
 preinstall-pak:
@@ -124,8 +124,7 @@ index:
 
 nsis: pc-windows
 	makensis railroad.nsi
-	cp ../railroad-installer.exe .
-	cp ../railroad-installer.exe ../railroad-installer-$(VERSION).exe
+	cp ./railroad-windows.exe ../railroad-installer-$(VERSION).exe
 
 zip:
 	cd ../ && \
@@ -157,7 +156,7 @@ export sumrrwindows=`sha256sum "./railroad-windows.su3"`
 export sumdeb=`sha256sum "../i2p-railroad_$(VERSION)-1_amd64.deb"`
 export sumzip=`sha256sum "../railroad-$(VERSION).zip"`
 export sumtar=`sha256sum "../railroad-$(VERSION).tar.gz"`
-export sumexe=`sha256sum "../railroad-installer-$(VERSION).exe"`
+export sumexe=`sha256sum "../railroad-windows-$(VERSION).exe"`
 
 upload-plugins:
 
