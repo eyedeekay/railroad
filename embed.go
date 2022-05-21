@@ -14,13 +14,12 @@ var content embed.FS
 var builtin embed.FS
 
 func unpack() error {
-	contentPath := filepath.Join(directory, "content")
-
+	contentPath := filepath.Join(directory, ".")
 	err := unembed.Unembed(content, contentPath)
 	if err != nil {
 		return err
 	}
-	builtinPath := filepath.Join(directory, "built-in")
+	builtinPath := filepath.Join(directory, ".")
 	err = unembed.Unembed(builtin, builtinPath)
 	if err != nil {
 		return err
