@@ -9,7 +9,9 @@ USER_GH=eyedeekay
 GOOS?=$(shell uname -s | tr A-Z a-z)
 GOARCH?="amd64"
 
-releases: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy sums
+bin: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy
+
+releases: bin sums
 
 linux-releases: linux linzip
 
@@ -162,7 +164,7 @@ upload-plugins:
 
 all: clean linzip winzip checkinstall releases plugins
 
-release: all release-upload
+release: all bin release-upload
 
 release-upload: check
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
