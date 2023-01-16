@@ -134,7 +134,7 @@ func Initialize() error {
 	}
 	// Open or create database file
 	var err error
-	readDB, err = sql.Open("sqlite3", filenames.DatabaseFilename)
+	readDB, err = sql.Open("sqlite", filenames.DatabaseFilename)
 	if err != nil {
 		return err
 	}
