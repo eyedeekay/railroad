@@ -172,7 +172,11 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 }
 
 func findMe() string {
-	file, err := filepath.Abs(os.Args[0])
+	exe, err := os.Executable()
+	if err != nil {
+		log.Fatal(err)
+	}
+	file, err := filepath.Abs(exe)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -232,7 +236,6 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 }
 
 func defaultDir() string {
-
 	// get the path to this executable and return the directory
 	ex, err := os.Executable()
 	if err != nil {
@@ -251,7 +254,6 @@ func main() {
 			log.Fatal(err)
 		}
 	}
-
 	// Setup
 	var err error
 	directory = flags.CustomPath
