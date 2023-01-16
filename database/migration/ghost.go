@@ -3,13 +3,14 @@ package migration
 import (
 	"database/sql"
 	"errors"
-	"i2pgit.org/idk/railroad/date"
-	"i2pgit.org/idk/railroad/filenames"
-	"i2pgit.org/idk/railroad/helpers"
 	"log"
 	"os"
 	"path/filepath"
 	"time"
+
+	"i2pgit.org/idk/railroad/date"
+	"i2pgit.org/idk/railroad/filenames"
+	"i2pgit.org/idk/railroad/helpers"
 )
 
 const stmtRetrieveGhostPosts = "SELECT id, (created_at/1000), (updated_at/1000), (published_at/1000) FROM posts"
@@ -66,7 +67,7 @@ func convertGhostDatabase(fileName string) error {
 		return errors.New(filenames.DatabaseFilename + " already exists.")
 	}
 	log.Println("Trying to convert " + fileName + "...")
-	readDB, err := sql.Open("sqlite3", fileName)
+	readDB, err := sql.Open("sqlite", fileName)
 	if err != nil {
 		log.Println("Error:", err)
 		return err
