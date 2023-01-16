@@ -3,13 +3,13 @@ package database
 import (
 	"database/sql"
 
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"i2pgit.org/idk/railroad/database/migration"
 	"i2pgit.org/idk/railroad/date"
 	"i2pgit.org/idk/railroad/filenames"
 	"i2pgit.org/idk/railroad/helpers"
 	"i2pgit.org/idk/railroad/structure"
+	_ "modernc.org/sqlite"
 )
 
 // Handler for read access
