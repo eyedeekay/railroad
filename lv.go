@@ -20,6 +20,6 @@ func LaunchView() error {
 	}
 	addr := configuration.Config.HttpHostAndPort
 	log.Println("http://" + addr + "/admin")
-	goi2pbrowser.BrowseApp("", "http://"+addr+"/admin")
+	goi2pbrowser.BrowseApp("railroad-admin", "http://"+addr+"/admin")
 	return nil
 }
