@@ -170,21 +170,21 @@ func publicHandler(w http.ResponseWriter, r *http.Request, params map[string]str
 
 func InitializeBlog(router *httptreemux.TreeMux) {
 	// For index
-	router.GET("/", indexHandler)
-	router.GET("/:slug/edit", postEditHandler)
-	router.GET("/:slug/", postHandler)
-	router.GET("/page/:number/", indexHandler)
+	router.GET("/", setHeader(indexHandler))
+	router.GET("/:slug/edit", setHeader(postEditHandler))
+	router.GET("/:slug/", setHeader(postHandler))
+	router.GET("/page/:number/", setHeader(indexHandler))
 	// For author
-	router.GET("/author/:slug/", authorHandler)
-	router.GET("/author/:slug/:function/", authorHandler)
-	router.GET("/author/:slug/:function/:number/", authorHandler)
+	router.GET("/author/:slug/", setHeader(authorHandler))
+	router.GET("/author/:slug/:function/", setHeader(authorHandler))
+	router.GET("/author/:slug/:function/:number/", setHeader(authorHandler))
 	// For tag
-	router.GET("/tag/:slug/", tagHandler)
-	router.GET("/tag/:slug/:function/", tagHandler)
-	router.GET("/tag/:slug/:function/:number/", tagHandler)
+	router.GET("/tag/:slug/", setHeader(tagHandler))
+	router.GET("/tag/:slug/:function/", setHeader(tagHandler))
+	router.GET("/tag/:slug/:function/:number/", setHeader(tagHandler))
 	// For serving asset files
-	router.GET("/assets/*filepath", assetsHandler)
-	router.GET("/images/*filepath", imagesHandler)
-	router.GET("/content/images/*filepath", imagesHandler) // This is here to keep compatibility with Ghost
-	router.GET("/public/*filepath", publicHandler)
+	router.GET("/assets/*filepath", setHeader(assetsHandler))
+	router.GET("/images/*filepath", setHeader(imagesHandler))
+	router.GET("/content/images/*filepath", setHeader(imagesHandler)) // This is here to keep compatibility with Ghost
+	router.GET("/public/*filepath", setHeader(publicHandler))
 }
