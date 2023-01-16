@@ -19,8 +19,14 @@ github.com/dsnet/golib v0.0.0-20171103203638-1ea166775780/go.mod h1:Lj+Z9rebOhdf
 github.com/eyedeekay/checki2cp v0.0.21 h1:DVer7H6RffCWS8Bo3+J6EyppUc1y8lvApKdQnAiVj5g=
 github.com/eyedeekay/checki2cp v0.0.21/go.mod h1:75sGwBgnacHmxxx8RQ7BIeS0gu5Pw916gFb2c80OUTc=
 github.com/eyedeekay/go-fpw v0.0.0-20200512022837-c8b4dcdc74d4/go.mod h1:RyCx7KuH+5ryvIpUF7SpxiChLtjeuPbVFCIzf8shIFc=
+github.com/eyedeekay/go-fpw v0.0.0-20221020035017-28fb80249c64 h1:qEWwyrmY15uYX2a0o0vxspNKf2sho9eQkwatmWDIA/w=
+github.com/eyedeekay/go-fpw v0.0.0-20221020035017-28fb80249c64/go.mod h1:OZD3uVWaZcd9uKc7JyZHXfFpEwkMg09EfcHmYjenVRw=
 github.com/eyedeekay/go-i2cp v0.0.0-20190716135428-6d41bed718b0/go.mod h1:+P0fIhkqIYjo7exMJRTlSteRMbRyHbiBiKw+YlPWk+c=
+github.com/eyedeekay/go-i2pbrowser v0.0.0-20230112202429-8be225b855d8 h1:corxxazTRWaX/Nwo9dNcpsqv109A4vnPiuoDpPo3WTg=
+github.com/eyedeekay/go-i2pbrowser v0.0.0-20230112202429-8be225b855d8/go.mod h1:bTpndon7by9OxszyX0Rx+enwf0ovsD2VBddXSK2V5gw=
 github.com/eyedeekay/go-i2pcontrol v0.0.0-20200110011336-510cca77e350/go.mod h1:bhIQsVpbNNXMtcoZ9UF4hLQleOjaCgKGXiRRhNc8TOA=
+github.com/eyedeekay/go-unzip v0.0.0-20220914222511-f2936bba53c2 h1:2ugjFSEUAduRk1lp5dSw19771HTZL8e37QSXjiiC7P4=
+github.com/eyedeekay/go-unzip v0.0.0-20220914222511-f2936bba53c2/go.mod h1:LRwT8AnFFHRm/oj++niZMHsi3o4rNDr1lN61xwHgFgI=
 github.com/eyedeekay/goSam v0.32.31-0.20210122211817-f97683379f23/go.mod h1:UgJnih/LpotwKriwVPOEa6yPDM2NDdVrKfLtS5DOLPE=
 github.com/eyedeekay/i2pkeys v0.0.0-20220310052025-204d4ae6dcae/go.mod h1:W9KCm9lqZ+Ozwl3dwcgnpPXAML97+I8Jiht7o5A8YBM=
 github.com/eyedeekay/i2pkeys v0.0.0-20220804220722-1048b5ce6ba7 h1:or9gYJ9VQN8YGoC0yKRC5lAWna2TaDMGZH/JFhwoJ4Q=
@@ -62,6 +68,12 @@ github.com/golang/snappy v0.0.0-20170215233205-553a64147049/go.mod h1:/XxbfmMg8l
 github.com/golang/snappy v0.0.1/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
 github.com/google/go-cmp v0.1.1-0.20171103154506-982329095285/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
+github.com/google/go-cmp v0.5.2 h1:X2ev0eStA3AbceY54o37/0PQ/UWqKEiiO2dKL5OPaFM=
+github.com/google/go-cmp v0.5.2/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
+github.com/google/go-github v17.0.0+incompatible h1:N0LgJ1j65A7kfXrZnUDaYCs/Sf4rEjNlfyDHW9dolSY=
+github.com/google/go-github v17.0.0+incompatible/go.mod h1:zLgOLi98H3fifZn+44m+umXrS52loVEgC2AApnigrVQ=
+github.com/google/go-querystring v1.1.0 h1:AnCroh3fv4ZBgVIf1Iwtovgjaw/GiKJo8M8yD/fhyJ8=
+github.com/google/go-querystring v1.1.0/go.mod h1:Kcdr2DB4koayq7X8pmAG4sNG59So17icRSOU623lUBU=
 github.com/google/renameio v0.1.0/go.mod h1:KWCgfxg9yswjAJkECMjeO8J8rahYeXnNhOm40UhjYkI=
 github.com/google/renameio v1.0.0/go.mod h1:t/HQoYBZSsWSNK35C6CO/TpPLDVWvxOHboWUAweKUpk=
 github.com/googleapis/gax-go v2.0.0+incompatible/go.mod h1:SFVmujtThgffbyetf+mdk2eWhX2bMyUtNHzFKcPA9HY=
@@ -121,6 +133,7 @@ github.com/pierrec/lz4 v2.0.5+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi
 github.com/pierrec/lz4 v2.5.2+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/riobard/go-x25519 v0.0.0-20190716001027-10cc4d8d0b33/go.mod h1:BjmVxzAnkLeoEbqHEerI4eSw6ua+RaIB0S4jMV21RAs=
+github.com/robertkrimen/godocdown v0.0.0-20130622164427-0bfa04905481/go.mod h1:C9WhFzY47SzYBIvzFqSvHIR6ROgDo4TtdTuRaOMjF/s=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.6.2/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
 github.com/russross/blackfriday v1.6.0 h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=

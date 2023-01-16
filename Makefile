@@ -2,9 +2,10 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.0.045
-LAST_VERSION=0.0.045
+VERSION=0.1.0
+LAST_VERSION=0.1.0
 USER_GH=eyedeekay
+export CGO_ENABLED=0
 
 GOOS?=$(shell uname -s | tr A-Z a-z)
 GOARCH?="amd64"
@@ -17,15 +18,15 @@ linux-releases: linux linzip
 
 windows-releases: windows winzip
 	
-linux: docker
-#	GOOS=linux go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
+linux:
+	GOOS=linux go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
 
 rb:
-	/usr/lib/go-1.16/bin/go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
 
 docker:
 	docker build -t $(USER_GH)/$(REPO_NAME):$(VERSION) .
-	docker run -it -v $(PWD):/home/user/go/src/i2pgit.org/idk/$(REPO_NAME) $(USER_GH)/$(REPO_NAME):$(VERSION)
+	docker run -it -v $(PWD)/../../../github.com/eyedeekay/go-i2pbrowser:/home/user/go/src/i2pgit.org/idk/go-i2pbrowser -v $(PWD):/home/user/go/src/i2pgit.org/idk/$(REPO_NAME) $(USER_GH)/$(REPO_NAME):$(VERSION)
 
 linux-release: linux
 	make checkinstall

@@ -7,6 +7,7 @@ require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/eyedeekay/checki2cp v0.0.21
+	github.com/eyedeekay/go-i2pbrowser v0.0.0-20230112202429-8be225b855d8
 	github.com/eyedeekay/i2pkeys v0.0.0-20220804220722-1048b5ce6ba7
 	github.com/eyedeekay/sam3 v0.33.4
 	github.com/eyedeekay/unembed v0.0.0-20220521030224-e33fac302930
@@ -41,3 +42,7 @@ replace github.com/txthinking/x => github.com/eyedeekay/x v0.0.0-20210312211721-
 replace github.com/kabukky/journey => i2pgit.org/idk/railroad v0.0.0-20210521045638-9a9fc77a8b37
 
 replace fyne.io/systray v1.9.0 => fyne.io/systray v1.9.1-0.20220508132247-214b548ccb52
+
+replace github.com/artdarek/go-unzip v1.0.0 => github.com/eyedeekay/go-unzip v0.0.0-20220914222511-f2936bba53c2
+
+replace github.com/eyedeekay/go-i2pbrowser => ../../../github.com/eyedeekay/go-i2pbrowser
