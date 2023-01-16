@@ -24,10 +24,6 @@ linux:
 rb:
 	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
 
-docker:
-	docker build -t $(USER_GH)/$(REPO_NAME):$(VERSION) .
-	docker run -it -v $(PWD)/../../../github.com/eyedeekay/go-i2pbrowser:/home/user/go/src/i2pgit.org/idk/go-i2pbrowser -v $(PWD):/home/user/go/src/i2pgit.org/idk/$(REPO_NAME) $(USER_GH)/$(REPO_NAME):$(VERSION)
-
 linux-release: linux
 	make checkinstall
 
@@ -94,7 +90,7 @@ uninstall:
 		/etc/systemd/system/$(REPO_NAME).d/ \
 		/etc/init.d/$(REPO_NAME)
 
-checkinstall: docker preinstall-pak
+checkinstall: linux preinstall-pak
 	fakeroot checkinstall \
 		--default \
 		--install=no \
@@ -212,7 +208,7 @@ plugin-config/lib/webview.dll:
 	#wget -O plugin-config/lib/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
 plugin-linux:
-	make docker
+	make linux
 	make pc-linux
 	GOOS=linux make plugin-pkg
 
