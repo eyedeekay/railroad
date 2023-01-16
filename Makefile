@@ -220,7 +220,7 @@ plugin-windows:
 SIGNER_DIR=$(HOME)/i2p-go-keys/
 
 plugin-pkg:
-	rm -f plugin.yaml
+	rm -f plugin.yaml config.yaml
 	i2p.plugin.native -name=railroad-$(GOOS) \
 		-signer=hankhill19580@gmail.com \
 		-signer-dir=$(SIGNER_DIR) \

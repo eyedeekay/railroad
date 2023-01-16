@@ -14,3 +14,7 @@ railroad-installer.exe
 railroad-*
 content/data/journey.db
 .i2cp.conf
+/client.yaml
+/plugin.yaml
+/*.zip
+/*public.txt
