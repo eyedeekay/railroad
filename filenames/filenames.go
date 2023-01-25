@@ -11,7 +11,7 @@ import (
 )
 
 func logString(name, asset string) string {
-	log.Println(name, asset)
+	//log.Println(name, asset)
 	return asset
 }
 
