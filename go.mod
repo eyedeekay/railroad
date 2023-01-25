@@ -16,13 +16,8 @@ require (
 	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568
 	github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
-	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
-	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
 	github.com/russross/blackfriday v1.6.0
 	github.com/satori/go.uuid v1.2.0
-	github.com/txthinking/runnergroup v0.0.0-20220212043759-8da8edb7dae8 // indirect
-	github.com/txthinking/socks5 v0.0.0-20220615051428-39268faee3e6
-	github.com/txthinking/x v0.0.0-00010101000000-000000000000 // indirect
 	github.com/webview/webview v0.0.0-20230110200822-73aee3dae745
 	github.com/yuin/gopher-lua v1.0.0
 	golang.org/x/crypto v0.5.0

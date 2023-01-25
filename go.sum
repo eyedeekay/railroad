@@ -28,8 +28,8 @@ github.com/eyedeekay/go-fpw v0.0.8 h1:e7dluVavlzIZTwnX0PTkRd30ehLDXh8VR+lFWrvzoX
 github.com/eyedeekay/go-fpw v0.0.8/go.mod h1:vE5iBI6BU2F8rMCL6J4N9/hENN/UrTqS9U8yuNYlTzU=
 github.com/eyedeekay/go-i2cp v0.0.0-20190716135428-6d41bed718b0/go.mod h1:+P0fIhkqIYjo7exMJRTlSteRMbRyHbiBiKw+YlPWk+c=
 github.com/eyedeekay/go-i2pcontrol v0.0.0-20200110011336-510cca77e350/go.mod h1:bhIQsVpbNNXMtcoZ9UF4hLQleOjaCgKGXiRRhNc8TOA=
-github.com/eyedeekay/go-unzip v0.0.0-20220914222511-f2936bba53c2 h1:2ugjFSEUAduRk1lp5dSw19771HTZL8e37QSXjiiC7P4=
-github.com/eyedeekay/go-unzip v0.0.0-20220914222511-f2936bba53c2/go.mod h1:LRwT8AnFFHRm/oj++niZMHsi3o4rNDr1lN61xwHgFgI=
+github.com/eyedeekay/go-unzip v0.0.0-20230124015700-cc3131fd4ee0 h1:ow+7AeTmL6PVmIH9N7iRsSIBmtrQr5jlcMXvHALAhyU=
+github.com/eyedeekay/go-unzip v0.0.0-20230124015700-cc3131fd4ee0/go.mod h1:LRwT8AnFFHRm/oj++niZMHsi3o4rNDr1lN61xwHgFgI=
 github.com/eyedeekay/goSam v0.32.31-0.20210122211817-f97683379f23/go.mod h1:UgJnih/LpotwKriwVPOEa6yPDM2NDdVrKfLtS5DOLPE=
 github.com/eyedeekay/i2pkeys v0.0.0-20220310052025-204d4ae6dcae/go.mod h1:W9KCm9lqZ+Ozwl3dwcgnpPXAML97+I8Jiht7o5A8YBM=
 github.com/eyedeekay/i2pkeys v0.33.0 h1:5SzUyWxNjV6AvYv/WaI8J4dSgAfv7/WEps6pDLe2YSs=
@@ -39,12 +39,8 @@ github.com/eyedeekay/sam3 v0.32.2/go.mod h1:Y3igFVzN4ybqkkpfUWULGhw7WRp8lieq0ORX
 github.com/eyedeekay/sam3 v0.32.32/go.mod h1:qRA9KIIVxbrHlkj+ZB+OoxFGFgdKeGp1vSgPw26eOVU=
 github.com/eyedeekay/sam3 v0.33.5 h1:mY2MmEG4W35AOpG/G7DOdAhFZWRwFxlm+NmIoub1Xnw=
 github.com/eyedeekay/sam3 v0.33.5/go.mod h1:sPtlI4cRm7wD0UywOzLPvvdY1G++vBSK3n+jiIGqWlU=
-github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f h1:PO5KVy68Ql6RgIqhxP6tncg3hkhMO7Bk3Qj1oQPYpPQ=
-github.com/eyedeekay/socks5 v0.0.0-20210312233714-7d95dbdbcc0f/go.mod h1:4z7p1AUoklFHhYx1kgZgaDz/tUNZ1GTwv69CbaJbys8=
 github.com/eyedeekay/unembed v0.0.0-20220521030224-e33fac302930 h1:ysNMUwNIQJk8KBmum7XGxiWB2hfCN7zvrECYelqKGoE=
 github.com/eyedeekay/unembed v0.0.0-20220521030224-e33fac302930/go.mod h1:A6dZU88muI132XMrmdM0+cc2yIuwmhwgRfyrU54DjPc=
-github.com/eyedeekay/x v0.0.0-20210312211721-5efa05df800e h1:rXJ26d2+IMY1qcC1QL9czj6WJh+LNWiYZu67xcMCiZk=
-github.com/eyedeekay/x v0.0.0-20210312211721-5efa05df800e/go.mod h1:scKi5GHoaJRuBXXge2ubKHWKrLbp1VD4HogJ2MLf6xc=
 github.com/fsnotify/fsnotify v1.4.3-0.20170329110642-4da3e2cfbabc h1:omfZI1v/Bu4YEatmRAYKISWA95u6XiN4Zorz/JPKCZA=
 github.com/fsnotify/fsnotify v1.4.3-0.20170329110642-4da3e2cfbabc/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/garyburd/redigo v1.1.1-0.20170914051019-70e1b1943d4f/go.mod h1:NR3MbYisc3/PwhQ00EMzDiPmrwpPxAn5GI05/YaO1SY=
@@ -134,11 +130,7 @@ github.com/mitchellh/mapstructure v0.0.0-20170523030023-d0303fe80992/go.mod h1:F
 github.com/nwaples/rardecode v1.0.0/go.mod h1:5DzqNKiOdpKKBH87u8VlvAnPZMXcGRhxWkRpHbbfGS0=
 github.com/nwaples/rardecode v1.1.0/go.mod h1:5DzqNKiOdpKKBH87u8VlvAnPZMXcGRhxWkRpHbbfGS0=
 github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c/go.mod h1:X07ZCGwUbLaax7L0S3Tw4hpejzu63ZrrQiUe6W0hcy0=
-github.com/patrickmn/go-cache v2.1.0+incompatible h1:HRMgzkcYKYpi3C8ajMPV8OFXaaRUnok+kx1WdO15EQc=
-github.com/patrickmn/go-cache v2.1.0+incompatible/go.mod h1:3Qf8kWWT7OJRJbdiICTKqZju1ZixQ/KpMGzzAfe6+WQ=
 github.com/pelletier/go-toml v1.0.1-0.20170904195809-1d6b12b7cb29/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
-github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5 h1:Ii+DKncOVM8Cu1Hc+ETb5K+23HdAMvESYE3ZJ5b5cMI=
-github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5/go.mod h1:iIss55rKnNBTvrwdmkUpLnDpZoAHvWaiq5+iMmen4AE=
 github.com/pierrec/lz4 v2.0.5+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pierrec/lz4 v2.5.2+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
@@ -163,8 +155,6 @@ github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UV
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/tevino/abool v1.2.0 h1:heAkClL8H6w+mK5md9dzsuohKeXHUpY7Vw0ZCKW+huA=
 github.com/tevino/abool v1.2.0/go.mod h1:qc66Pna1RiIsPa7O4Egxxs9OqkuxDX55zznh9K07Tzg=
-github.com/txthinking/runnergroup v0.0.0-20220212043759-8da8edb7dae8 h1:iYc+JnXtzv6sdMx9Q7OTKkDAn7FhDPDogcjeSfEQcLY=
-github.com/txthinking/runnergroup v0.0.0-20220212043759-8da8edb7dae8/go.mod h1:CLUSJbazqETbaR+i0YAhXBICV9TrKH93pziccMhmhpM=
 github.com/ulikunitz/xz v0.5.6/go.mod h1:2bypXElzHzzJZwzH67Y6wb67pO62Rzfn7BSiF4ABRW8=
 github.com/ulikunitz/xz v0.5.10/go.mod h1:nbz6k7qbPmH4IRqmfOplQw/tblSgqTqBwxkY0oWt/14=
 github.com/webview/webview v0.0.0-20230110200822-73aee3dae745 h1:yq3jph00Ulex/MG1lgDpGceukf7dT06qi9YAB45Z7v0=
