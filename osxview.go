@@ -18,11 +18,8 @@ func main() {
 	if err := os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
 		log.Fatal(err)
 	}
-	if err := os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
-		log.Fatal(err)
-	}
 	debug := true
-	addr := configuration.Config.HttpHostAndPort
+	addr := configuration.Config().HttpHostAndPort
 	webView := webview.New(debug)
 	defer webView.Destroy()
 	webView.SetTitle("Railroad Blog - Administration")
