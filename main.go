@@ -156,7 +156,7 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 	return
 }
 
-var socksPort = flag.String("socksport", "7674", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
+// var socksPort = flag.String("socksport", "7674", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
 var uiOnly = flag.Bool("uionly", false, "Launch the UI blindly, with no checks to make sure the blog is running")
 var notray = flag.Bool("notray", false, "Don't launch the systray icon")
 
@@ -240,13 +240,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if runtime.GOOS != "windows" {
-		if err = os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
-			panic(err)
-		}
-		if err = os.Setenv("ALL_PROXY", "socks5://127.0.0.1:"+*socksPort); err != nil {
-			panic(err)
-		}
+	if err = os.Setenv("NO_PROXY", "127.0.0.1:7672"); err != nil {
+		panic(err)
 	}
 	time.Sleep(time.Second * 3)
 
@@ -254,14 +249,6 @@ func main() {
 		log.Println("Checking SAM")
 		time.Sleep(time.Second * 15)
 		log.Println("Waiting for SAM")
-	}
-
-	if status, _, err := portCheck("127.0.0.1:" + *socksPort); err != nil {
-		go socksmain()
-	} else {
-		if !status {
-			go socksmain()
-		}
 	}
 
 	if status, _, err := portCheck(configuration.Config().HttpHostAndPort); err == nil {
