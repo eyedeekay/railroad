@@ -113,14 +113,6 @@ func onExit() {
 	// clean up here
 }
 
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
-}
-
 var domainhelp = `You haven't configured an I2P hostname for your site.
 If you want to, edit config.json and change the value of "HttpsUrl:" to your desired human-readable name, ending in .i2p.
 For example:
@@ -162,19 +154,6 @@ func portCheck(addr string) (status bool, faddr string, err error) {
 		log.Println("Opened", net.JoinHostPort(host, port))
 	}
 	return
-}
-
-func findMe() string {
-	exe, err := os.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
-	file, err := filepath.Abs(exe)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println(file)
-	return file
 }
 
 var socksPort = flag.String("socksport", "7674", "Proxy any outgoing requests in the webview over a SOCKS proxy(will start one if there isn't one ready)")
@@ -249,6 +228,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		return
 	}
 	// Setup
 	var err error
