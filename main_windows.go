@@ -20,7 +20,7 @@ func LaunchView() error {
 		return err
 	}
 	debug := true
-	addr := configuration.Config().HttpHostAndPort
+	addr := addrString(configuration.Config().HttpHostAndPort)
 	webView := webview.NewWithOptions(webview.WebViewOptions{
 		Debug:     debug,
 		AutoFocus: true,

@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 	debug := true
-	addr := configuration.Config().HttpHostAndPort
+	addr := addrString(configuration.Config().HttpHostAndPort)
 	webView := webview.New(debug)
 	defer webView.Destroy()
 	webView.SetTitle("Railroad Blog - Administration")
