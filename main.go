@@ -507,3 +507,10 @@ func main() {
 		}
 	}
 }
+
+func addrString(addr string) string {
+	if strings.HasPrefix(addr, ":") {
+		return fmt.Sprintf("127.0.0.1%s", addr)
+	}
+	return addr
+}
