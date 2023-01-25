@@ -5,9 +5,8 @@ GOPATH=$(HOME)/go
 VERSION=0.1.3
 LAST_VERSION=0.1.2
 USER_GH=eyedeekay
-export CGO_ENABLED=0
+CGO_ENABLED?=0
 
-GOOS?=$(shell uname -s | tr A-Z a-z)
 GOARCH?="amd64"
 
 bin: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy
@@ -22,7 +21,7 @@ linux:
 	GOOS=linux go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)
 
 rb:
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)-$(GOOS)
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)
 
 linux-release: linux
 	make checkinstall
@@ -130,8 +129,8 @@ zip:
 		zip railroad.zip -r railroad
 
 osx:
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS)-ui
+	CGO_ENABLED=1 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
+	CGO_ENABLED=1 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS)-ui
 
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
@@ -220,8 +219,8 @@ plugin-windows:
 SIGNER_DIR=$(HOME)/i2p-go-keys/
 
 plugin-pkg:
-	rm -f plugin.yaml config.yaml
-	i2p.plugin.native -name=railroad-$(GOOS) \
+	rm -f plugin.yaml client.yaml
+	GOOS=windows i2p.plugin.native -name=railroad-$(GOOS) \
 		-signer=hankhill19580@gmail.com \
 		-signer-dir=$(SIGNER_DIR) \
 		-version "$(VERSION)" \
@@ -239,6 +238,7 @@ plugin-pkg:
 		-website="http://idk.i2p/railroad/" \
 		-command="railroad-$(GOOS) -custompath \$$PLUGIN/" \
 		-license=MIT \
+		-targetos=$(GOOS) \
 		-res=plugin-config/
 	cp -v railroad-$(GOOS).su3 ../railroad-$(GOOS).su3
 	unzip -o railroad-$(GOOS).zip -d railroad-$(GOOS)-zip
