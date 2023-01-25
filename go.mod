@@ -36,6 +36,6 @@ replace github.com/txthinking/x => github.com/eyedeekay/x v0.0.0-20210312211721-
 
 replace fyne.io/systray v1.9.0 => fyne.io/systray v1.9.1-0.20220508132247-214b548ccb52
 
-replace github.com/artdarek/go-unzip v1.0.0 => github.com/eyedeekay/go-unzip v0.0.0-20220914222511-f2936bba53c2
+replace github.com/artdarek/go-unzip v1.0.0 => github.com/eyedeekay/go-unzip v0.0.0-20230124015700-cc3131fd4ee0
 
 replace github.com/eyedeekay/go-i2pbrowser => ../../../github.com/eyedeekay/go-i2pbrowser

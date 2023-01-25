@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.1.2
-LAST_VERSION=0.1.1
+VERSION=0.1.3
+LAST_VERSION=0.1.2
 USER_GH=eyedeekay
 export CGO_ENABLED=0
 
