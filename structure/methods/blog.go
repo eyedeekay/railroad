@@ -2,12 +2,13 @@ package methods
 
 import (
 	"encoding/json"
+	"log"
+
 	"i2pgit.org/idk/railroad/configuration"
 	"i2pgit.org/idk/railroad/database"
 	"i2pgit.org/idk/railroad/date"
 	"i2pgit.org/idk/railroad/slug"
 	"i2pgit.org/idk/railroad/structure"
-	"log"
 )
 
 // Global blog - thread safe and accessible by all requests
@@ -58,7 +59,7 @@ func GenerateBlog() error {
 		return err
 	}
 	// Add parameters that are not saved in db
-	blog.Url = []byte(configuration.Config.Url)
+	blog.Url = []byte(configuration.Config().Url)
 	blog.AssetPath = assetPath
 	// Create navigation slugs
 	for index := range blog.NavigationItems {

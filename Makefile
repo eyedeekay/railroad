@@ -82,7 +82,7 @@ install:
 	cp icon/icon.png /var/lib/$(REPO_NAME)/icon/icon.png
 	chown -R railroad:railroad /var/lib/$(REPO_NAME)/
 	install -m644 etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).conf /etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).conf
-	install -m644 etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).service /etc/systemd/system/$(REPO_NAME).d/$(REPO_NAME).service
+	install -m644 etc/systemd/system/$(REPO_NAME).service /etc/systemd/system/$(REPO_NAME).service
 
 uninstall:
 	rm -rf /usr/bin/railroad \

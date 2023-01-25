@@ -12,7 +12,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -41,11 +40,11 @@ func save(c *configuration.Configuration) error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filenames.ConfigFilename, data, 0600)
+	return ioutil.WriteFile(filenames.ConfigFilename(), data, 0600)
 }
 
 func httpsRedirect(w http.ResponseWriter, r *http.Request, _ map[string]string) {
-	http.Redirect(w, r, configuration.Config.HttpsUrl+r.RequestURI, http.StatusMovedPermanently)
+	http.Redirect(w, r, configuration.Config().HttpsUrl+r.RequestURI, http.StatusMovedPermanently)
 }
 
 var configjson = `{
@@ -58,7 +57,8 @@ var configjson = `{
 }`
 
 var host string
-var directory string
+
+//var directory string
 
 func onReady() {
 	systray.SetIcon(icon.Data)
@@ -66,13 +66,13 @@ func onReady() {
 	systray.SetTooltip("Blog is running on I2P: http://" + host)
 	mShowUrl := systray.AddMenuItem("Copy Address", "copy blog address to clipboard")
 	mEditUrl := systray.AddMenuItem("Edit your blog", "Edit your blog in it's own webview")
-	if strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
-		if !strings.HasSuffix(configuration.Config.HttpsUrl, "b32.i2p") {
+	if strings.HasSuffix(configuration.Config().HttpsUrl, "i2p") {
+		if !strings.HasSuffix(configuration.Config().HttpsUrl, "b32.i2p") {
 			mCopyUrl := systray.AddMenuItem("Copy blog address helper", "copy blog addresshelper to clipboard")
 			go func() {
 				<-mCopyUrl.ClickedCh
-				log.Println("Requesting copy short address helper:", configuration.Config.HttpsUrl+"/i2paddresshelper="+host)
-				clipboard.WriteAll(configuration.Config.HttpsUrl + "/i2paddresshelper=" + host)
+				log.Println("Requesting copy short address helper:", configuration.Config().HttpsUrl+"/i2paddresshelper="+host)
+				clipboard.WriteAll(configuration.Config().HttpsUrl + "/i2paddresshelper=" + host)
 				log.Println("Finished copy short address helper")
 			}()
 		}
@@ -92,17 +92,10 @@ func onReady() {
 		time.Sleep(time.Second)
 		go func() {
 			<-mEditUrl.ClickedCh
-			log.Println("Waiting for password = ", passStat())
-			log.Println("Requesting edit")
-			cmd := exec.Command(findMe(), "-uionly=true")
-			var out []byte
-			var err error
-			if out, err = cmd.CombinedOutput(); err != nil {
-				log.Println("COMMAND", err)
-			} else {
-				log.Println(string(out))
+			err := LaunchView()
+			if err != nil {
+				log.Fatal(err)
 			}
-			log.Println("Finished requesting edit")
 		}()
 		time.Sleep(time.Second)
 		go func() {
@@ -209,12 +202,12 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 			panic(err)
 		}
 		host = strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0]
-		if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
-			configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+		if !strings.HasSuffix(configuration.Config().HttpsUrl, "i2p") {
+			configuration.Config().HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 			log.Println(domainhelp)
 		}
-		configuration.Config.Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
-		save(configuration.Config)
+		configuration.Config().Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+		save(configuration.Config())
 		listener.Close()
 		time.Sleep(time.Second * 10)
 	} else {
@@ -224,12 +217,12 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 			panic(err)
 		}
 		host = strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0]
-		if !strings.HasSuffix(configuration.Config.HttpsUrl, "i2p") {
-			configuration.Config.HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+		if !strings.HasSuffix(configuration.Config().HttpsUrl, "i2p") {
+			configuration.Config().HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 			log.Println(domainhelp)
 		}
-		configuration.Config.Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
-		save(configuration.Config)
+		configuration.Config().Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+		save(configuration.Config())
 		return true, listener, err
 	}
 	return false, nil, nil
@@ -247,7 +240,10 @@ func defaultDir() string {
 
 func main() {
 	flag.StringVar(&flags.CustomPath, "custompath", defaultDir(), "Change to custom path for running the blog")
+	log.Println("Flags are not parsed yet")
 	flag.Parse()
+	log.Println("Flags are parsed")
+	filenames.CreateDirs()
 	if *uiOnly {
 		err := LaunchView()
 		if err != nil {
@@ -256,7 +252,6 @@ func main() {
 	}
 	// Setup
 	var err error
-	directory = flags.CustomPath
 	err = os.Chdir(flags.CustomPath)
 	if err != nil {
 		log.Fatal(err)
@@ -289,7 +284,7 @@ func main() {
 		}
 	}
 
-	if status, _, err := portCheck(configuration.Config.HttpHostAndPort); err == nil {
+	if status, _, err := portCheck(configuration.Config().HttpHostAndPort); err == nil {
 		if status {
 			err := LaunchView()
 			if err != nil {
@@ -301,13 +296,13 @@ func main() {
 		log.Fatal(err)
 	}
 	// Enforce safe local configuration
-	if configuration.Config.HttpHostAndPort == ":7672" {
-		configuration.Config.HttpHostAndPort = "127.0.0.1:7672"
+	if configuration.Config().HttpHostAndPort == ":7672" {
+		configuration.Config().HttpHostAndPort = "127.0.0.1:7672"
 	}
-	if configuration.Config.HttpsHostAndPort == ":7673" {
-		configuration.Config.HttpsHostAndPort = "127.0.0.1:7673"
+	if configuration.Config().HttpsHostAndPort == ":7673" {
+		configuration.Config().HttpsHostAndPort = "127.0.0.1:7673"
 	}
-	configuration.Config.UseLetsEncrypt = false
+	configuration.Config().UseLetsEncrypt = false
 
 	// GOMAXPROCS - Maybe not needed
 	runtime.GOMAXPROCS(runtime.NumCPU())
@@ -350,8 +345,8 @@ func main() {
 	}
 
 	// HTTP(S) Server
-	httpPort := configuration.Config.HttpHostAndPort
-	httpsPort := configuration.Config.HttpsHostAndPort
+	httpPort := configuration.Config().HttpHostAndPort
+	httpsPort := configuration.Config().HttpsHostAndPort
 	// Check if HTTP/HTTPS flags were provided
 	if flags.HttpPort != "" {
 		components := strings.SplitAfterN(httpPort, ":", 2)
@@ -362,7 +357,7 @@ func main() {
 		httpsPort = components[0] + flags.HttpsPort
 	}
 	// Determine the kind of https support (as set in the config.json)
-	switch configuration.Config.HttpsUsage {
+	switch configuration.Config().HttpsUsage {
 	case "AdminOnly":
 		httpRouter := httptreemux.New()
 		httpsRouter := httptreemux.New()
@@ -515,7 +510,7 @@ func main() {
 		// Admin as http
 		server.InitializeAdmin(httpRouter)
 		// Start http server
-		log.Println("Starting server without HTTPS support. Please enable HTTPS in " + filenames.ConfigFilename + " to improve security.")
+		log.Println("Starting server without HTTPS support. Please enable HTTPS in " + filenames.ConfigFilename() + " to improve security.")
 		log.Println("Starting http server on port " + httpPort + "...")
 		go func() {
 			for con, listener, err := waitPass(""); con; con, listener, err = waitPass("") {

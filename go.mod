@@ -7,15 +7,12 @@ require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/eyedeekay/checki2cp v0.0.21
-	github.com/eyedeekay/go-i2pbrowser v0.0.0-20230112202429-8be225b855d8
-	github.com/eyedeekay/i2pkeys v0.0.0-20220804220722-1048b5ce6ba7
+	github.com/eyedeekay/go-i2pbrowser v0.0.8
+	github.com/eyedeekay/i2pkeys v0.33.0
 	github.com/eyedeekay/sam3 v0.33.5
 	github.com/eyedeekay/unembed v0.0.0-20220521030224-e33fac302930
-	github.com/fsnotify/fsnotify v1.4.9 // indirect
-	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gorilla/securecookie v1.1.1
-	github.com/jchv/go-webview2 v0.0.0-20220506072306-ae3fc72a5edd
-	github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e // indirect
+	github.com/jchv/go-webview2 v0.0.0-20221223143126-dc24628cff85
 	github.com/kabukky/feeds v0.0.0-20151110114325-c7025aca4568
 	github.com/kabukky/httpscerts v0.0.0-20150320125433-617593d7dcb3
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
@@ -25,11 +22,10 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/txthinking/runnergroup v0.0.0-20220212043759-8da8edb7dae8 // indirect
 	github.com/txthinking/socks5 v0.0.0-20220615051428-39268faee3e6
-	github.com/txthinking/x v0.0.0-20210326105829-476fab902fbe // indirect
-	github.com/webview/webview v0.0.0-20220729131735-25e7f41b8bbf
-	github.com/yuin/gopher-lua v0.0.0-20220504180219-658193537a64
-	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+	github.com/txthinking/x v0.0.0-00010101000000-000000000000 // indirect
+	github.com/webview/webview v0.0.0-20230110200822-73aee3dae745
+	github.com/yuin/gopher-lua v1.0.0
+	golang.org/x/crypto v0.5.0
 	gopkg.in/fsnotify.v1 v1.4.7
 	modernc.org/sqlite v1.20.2
 )

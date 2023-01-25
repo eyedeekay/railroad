@@ -5,12 +5,13 @@ package plugins
 
 import (
 	"errors"
-	"github.com/yuin/gopher-lua"
-	"i2pgit.org/idk/railroad/filenames"
-	"i2pgit.org/idk/railroad/structure"
 	"log"
 	"os"
 	"path/filepath"
+
+	lua "github.com/yuin/gopher-lua"
+	"i2pgit.org/idk/railroad/filenames"
+	"i2pgit.org/idk/railroad/structure"
 )
 
 func Load() error {
@@ -18,7 +19,7 @@ func Load() error {
 	LuaPool = nil
 	// Make map
 	nameMap := make(map[string]string, 0)
-	err := filepath.Walk(filenames.PluginsFilepath, func(filePath string, info os.FileInfo, err error) error {
+	err := filepath.Walk(filenames.PluginsFilepath(), func(filePath string, info os.FileInfo, err error) error {
 		if !info.IsDir() && filepath.Ext(filePath) == ".lua" {
 			// Check if the lua file is a plugin entry point by executing it
 			helperNames, err := getHelperNames(filePath)

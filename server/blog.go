@@ -154,17 +154,17 @@ func assetsHandler(w http.ResponseWriter, r *http.Request, params map[string]str
 	// Read lock global blog
 	methods.Blog.RLock()
 	defer methods.Blog.RUnlock()
-	http.ServeFile(w, r, filepath.Join(filenames.ThemesFilepath, methods.Blog.ActiveTheme, "assets", params["filepath"]))
+	http.ServeFile(w, r, filepath.Join(filenames.ThemesFilepath(), methods.Blog.ActiveTheme, "assets", params["filepath"]))
 	return
 }
 
 func imagesHandler(w http.ResponseWriter, r *http.Request, params map[string]string) {
-	http.ServeFile(w, r, filepath.Join(filenames.ImagesFilepath, params["filepath"]))
+	http.ServeFile(w, r, filepath.Join(filenames.ImagesFilepath(), params["filepath"]))
 	return
 }
 
 func publicHandler(w http.ResponseWriter, r *http.Request, params map[string]string) {
-	http.ServeFile(w, r, filepath.Join(filenames.PublicFilepath, params["filepath"]))
+	http.ServeFile(w, r, filepath.Join(filenames.PublicFilepath(), params["filepath"]))
 	return
 }
 

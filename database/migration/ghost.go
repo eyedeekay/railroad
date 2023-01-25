@@ -43,7 +43,7 @@ type dateHolder struct {
 // Function to convert a Ghost database to use with Journey
 func Ghost() {
 	// Check every file in data directory
-	err := filepath.Walk(filenames.DatabaseFilepath, inspectDatabaseFile)
+	err := filepath.Walk(filenames.DatabaseFilepath(), inspectDatabaseFile)
 	if err != nil {
 		log.Println("Error while looking for a Ghost database to convert:", err)
 		return
@@ -63,8 +63,8 @@ func inspectDatabaseFile(filePath string, info os.FileInfo, err error) error {
 // This function converts all fields in the Ghost db that are not compatible with Journey (only date fields for now. Ghost uses a javascript-specific unix timestamp).
 func convertGhostDatabase(fileName string) error {
 	// If journey.db exists already, don't convert this file
-	if helpers.FileExists(filenames.DatabaseFilename) {
-		return errors.New(filenames.DatabaseFilename + " already exists.")
+	if helpers.FileExists(filenames.DatabaseFilename()) {
+		return errors.New(filenames.DatabaseFilename() + " already exists.")
 	}
 	log.Println("Trying to convert " + fileName + "...")
 	readDB, err := sql.Open("sqlite", fileName)
@@ -132,7 +132,7 @@ func convertGhostDatabase(fileName string) error {
 		return err
 	}
 	// Rename file to Journey format
-	err = os.Rename(fileName, filenames.DatabaseFilename)
+	err = os.Rename(fileName, filenames.DatabaseFilename())
 	if err != nil {
 		log.Println("Error:", err)
 		return err

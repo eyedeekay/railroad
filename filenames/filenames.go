@@ -1,52 +1,87 @@
 package filenames
 
 import (
-	"github.com/kardianos/osext"
-	"i2pgit.org/idk/railroad/common"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/kardianos/osext"
+	flags "i2pgit.org/idk/railroad/common"
 )
 
-var (
-	// Determine the path the Journey executable is in - needed to load relative assets
-	ExecutablePath = determineExecutablePath()
+func logString(name, asset string) string {
+	log.Println(name, asset)
+	return asset
+}
 
-	// Determine the path to the assets folder (default: Journey root folder)
-	AssetPath = determineAssetPath()
+// Determine the path the Journey executable is in - needed to load relative assets
+func ExecutablePath() string { return logString("ExecutablePath", determineExecutablePath()) }
 
-	// For assets that are created, changed, our user-provided while running journey
-	ConfigFilename   = filepath.Join(AssetPath, "config.json")
-	ContentFilepath  = filepath.Join(AssetPath, "content")
-	DatabaseFilepath = filepath.Join(ContentFilepath, "data")
-	DatabaseFilename = filepath.Join(ContentFilepath, "data", "journey.db")
-	ThemesFilepath   = filepath.Join(ContentFilepath, "themes")
-	ImagesFilepath   = filepath.Join(ContentFilepath, "images")
-	PluginsFilepath  = filepath.Join(ContentFilepath, "plugins")
-	PagesFilepath    = filepath.Join(ContentFilepath, "pages")
+// Determine the path to the assets folder (default: Journey root folder)
+func AssetPath() string { return logString("AssetPath", determineAssetPath()) }
 
-	// For https
-	HttpsFilepath     = filepath.Join(ContentFilepath, "https")
-	HttpsCertFilename = filepath.Join(ContentFilepath, "https", "cert.pem")
-	HttpsKeyFilename  = filepath.Join(ContentFilepath, "https", "key.pem")
+// var (
+// For assets that are created, changed, our user-provided while running journey
+func ConfigFilename() string {
+	return logString("ConfigFilename", filepath.Join(AssetPath(), "config.json"))
+}
+func ContentFilepath() string {
+	return logString("ContentFilepath", filepath.Join(AssetPath(), "content"))
+}
+func DatabaseFilepath() string {
+	return logString("DatabaseFilepath", filepath.Join(ContentFilepath(), "data"))
+}
+func DatabaseFilename() string {
+	return logString("DatabaseFilename", filepath.Join(ContentFilepath(), "data", "journey.db"))
+}
+func ThemesFilepath() string {
+	return logString("ThemesFilepath", filepath.Join(ContentFilepath(), "themes"))
+}
+func ImagesFilepath() string {
+	return logString("ImagesFilepath", filepath.Join(ContentFilepath(), "images"))
+}
+func PluginsFilepath() string {
+	return logString("PluginsFilepath", filepath.Join(ContentFilepath(), "plugins"))
+}
+func PagesFilepath() string {
+	return logString("PagesFilepath", filepath.Join(ContentFilepath(), "pages"))
+}
 
-	//For built-in files (e.g. the admin interface)
-	AdminFilepath  = filepath.Join(ExecutablePath, "built-in", "admin")
-	PublicFilepath = filepath.Join(ExecutablePath, "built-in", "public")
-	HbsFilepath    = filepath.Join(ExecutablePath, "built-in", "hbs")
+// For https
+func HttpsFilepath() string {
+	return logString("HttpsFilepath", filepath.Join(ContentFilepath(), "https"))
+}
+func HttpsCertFilename() string {
+	return logString("HttpsCertFilename", filepath.Join(ContentFilepath(), "https", "cert.pem"))
+}
+func HttpsKeyFilename() string {
+	return logString("HttpsKeyFilename", filepath.Join(ContentFilepath(), "https", "key.pem"))
+}
 
-	// For blog  (this is a url string)
-	// TODO: This is not used at the moment because it is still hard-coded into the create database string
-	DefaultBlogLogoFilename  = "/public/images/blog-logo.jpg"
-	DefaultBlogCoverFilename = "/public/images/blog-cover.jpg"
+// For built-in files (e.g. the admin interface)
+func AdminFilepath() string {
+	return logString("AdminFilepath", filepath.Join(ExecutablePath(), "built-in", "admin"))
+}
+func PublicFilepath() string {
+	return logString("PublicFilepath", filepath.Join(ExecutablePath(), "built-in", "public"))
+}
+func HbsFilepath() string {
+	return logString("HbsFilepath", filepath.Join(ExecutablePath(), "built-in", "hbs"))
+}
 
-	// For users (this is a url string)
-	DefaultUserImageFilename = "/public/images/user-image.jpg"
-	DefaultUserCoverFilename = "/public/images/user-cover.jpg"
-)
+// For blog  (this is a url string)
+// TODO: This is not used at the moment because it is still hard-coded into the create database string
+func DefaultBlogLogoFilename() string  { return "/public/images/blog-logo.jpg" }
+func DefaultBlogCoverFilename() string { return "/public/images/blog-cover.jpg" }
 
-func init() {
+// For users (this is a url string)
+func DefaultUserImageFilename() string { return "/public/images/user-image.jpg" }
+func DefaultUserCoverFilename() string { return "/public/images/user-cover.jpg" }
+
+//)
+
+func CreateDirs() {
 	// Create content directories if they are not created already
 	err := createDirectories()
 	if err != nil {
@@ -56,7 +91,7 @@ func init() {
 }
 
 func createDirectories() error {
-	paths := []string{DatabaseFilepath, ThemesFilepath, ImagesFilepath, HttpsFilepath, PluginsFilepath, PagesFilepath}
+	paths := []string{DatabaseFilepath(), ThemesFilepath(), ImagesFilepath(), HttpsFilepath(), PluginsFilepath(), PagesFilepath()}
 	for _, path := range paths {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			log.Println("Creating " + path)
@@ -77,6 +112,7 @@ func bashPath(contentPath string) string {
 }
 
 func determineAssetPath() string {
+	log.Println("Determining assets path", flags.CustomPath)
 	if flags.CustomPath != "" {
 		contentPath, err := filepath.Abs(bashPath(flags.CustomPath))
 		if err != nil {

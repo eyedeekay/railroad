@@ -3,15 +3,16 @@ package templates
 import (
 	"bytes"
 	"errors"
+	"net/http"
+	"path/filepath"
+	"sync"
+
 	"i2pgit.org/idk/railroad/database"
 	"i2pgit.org/idk/railroad/filenames"
 	"i2pgit.org/idk/railroad/helpers"
 	"i2pgit.org/idk/railroad/plugins"
 	"i2pgit.org/idk/railroad/structure"
 	"i2pgit.org/idk/railroad/structure/methods"
-	"net/http"
-	"path/filepath"
-	"sync"
 )
 
 type Templates struct {
@@ -145,7 +146,7 @@ func ShowIndexTemplate(w http.ResponseWriter, r *http.Request, page int) error {
 
 func GetAllThemes() []string {
 	themes := make([]string, 0)
-	files, _ := filepath.Glob(filepath.Join(filenames.ThemesFilepath, "*"))
+	files, _ := filepath.Glob(filepath.Join(filenames.ThemesFilepath(), "*"))
 	for _, file := range files {
 		if helpers.IsDirectory(file) {
 			themes = append(themes, filepath.Base(file))

@@ -3,7 +3,14 @@ package templates
 import (
 	"bytes"
 	"errors"
-	"i2pgit.org/idk/railroad/common"
+	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
+
+	flags "i2pgit.org/idk/railroad/common"
 	"i2pgit.org/idk/railroad/database"
 	"i2pgit.org/idk/railroad/filenames"
 	"i2pgit.org/idk/railroad/helpers"
@@ -11,12 +18,6 @@ import (
 	"i2pgit.org/idk/railroad/structure"
 	"i2pgit.org/idk/railroad/structure/methods"
 	"i2pgit.org/idk/railroad/watcher"
-	"io/ioutil"
-	"log"
-	"os"
-	"path/filepath"
-	"regexp"
-	"strings"
 )
 
 // For parsing of the theme files
@@ -232,13 +233,13 @@ func compileTheme(themePath string) error {
 	// Check if pagination and navigation templates have been provided by the theme.
 	// If not, use the build in ones.
 	if _, ok := compiledTemplates.m["pagination"]; !ok {
-		err = compileFile(filepath.Join(filenames.HbsFilepath, "pagination.hbs"))
+		err = compileFile(filepath.Join(filenames.HbsFilepath(), "pagination.hbs"))
 		if err != nil {
 			log.Println("Warning: Couldn't compile pagination template.")
 		}
 	}
 	if _, ok := compiledTemplates.m["navigation"]; !ok {
-		err = compileFile(filepath.Join(filenames.HbsFilepath, "navigation.hbs"))
+		err = compileFile(filepath.Join(filenames.HbsFilepath(), "navigation.hbs"))
 		if err != nil {
 			log.Println("Warning: Couldn't compile navigation template.")
 		}
@@ -253,13 +254,13 @@ func checkThemes() error {
 	if err != nil {
 		return err
 	}
-	currentThemePath := filepath.Join(filenames.ThemesFilepath, *activeTheme)
+	currentThemePath := filepath.Join(filenames.ThemesFilepath(), *activeTheme)
 	err = compileTheme(currentThemePath)
 	if err == nil {
 		return nil
 	}
 	// If the currently set theme couldnt be compiled, try the default theme (promenade)
-	err = compileTheme(filepath.Join(filenames.ThemesFilepath, "promenade"))
+	err = compileTheme(filepath.Join(filenames.ThemesFilepath(), "promenade"))
 	if err == nil {
 		// Update the theme name in the database
 		err = methods.UpdateActiveTheme("promenade", 1)
@@ -271,7 +272,7 @@ func checkThemes() error {
 	// If all of that didn't work, try the available themes in order
 	allThemes := GetAllThemes()
 	for _, theme := range allThemes {
-		err = compileTheme(filepath.Join(filenames.ThemesFilepath, theme))
+		err = compileTheme(filepath.Join(filenames.ThemesFilepath(), theme))
 		if err == nil {
 			// Update the theme name in the database
 			err = methods.UpdateActiveTheme(theme, 1)
@@ -281,7 +282,7 @@ func checkThemes() error {
 			return nil
 		}
 	}
-	return errors.New("Couldn't find a theme to use in " + filenames.ThemesFilepath)
+	return errors.New("Couldn't find a theme to use in " + filenames.ThemesFilepath())
 }
 
 func Generate() error {
@@ -302,9 +303,9 @@ func Generate() error {
 		if err != nil {
 			return err
 		}
-		currentThemePath := filepath.Join(filenames.ThemesFilepath, *activeTheme)
+		currentThemePath := filepath.Join(filenames.ThemesFilepath(), *activeTheme)
 		// Create watcher
-		err = watcher.Watch([]string{currentThemePath, filenames.PluginsFilepath}, map[string]func() error{".hbs": Generate, ".lua": plugins.Load})
+		err = watcher.Watch([]string{currentThemePath, filenames.PluginsFilepath()}, map[string]func() error{".hbs": Generate, ".lua": plugins.Load})
 		if err != nil {
 			return err
 		}

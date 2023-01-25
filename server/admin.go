@@ -80,7 +80,7 @@ func getLoginHandler(w http.ResponseWriter, r *http.Request, _ map[string]string
 		http.Redirect(w, r, "/admin/register/", 302)
 		return
 	}
-	http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath, "login.html"))
+	http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath(), "login.html"))
 	return
 }
 
@@ -102,7 +102,7 @@ func postLoginHandler(w http.ResponseWriter, r *http.Request, _ map[string]strin
 // Function to serve the registration form
 func getRegistrationHandler(w http.ResponseWriter, r *http.Request, _ map[string]string) {
 	if database.RetrieveUsersCount() == 0 {
-		http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath, "registration.html"))
+		http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath(), "registration.html"))
 		return
 	}
 	http.Redirect(w, r, "/admin/", 302)
@@ -121,7 +121,7 @@ func postRegistrationHandler(w http.ResponseWriter, r *http.Request, _ map[strin
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			user := structure.User{Name: []byte(name), Slug: slug.Generate(name, "users"), Email: []byte(email), Image: []byte(filenames.DefaultUserImageFilename), Cover: []byte(filenames.DefaultUserCoverFilename), Role: 4}
+			user := structure.User{Name: []byte(name), Slug: slug.Generate(name, "users"), Email: []byte(email), Image: []byte(filenames.DefaultUserImageFilename()), Cover: []byte(filenames.DefaultUserCoverFilename()), Role: 4}
 			err = methods.SaveUser(&user, hashedPassword, 1)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -154,7 +154,7 @@ func adminHandler(w http.ResponseWriter, r *http.Request, _ map[string]string) {
 	} else {
 		userName := authentication.GetUserName(r)
 		if userName != "" {
-			http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath, "admin.html"))
+			http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath(), "admin.html"))
 			return
 		} else {
 			http.Redirect(w, r, "/admin/login/", 302)
@@ -168,7 +168,7 @@ func adminFileHandler(w http.ResponseWriter, r *http.Request, params map[string]
 	userName := authentication.GetUserName(r)
 	if userName != "" {
 		// Get arguments (files)
-		http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath, params["filepath"]))
+		http.ServeFile(w, r, filepath.Join(filenames.AdminFilepath(), params["filepath"]))
 		return
 	} else {
 		http.NotFound(w, r)
@@ -369,7 +369,7 @@ func apiUploadHandler(w http.ResponseWriter, r *http.Request, _ map[string]strin
 			}
 			// Folder structure: year/month/randomname
 			currentDate := date.GetCurrentTime()
-			filePath := filepath.Join(filenames.ImagesFilepath, currentDate.Format("2006"), currentDate.Format("01"))
+			filePath := filepath.Join(filenames.ImagesFilepath(), currentDate.Format("2006"), currentDate.Format("01"))
 			if os.MkdirAll(filePath, 0777) != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -385,7 +385,7 @@ func apiUploadHandler(w http.ResponseWriter, r *http.Request, _ map[string]strin
 				return
 			}
 			// Rewrite to file path on server
-			filePath = strings.Replace(dst.Name(), filenames.ImagesFilepath, "/images", 1)
+			filePath = strings.Replace(dst.Name(), filenames.ImagesFilepath(), "/images", 1)
 			// Make sure to always use "/" as path separator (to make a valid url that we can use on the blog)
 			filePath = filepath.ToSlash(filePath)
 			allFilePaths = append(allFilePaths, filePath)
@@ -416,10 +416,10 @@ func apiImagesHandler(w http.ResponseWriter, r *http.Request, params map[string]
 		}
 		images := make([]string, 0)
 		// Walk all files in images folder
-		err = filepath.Walk(filenames.ImagesFilepath, func(filePath string, info os.FileInfo, err error) error {
+		err = filepath.Walk(filenames.ImagesFilepath(), func(filePath string, info os.FileInfo, err error) error {
 			if !info.IsDir() && (strings.EqualFold(filepath.Ext(filePath), ".jpg") || strings.EqualFold(filepath.Ext(filePath), ".jpeg") || strings.EqualFold(filepath.Ext(filePath), ".gif") || strings.EqualFold(filepath.Ext(filePath), ".png") || strings.EqualFold(filepath.Ext(filePath), ".svg")) {
 				// Rewrite to file path on server
-				filePath = strings.Replace(filePath, filenames.ImagesFilepath, "/images", 1)
+				filePath = strings.Replace(filePath, filenames.ImagesFilepath(), "/images", 1)
 				// Make sure to always use "/" as path separator (to make a valid url that we can use on the blog)
 				filePath = filepath.ToSlash(filePath)
 				// Prepend file to slice (thus reversing the order)
@@ -471,7 +471,7 @@ func deleteApiImageHandler(w http.ResponseWriter, r *http.Request, _ map[string]
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		err = filepath.Walk(filenames.ImagesFilepath, func(filePath string, info os.FileInfo, err error) error {
+		err = filepath.Walk(filenames.ImagesFilepath(), func(filePath string, info os.FileInfo, err error) error {
 			if !info.IsDir() && filepath.Base(filePath) == filepath.Base(json.Filename) {
 				err := os.Remove(filePath)
 				if err != nil {
@@ -551,7 +551,7 @@ func patchApiBlogHandler(w http.ResponseWriter, r *http.Request, _ map[string]st
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tempBlog := structure.Blog{Url: []byte(configuration.Config.Url), Title: []byte(json.Title), Description: []byte(json.Description), Logo: []byte(json.Logo), Cover: []byte(json.Cover), AssetPath: []byte("/assets/"), PostCount: blog.PostCount, PostsPerPage: json.PostsPerPage, ActiveTheme: json.ActiveTheme, NavigationItems: json.NavigationItems}
+		tempBlog := structure.Blog{Url: []byte(configuration.Config().Url), Title: []byte(json.Title), Description: []byte(json.Description), Logo: []byte(json.Logo), Cover: []byte(json.Cover), AssetPath: []byte("/assets/"), PostCount: blog.PostCount, PostsPerPage: json.PostsPerPage, ActiveTheme: json.ActiveTheme, NavigationItems: json.NavigationItems}
 		err = methods.UpdateBlog(&tempBlog, userId)
 		// Check if active theme setting has been changed, if so, generate templates from new theme
 		if tempBlog.ActiveTheme != blog.ActiveTheme {

@@ -25,7 +25,7 @@ func NewConfiguration() *Configuration {
 	var config Configuration
 	err := config.load()
 	if err != nil {
-		log.Println("Warning: couldn't load " + filenames.ConfigFilename + ", creating new config file.")
+		log.Println("Warning: couldn't load " + filenames.ConfigFilename() + ", creating new config file.")
 		err = config.create()
 		if err != nil {
 			log.Fatal("Fatal error: Couldn't create configuration.")
@@ -41,19 +41,21 @@ func NewConfiguration() *Configuration {
 }
 
 // Global config - thread safe and accessible from all packages
-var Config = NewConfiguration()
+func Config() *Configuration {
+	return NewConfiguration()
+}
 
 func (c *Configuration) save() error {
 	data, err := json.Marshal(c)
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filenames.ConfigFilename, data, 0600)
+	return ioutil.WriteFile(filenames.ConfigFilename(), data, 0600)
 }
 
 func (c *Configuration) load() error {
 	configWasChanged := false
-	data, err := ioutil.ReadFile(filenames.ConfigFilename)
+	data, err := ioutil.ReadFile(filenames.ConfigFilename())
 	if err != nil {
 		return err
 	}
@@ -93,7 +95,7 @@ func (c *Configuration) load() error {
 	cReflected := reflect.ValueOf(*c)
 	for i := 0; i < cReflected.NumField(); i++ {
 		if cReflected.Field(i).Interface() == "" {
-			log.Println("Error: " + filenames.ConfigFilename + " is corrupted. Did you fill out all of the fields?")
+			log.Println("Error: " + filenames.ConfigFilename() + " is corrupted. Did you fill out all of the fields?")
 			return errors.New("Error: Configuration corrupted.")
 		}
 	}
@@ -112,7 +114,7 @@ func (c *Configuration) create() error {
 	c = &Configuration{HttpHostAndPort: ":7672", HttpsHostAndPort: ":7673", HttpsUsage: "None", Url: "127.0.0.1:7672", HttpsUrl: "127.0.0.1:7673"}
 	err := c.save()
 	if err != nil {
-		log.Println("Error: couldn't create " + filenames.ConfigFilename)
+		log.Println("Error: couldn't create " + filenames.ConfigFilename())
 		return err
 	}
 
