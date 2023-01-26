@@ -72,7 +72,7 @@ func onReady() {
 			go func() {
 				<-mCopyUrl.ClickedCh
 				log.Println("Requesting copy short address helper:", configuration.Config().HttpsUrl+"/i2paddresshelper="+host)
-				clipboard.WriteAll(configuration.Config().HttpsUrl + "/i2paddresshelper=" + host)
+				clipboard.WriteAll(configuration.Config().HttpsUrl + "/?i2paddresshelper=" + host)
 				log.Println("Finished copy short address helper")
 			}()
 		}
@@ -185,6 +185,10 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 			configuration.Config().HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 			log.Println(domainhelp)
 		}
+		if !strings.HasSuffix(configuration.Config().Url, "i2p") {
+			configuration.Config().Url = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+			log.Println(domainhelp)
+		}
 		configuration.Config().Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 		save(configuration.Config())
 		listener.Close()
@@ -198,6 +202,10 @@ func waitPass(aftername string) (bool, net.Listener, error) {
 		host = strings.Split(listener.Addr().(i2pkeys.I2PAddr).Base32(), ":")[0]
 		if !strings.HasSuffix(configuration.Config().HttpsUrl, "i2p") {
 			configuration.Config().HttpsUrl = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
+			log.Println(domainhelp)
+		}
+		if !strings.HasSuffix(configuration.Config().Url, "i2p") {
+			configuration.Config().Url = "https://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
 			log.Println(domainhelp)
 		}
 		configuration.Config().Url = "http://" + listener.Addr().(i2pkeys.I2PAddr).Base32()
