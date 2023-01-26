@@ -112,7 +112,6 @@ func bashPath(contentPath string) string {
 }
 
 func determineAssetPath() string {
-	log.Println("Determining assets path", flags.CustomPath)
 	if flags.CustomPath != "" {
 		contentPath, err := filepath.Abs(bashPath(flags.CustomPath))
 		if err != nil {
