@@ -18,7 +18,6 @@ require (
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
 	github.com/russross/blackfriday v1.6.0
 	github.com/satori/go.uuid v1.2.0
-	github.com/webview/webview v0.0.0-20230110200822-73aee3dae745
 	github.com/yuin/gopher-lua v1.0.0
 	golang.org/x/crypto v0.5.0
 	gopkg.in/fsnotify.v1 v1.4.7

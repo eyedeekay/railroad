@@ -1,6 +1,3 @@
-//go:build !osxalt
-// +build !osxalt
-
 package main
 
 import (

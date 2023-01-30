@@ -130,8 +130,8 @@ zip:
 		zip railroad.zip -r railroad
 
 osx:
-	CGO_ENABLED=1 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
-	CGO_ENABLED=1 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS)-ui
+	CGO_ENABLED=0 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
+	CGO_ENABLED=0 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS)-ui
 
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
