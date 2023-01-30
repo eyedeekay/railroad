@@ -17,12 +17,12 @@ releases: bin sums
 linux-releases: linux linzip
 
 windows-releases: windows winzip
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-windows.exe
-
+	
 build:
 	go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)
 
 winbuild:
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-windows.exe
 
 linux:
 	GOOS=linux make build
