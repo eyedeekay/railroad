@@ -185,7 +185,7 @@ download-su3s:
 download-single-su3:
 	wget-ds "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
 
-plugins: pc-linux plugin-linux pc-windows plugin-windows
+plugins: pc-linux plugin-linux plugin-darwin pc-windows plugin-windows
 
 pc-clean:
 	rm -rf plugin-config
