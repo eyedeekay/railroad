@@ -17,12 +17,15 @@ releases: bin sums
 linux-releases: linux linzip
 
 windows-releases: windows winzip
-	
-linux:
-	GOOS=linux go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-windows.exe
 
-rb:
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o $(REPO_NAME)
+build:
+	go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)
+
+winbuild:
+
+linux:
+	GOOS=linux make build
 
 linux-release: linux
 	make checkinstall
@@ -35,11 +38,9 @@ linzip: clean
 windows: railroad-windows.exe
 
 railroad-windows.exe:
-	GOOS=windows go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-windows.exe
+	GOOS=windows make winbuild
 	#xgo --docker-repo crazymax/xgo --ldflags="-H windowsgui" --targets=windows/amd64 . && mv ../railroad-windows-4.0-amd64.exe railroad-windows.exe
 	cp railroad-windows.exe railroad-windows
-	#wget -O WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
-	#wget -O webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 
 winzip: clean
 	zip -x=./*.crt -x=./*.crl -x=./*.pem \
@@ -130,13 +131,13 @@ zip:
 		zip railroad.zip -r railroad
 
 osx:
-	CGO_ENABLED=0 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
+	GOOS=darwin make build
 
 macapp:
+	GOOS=darwin make build
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
-	go build -o railroad.app/Contents/MacOS/railroad
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad.app/Contents/MacOS/railroad-ui
+	cp railroad-darwin railroad.app/Contents/MacOS/railroad
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
@@ -214,13 +215,13 @@ plugin-linux:
 	GOOS=linux make plugin-pkg
 
 plugin-windows:
-	make railroad-windows.exe
-	make pc-windows
+	GOOS=darwin make railroad-windows.exe
+	GOOS=darwin make pc-windows
 	GOOS=windows make plugin-pkg
 
 plugin-darwin:
-	make osx
-	make pc-linux
+	GOOS=darwin make osx
+	GOOS=darwin make pc-linux
 	GOOS=darwin make plugin-pkg
 
 SIGNER_DIR=$(HOME)/i2p-go-keys/
