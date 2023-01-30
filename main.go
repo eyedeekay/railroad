@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"time"
 
@@ -219,9 +218,6 @@ func main() {
 		configuration.Config().HttpsHostAndPort = "127.0.0.1:7673"
 	}
 	configuration.Config().UseLetsEncrypt = false
-
-	// GOMAXPROCS - Maybe not needed
-	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	// Write log to file if the log flag was provided
 	if flags.Log != "" {

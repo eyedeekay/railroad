@@ -131,13 +131,12 @@ zip:
 
 osx:
 	CGO_ENABLED=0 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad-$(GOOS)
-	CGO_ENABLED=0 GOOS=darwin go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad-$(GOOS)-ui
 
 macapp:
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
 	go build -o railroad.app/Contents/MacOS/railroad
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo,osxalt" -ldflags "-s -w" -o railroad.app/Contents/MacOS/railroad-ui
+	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags "-s -w" -o railroad.app/Contents/MacOS/railroad-ui
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
@@ -171,6 +170,7 @@ release-upload: check
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "./railroad-linux.su3"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "./railroad-darwin.su3"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "./railroad-windows.su3"
 #	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
@@ -179,6 +179,7 @@ upload-su3s: release-upload
 download-su3s:
 	GOOS=windows make download-single-su3
 	GOOS=linux make download-single-su3
+	GOOS=darwin make download-single-su3
 
 download-single-su3:
 	wget-ds "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
@@ -216,6 +217,11 @@ plugin-windows:
 	make railroad-windows.exe
 	make pc-windows
 	GOOS=windows make plugin-pkg
+
+plugin-darwin:
+	make osx
+	make pc-linux
+	GOOS=darwin make plugin-pkg
 
 SIGNER_DIR=$(HOME)/i2p-go-keys/
 
