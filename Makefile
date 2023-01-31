@@ -2,8 +2,8 @@
 REPO_NAME=railroad
 export GOPATH=$(HOME)/go
 GOPATH=$(HOME)/go
-VERSION=0.1.6
-LAST_VERSION=0.1.5
+VERSION=0.1.7
+LAST_VERSION=0.1.6
 USER_GH=eyedeekay
 CGO_ENABLED?=0
 
@@ -18,7 +18,8 @@ build:
 	go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)-$(GOARCH)
 
 winbuild:
-	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-windows.exe
+	GOOS=windows go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-$(GOOS)-$(GOARCH).exe
+	GOOS=windows go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-$(GOOS)-$(GOARCH)
 
 linux:
 	GOOS=linux make build
@@ -34,8 +35,6 @@ windows: railroad-windows.exe
 
 railroad-windows.exe:
 	GOOS=windows make winbuild
-	#xgo --docker-repo crazymax/xgo --ldflags="-H windowsgui" --targets=windows/$(GOARCH) . && mv ../railroad-windows-4.0-$(GOARCH).exe railroad-windows.exe
-	cp railroad-windows.exe railroad-windows
 
 winzip: windows nsis
 	zip -x=./*.crt -x=./*.crl -x=./*.pem \
@@ -46,7 +45,7 @@ copy:
 	cp -v ../railroad-$(VERSION).tar.gz .
 	cp -v ../railroad-$(VERSION).zip .
 	cp -v ../i2p-railroad_$(VERSION)-1_$(GOARCH).deb .
-	cp -v ./railroad-windows.exe railroad-windows-$(VERSION).exe
+	cp -v ./railroad-$(GOOS)-$(GOARCH).exe railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
@@ -108,7 +107,7 @@ checkinstall: linux preinstall-pak
 
 nsis: plugin-config
 	makensis railroad.nsi
-	cp ./railroad-windows.exe ../railroad-windows-$(VERSION).exe
+	cp ./railroad-$(GOOS)-$(GOARCH).exe ../railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe
 
 osx:
 	GOOS=darwin make build
@@ -124,14 +123,14 @@ fmt:
 
 check:
 	ls -lah "../railroad-$(VERSION).zip" \
-		"./railroad-windows-$(VERSION).exe" \
+		"./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe" \
 		"../railroad-$(VERSION).tar.gz" \
 		"../i2p-railroad_$(VERSION)-1_amd64.deb" \
 		"../i2p-railroad_$(VERSION)-1_arm64.deb" \
 		"./railroad-linux.su3" \
 		"./railroad-darwin.su3" \
 		"./railroad-darwin-arm64.su3" \
-		"./railroad-windows.su3"
+		"./railroad-$(GOOS)-$(GOARCH).su3"
 	echo "PRE RELEASE ARTIFACT CHECK PASSED."
 	sleep 10s
 
@@ -140,14 +139,14 @@ all: clean linzip winzip macapp debs plugins nsis copy
 release: all check release-upload
 
 file-release:
-	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
+	cat desc changelog | grep -B 100 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
 	sleep 3s
 
 release-upload: check file-release basic-release upload-su3s upload-debs
 
 basic-release:
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../railroad-$(VERSION).zip`" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-windows-$(VERSION).exe`" -n "railroad-windows-$(VERSION).exe" -f "./railroad-windows-$(VERSION).exe"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe`" -n "railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe" -f "./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../railroad-$(VERSION).tar.gz`" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
 
 upload-single-deb:
@@ -205,8 +204,8 @@ plugin-linux:
 	GOOS=linux GOARCH=arm64 make plugin-pkg
 
 plugin-windows:
-	GOOS=darwin make railroad-windows.exe
-	GOOS=darwin make plugin-config
+	GOOS=windows make railroad-windows.exe
+	GOOS=windows make plugin-config
 	GOOS=windows make plugin-pkg
 
 plugin-darwin:
