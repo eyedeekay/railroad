@@ -18,3 +18,5 @@ content/data/journey.db
 /plugin.yaml
 /*.zip
 /*public.txt
+/railroad.app
+/plugin-config
