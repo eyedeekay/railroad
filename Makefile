@@ -10,12 +10,12 @@ CGO_ENABLED?=0
 GOOS?="linux"
 GOARCH?="amd64"
 
-bin: $(GOPATH)/src/i2pgit.org/idk/railroad clean copy
+bin: $(GOPATH)/src/i2pgit.org/idk/railroad
 
 releases: bin sums
 	
 build:
-	go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)
+	go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)-$(GOARCH)
 
 winbuild:
 	go build -tags="sqlite_omit_load_extension,netgo,osusergo" -ldflags="-H windowsgui -s -w" -o railroad-windows.exe
@@ -25,7 +25,7 @@ linux:
 
 linux-release: linux
 
-linzip: clean
+linzip: linux
 	tar --exclude=./*.crt --exclude=./*.crl --exclude=./*.pem \
 		--exclude=./*.private --exclude=./*.public.txt \
 		--exclude="./.git/*" -zcvf ../railroad-$(VERSION).tar.gz .
@@ -37,7 +37,7 @@ railroad-windows.exe:
 	#xgo --docker-repo crazymax/xgo --ldflags="-H windowsgui" --targets=windows/$(GOARCH) . && mv ../railroad-windows-4.0-$(GOARCH).exe railroad-windows.exe
 	cp railroad-windows.exe railroad-windows
 
-winzip: clean
+winzip: windows nsis
 	zip -x=./*.crt -x=./*.crl -x=./*.pem \
 		-x=./*.private -x=./*.public.txt \
 		-x="./.git/*" -r ../railroad-$(VERSION).zip .
@@ -128,9 +128,9 @@ zip:
 
 osx:
 	GOOS=darwin make build
+	GOOS=darwin GOARCH=arm64 make build
 
-macapp:
-	GOOS=darwin make build
+macapp: osx
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
 	cp railroad-darwin railroad.app/Contents/MacOS/railroad
@@ -142,14 +142,16 @@ check:
 	ls -lah "../railroad-$(VERSION).zip" \
 		"./railroad-windows-$(VERSION).exe" \
 		"../railroad-$(VERSION).tar.gz" \
-		"../i2p-railroad_$(VERSION)-1_$(GOARCH).deb" \
+		"../i2p-railroad_$(VERSION)-1_amd64.deb" \
+		"../i2p-railroad_$(VERSION)-1_arm64.deb" \
 		"./railroad-linux.su3" \
 		"./railroad-darwin.su3" \
+		"./railroad-darwin-arm64.su3" \
 		"./railroad-windows.su3"
 
-all: clean linzip winzip debs plugins
+all: clean linzip winzip macapp debs plugins nsis copy
 
-release: all bin release-upload
+release: all check release-upload
 
 file-release:
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
@@ -166,7 +168,7 @@ upload-single-deb:
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../i2p-railroad_$(VERSION)-1_$(GOARCH).deb`" -n "i2p-railroad_$(VERSION)-1_$(GOARCH).deb" -f "../i2p-railroad_$(VERSION)-1_$(GOARCH).deb"
 
 upload-single-su3:
-	echo gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum "./railroad-$(GOOS).su3"`" -n "$(REPO_NAME)-$(GOOS).su3" -f "./railroad-$(GOOS).su3"
+	echo gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum "./railroad-$(GOOS)-$(GOARCH).su3"`" -n "$(REPO_NAME)-$(GOOS)-$(GOARCH).su3" -f "./railroad-$(GOOS)-$(GOARCH).su3"
 
 debs:
 	GOOS=linux GOARCH=amd64 make checkinstall
@@ -189,7 +191,7 @@ download-su3s:
 	GOOS=darwin GOARCH=arm64 make download-single-su3
 
 download-single-su3:
-	wget-ds "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
+	wget-ds "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS)-$(GOARCH).su3"
 
 plugins: plugin-config plugin-linux plugin-darwin plugin-config plugin-windows
 
@@ -227,25 +229,25 @@ SIGNER_DIR=$(HOME)/i2p-go-keys/
 
 plugin-pkg:
 	rm -f plugin.yaml client.yaml
-	GOOS=windows i2p.plugin.native -name=railroad-$(GOOS) \
+	GOOS=windows i2p.plugin.native -name=railroad-$(GOOS)-$(GOARCH) \
 		-signer=hankhill19580@gmail.com \
 		-signer-dir=$(SIGNER_DIR) \
 		-version "$(VERSION)" \
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
-		-clientname=railroad-$(GOOS) \
+		-clientname=railroad-$(GOOS)-$(GOARCH) \
 		-consolename="Railroad Blog" \
 		-consoleurl="http://127.0.0.1:7672" \
-		-name="railroad-$(GOOS)" \
+		-name="railroad-$(GOOS)-$(GOARCH)" \
 		-delaystart="1" \
 		-desc="`cat desc`" \
-		-exename=railroad-$(GOOS) \
+		-exename=railroad-$(GOOS)-$(GOARCH) \
 		-icondata=icon/icon.png \
-		-updateurl="http://idk.i2p/railroad/railroad-$(GOOS).su3" \
+		-updateurl="http://idk.i2p/railroad/railroad-$(GOOS)-$(GOARCH).su3" \
 		-website="http://idk.i2p/railroad/" \
-		-command="railroad-$(GOOS) -custompath \$$PLUGIN/" \
+		-command="railroad-$(GOOS)-$(GOARCH) -custompath \$$PLUGIN/" \
 		-license=MIT \
-		-targetos=$(GOOS) \
+		-targetos=$(GOOS)-$(GOARCH) \
 		-res=plugin-config/
-	cp -v railroad-$(GOOS).su3 ../railroad-$(GOOS).su3
-	unzip -o railroad-$(GOOS).zip -d railroad-$(GOOS)-zip
+	cp -v railroad-$(GOOS)-$(GOARCH).su3 ../railroad-$(GOOS)-$(GOARCH).su3
+	unzip -o railroad-$(GOOS)-$(GOARCH).zip -d railroad-$(GOOS)-$(GOARCH)-zip
