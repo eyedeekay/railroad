@@ -10,13 +10,9 @@ CGO_ENABLED?=0
 GOOS?="linux"
 GOARCH?="amd64"
 
-bin: $(GOPATH)/src/i2pgit.org/idk/railroad clean linux-releases windows-releases copy
+bin: $(GOPATH)/src/i2pgit.org/idk/railroad clean copy
 
 releases: bin sums
-
-linux-releases: linux linzip
-
-windows-releases: windows winzip
 	
 build:
 	go build -tags=sqlite_omit_load_extension,netgo,osusergo -ldflags "-s -w" -o railroad-$(GOOS)
@@ -28,7 +24,6 @@ linux:
 	GOOS=linux make build
 
 linux-release: linux
-	make checkinstall
 
 linzip: clean
 	tar --exclude=./*.crt --exclude=./*.crl --exclude=./*.pem \
@@ -39,7 +34,7 @@ windows: railroad-windows.exe
 
 railroad-windows.exe:
 	GOOS=windows make winbuild
-	#xgo --docker-repo crazymax/xgo --ldflags="-H windowsgui" --targets=windows/amd64 . && mv ../railroad-windows-4.0-amd64.exe railroad-windows.exe
+	#xgo --docker-repo crazymax/xgo --ldflags="-H windowsgui" --targets=windows/$(GOARCH) . && mv ../railroad-windows-4.0-$(GOARCH).exe railroad-windows.exe
 	cp railroad-windows.exe railroad-windows
 
 winzip: clean
@@ -50,7 +45,7 @@ winzip: clean
 copy:
 	cp -v ../railroad-$(VERSION).tar.gz .
 	cp -v ../railroad-$(VERSION).zip .
-	cp -v ../i2p-railroad_$(VERSION)-1_amd64.deb .
+	cp -v ../i2p-railroad_$(VERSION)-1_$(GOARCH).deb .
 	cp -v ./railroad-windows.exe railroad-windows-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
@@ -93,6 +88,7 @@ uninstall:
 
 checkinstall: linux preinstall-pak
 	fakeroot checkinstall \
+		--arch=$(GOARCH) \
 		--default \
 		--install=no \
 		--fstrans=yes \
@@ -122,7 +118,7 @@ index:
 	@echo "</body>" >> index.html
 	@echo "</html>" >> index.html
 
-nsis: pc-windows
+nsis: plugin-config
 	makensis railroad.nsi
 	cp ./railroad-windows.exe ../railroad-windows-$(VERSION).exe
 
@@ -146,52 +142,61 @@ check:
 	ls -lah "../railroad-$(VERSION).zip" \
 		"./railroad-windows-$(VERSION).exe" \
 		"../railroad-$(VERSION).tar.gz" \
-		"../i2p-railroad_$(VERSION)-1_amd64.deb" \
+		"../i2p-railroad_$(VERSION)-1_$(GOARCH).deb" \
 		"./railroad-linux.su3" \
+		"./railroad-darwin.su3" \
 		"./railroad-windows.su3"
 
-export sumrrlinux=`sha256sum "./railroad-linux.su3"`
-export sumrrwindows=`sha256sum "./railroad-windows.su3"`
-export sumdeb=`sha256sum "../i2p-railroad_$(VERSION)-1_amd64.deb"`
-export sumzip=`sha256sum "../railroad-$(VERSION).zip"`
-export sumtar=`sha256sum "../railroad-$(VERSION).tar.gz"`
-export sumexe=`sha256sum "./railroad-windows-$(VERSION).exe"`
-
-upload-plugins:
-
-all: clean linzip winzip checkinstall releases plugins
+all: clean linzip winzip debs plugins
 
 release: all bin release-upload
 
-release-upload: check
+file-release:
 	cat desc changelog | grep -B 10 "$(LAST_VERSION)" | gothub release -p -u $(USER_GH) -r $(REPO_NAME) -t $(VERSION) -n $(VERSION) -d -; true
 	sleep 3s
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumzip)" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumexe)" -n "railroad-windows-$(VERSION).exe" -f "./railroad-windows-$(VERSION).exe"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumtar)" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumdeb)" -n "i2p-railroad_$(VERSION)-1_amd64.deb" -f "../i2p-railroad_$(VERSION)-1_amd64.deb"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "./railroad-linux.su3"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrlinux)" -n "$(REPO_NAME)-linux.su3" -f "./railroad-darwin.su3"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "$(sumrrwindows)" -n "$(REPO_NAME)-windows.su3" -f "./railroad-windows.su3"
-#	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -n "" -f ""
 
-upload-su3s: release-upload
+release-upload: check file-release basic-release upload-su3s upload-debs
+
+basic-release:
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../railroad-$(VERSION).zip`" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-windows-$(VERSION).exe`" -n "railroad-windows-$(VERSION).exe" -f "./railroad-windows-$(VERSION).exe"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../railroad-$(VERSION).tar.gz`" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
+
+upload-single-deb:
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../i2p-railroad_$(VERSION)-1_$(GOARCH).deb`" -n "i2p-railroad_$(VERSION)-1_$(GOARCH).deb" -f "../i2p-railroad_$(VERSION)-1_$(GOARCH).deb"
+
+upload-single-su3:
+	echo gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum "./railroad-$(GOOS).su3"`" -n "$(REPO_NAME)-$(GOOS).su3" -f "./railroad-$(GOOS).su3"
+
+debs:
+	GOOS=linux GOARCH=amd64 make checkinstall
+	GOOS=linux GOARCH=arm64 make checkinstall
+
+upload-debs:
+	GOOS=linux GOARCH=amd64 make upload-single-deb
+	GOOS=linux GOARCH=arm64 make upload-single-deb
+
+upload-su3s:
+	GOOS=windows make upload-single-su3
+	GOOS=linux make upload-single-su3
+	GOOS=darwin make upload-single-su3
+	GOOS=darwin GOARCH=arm64 make upload-single-su3
 
 download-su3s:
 	GOOS=windows make download-single-su3
 	GOOS=linux make download-single-su3
 	GOOS=darwin make download-single-su3
+	GOOS=darwin GOARCH=arm64 make download-single-su3
 
 download-single-su3:
 	wget-ds "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS).su3"
 
-plugins: pc-linux plugin-linux plugin-darwin pc-windows plugin-windows
+plugins: plugin-config plugin-linux plugin-darwin plugin-config plugin-windows
 
 pc-clean:
 	rm -rf plugin-config
 
-pc-windows: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in plugin-config/lib/WebView2Loader.dll plugin-config/lib/webview.dll
-pc-linux: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in
+plugin-config: pc-clean plugin-config/lib plugin-config/lib/content plugin-config/lib/built-in
 
 plugin-config/lib:
 	mkdir -p plugin-config/lib/
@@ -203,25 +208,19 @@ plugin-config/lib/content:
 plugin-config/lib/built-in:
 	cp -r built-in plugin-config/lib/built-in
 
-plugin-config/lib/WebView2Loader.dll:
-	#get -O plugin-config/lib/WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
-
-plugin-config/lib/webview.dll:
-	#wget -O plugin-config/lib/webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
-
 plugin-linux:
 	make linux
-	make pc-linux
+	make plugin-config
 	GOOS=linux make plugin-pkg
 
 plugin-windows:
 	GOOS=darwin make railroad-windows.exe
-	GOOS=darwin make pc-windows
+	GOOS=darwin make plugin-config
 	GOOS=windows make plugin-pkg
 
 plugin-darwin:
 	GOOS=darwin make osx
-	GOOS=darwin make pc-linux
+	GOOS=darwin make plugin-config
 	GOOS=darwin make plugin-pkg
 
 SIGNER_DIR=$(HOME)/i2p-go-keys/
