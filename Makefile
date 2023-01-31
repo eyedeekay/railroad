@@ -120,14 +120,15 @@ fmt:
 
 check:
 	ls -lah "./railroad-$(VERSION).zip" \
-		"./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe" \
+		"./railroad-windows-amd64-$(VERSION).exe" \
 		"./railroad-$(VERSION).tar.gz" \
 		"./i2p-railroad_$(VERSION)-1_amd64.deb" \
 		"./i2p-railroad_$(VERSION)-1_arm64.deb" \
-		"./railroad-linux.su3" \
-		"./railroad-darwin.su3" \
+		"./railroad-linux-amd64.su3" \
+		"./railroad-linux-arm64.su3" \
+		"./railroad-darwin-amd64.su3" \
 		"./railroad-darwin-arm64.su3" \
-		"./railroad-$(GOOS)-$(GOARCH).su3"
+		"./railroad-windows-amd64.su3"
 	echo "PRE RELEASE ARTIFACT CHECK PASSED."
 	sleep 10s
 
@@ -255,3 +256,6 @@ plugin-pkg:
 	cp -v railroad-$(GOOS)-$(GOARCH).su3 ./railroad-$(GOOS)-$(GOARCH)-$(VERSION).su3
 	unzip -o railroad-$(GOOS)-$(GOARCH).zip -d railroad-$(GOOS)-$(GOARCH)-$(VERSION)-zip
 
+
+index:
+	edgar

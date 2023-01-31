@@ -35,11 +35,19 @@ The first time you run `railroad` you'll need to set up an account. Go to
 fill in your username and password. Restart the plugin and your site will
 become available.
 
- - Windows I2P Plugin: [http://idk.i2p/railroad/railroad-windows.su3](http://idk.i2p/railroad/railroad-windows.su3)
- - Linux I2P Plugin: [http://idk.i2p/railroad/railroad-linux.su3](http://idk.i2p/railroad/railroad-linux.su3)
+ - Windows I2P Plugin: [http://idk.i2p/railroad/railroad-windows-amd64.su3](http://idk.i2p/railroad/railroad-windows-amd64.su3)
+ - Linux I2P Plugin: [http://idk.i2p/railroad/railroad-linux-amd64.su3](http://idk.i2p/railroad/railroad-linux-amd64.su3)
+ - Linux ARM64 I2P Plugin: [http://idk.i2p/railroad/railroad-linux-arm64.su3](http://idk.i2p/railroad/railroad-linux-arm64.su3)
 
  - Binary Releases: [Github](https://github.com/eyedeekay/railroad/releases)
  - Source Code: [i2pgit.org](https://i2pgit.org/idk/railroad)
+
+## OSX Builds
+
+I have no idea if these will work:
+
+ - Darwin I2P Plugin: [http://idk.i2p/railroad/railroad-darwin-amd64.su3](http://idk.i2p/railroad/railroad-darwin-amd64.su3)
+ - Darwin ARM64 I2P Plugin: [http://idk.i2p/railroad/railroad-darwin-arm64.su3](http://idk.i2p/railroad/railroad-darwin-arm64.su3)
 
 ## build from source
 
