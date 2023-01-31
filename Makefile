@@ -67,7 +67,7 @@ install:
 	cp -R content /var/lib/$(REPO_NAME)/content
 	cp -R built-in /var/lib/$(REPO_NAME)/built-in
 	install -m755 railroad.sh /usr/bin/railroad
-	install -m755 railroad-linux /var/lib/$(REPO_NAME)/railroad
+	install -m755 railroad-$(GOOS)-$(GOARCH) /var/lib/$(REPO_NAME)/railroad
 	cp res/desktop/i2prailroad.desktop /usr/share/applications
 	install -m644 etc/default/$(REPO_NAME) /etc/default/$(REPO_NAME)
 	install -m755 etc/init.d/$(REPO_NAME) /etc/init.d/$(REPO_NAME)
@@ -106,25 +106,9 @@ checkinstall: linux preinstall-pak
 		--pakdir=".." \
 		--backup=no
 
-index:
-	@echo "<!DOCTYPE html>" > index.html
-	@echo "<html>" >> index.html
-	@echo "<head>" >> index.html
-	@echo "  <title>Railroad, anonymous blogging based on Journey</title>" >> index.html
-	@echo "  <link rel=\"stylesheet\" type=\"text/css\" href =\"home.css\" />" >> index.html
-	@echo "</head>" >> index.html
-	@echo "<body>" >> index.html
-	markdown README.md | tee -a index.html
-	@echo "</body>" >> index.html
-	@echo "</html>" >> index.html
-
 nsis: plugin-config
 	makensis railroad.nsi
 	cp ./railroad-windows.exe ../railroad-windows-$(VERSION).exe
-
-zip:
-	cd ../ && \
-		zip railroad.zip -r railroad
 
 osx:
 	GOOS=darwin make build
@@ -133,7 +117,7 @@ osx:
 macapp: osx
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
-	cp railroad-darwin railroad.app/Contents/MacOS/railroad
+	cp railroad-$(GOOS)-$(GOARCH) railroad.app/Contents/MacOS/railroad
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
@@ -148,6 +132,8 @@ check:
 		"./railroad-darwin.su3" \
 		"./railroad-darwin-arm64.su3" \
 		"./railroad-windows.su3"
+	echo "PRE RELEASE ARTIFACT CHECK PASSED."
+	sleep 10s
 
 all: clean linzip winzip macapp debs plugins nsis copy
 
@@ -181,12 +167,14 @@ upload-debs:
 upload-su3s:
 	GOOS=windows make upload-single-su3
 	GOOS=linux make upload-single-su3
+	GOOS=linux GOARCH=arm64 make upload-single-su3
 	GOOS=darwin make upload-single-su3
 	GOOS=darwin GOARCH=arm64 make upload-single-su3
 
 download-su3s:
 	GOOS=windows make download-single-su3
 	GOOS=linux make download-single-su3
+	GOOS=linux GOARCH=arm64 make download-single-su3
 	GOOS=darwin make download-single-su3
 	GOOS=darwin GOARCH=arm64 make download-single-su3
 
@@ -214,6 +202,7 @@ plugin-linux:
 	make linux
 	make plugin-config
 	GOOS=linux make plugin-pkg
+	GOOS=linux GOARCH=arm64 make plugin-pkg
 
 plugin-windows:
 	GOOS=darwin make railroad-windows.exe
@@ -224,6 +213,7 @@ plugin-darwin:
 	GOOS=darwin make osx
 	GOOS=darwin make plugin-config
 	GOOS=darwin make plugin-pkg
+	GOOS=darwin GOARCH=arm64 make plugin-pkg
 
 SIGNER_DIR=$(HOME)/i2p-go-keys/
 
