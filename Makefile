@@ -107,7 +107,7 @@ checkinstall: linux preinstall-pak
 
 nsis: plugin-config
 	makensis railroad.nsi
-	cp ./railroad-$(GOOS)-$(GOARCH).exe ../railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe
+	cp ./railroad-installer.exe ../railroad-installer-$(VERSION).exe
 
 osx:
 	GOOS=darwin make build

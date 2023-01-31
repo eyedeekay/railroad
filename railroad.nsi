@@ -1,7 +1,7 @@
 UniCode true
 
 # define name of installer
-OutFile "../railroad-installer.exe"
+OutFile "railroad-installer.exe"
  
 # define installation directory
 !define APPNAME "Railroad"
@@ -24,7 +24,8 @@ RequestExecutionLevel user
 Section
     Exec 'CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.Win32WebViewHost_cw5n1h2txyewy"'
     SetOutPath $INSTDIR
-    File railroad-windows.exe
+    File railroad-windows-amd64.exe
+    Delete railroad-windows.exe
     File README.md
     File LICENSE.md
     File /a /r ".\content\"
@@ -35,7 +36,7 @@ Section
 
     # create a shortcut named "new shortcut" in the start menu programs directory
     # point the new shortcut at the program uninstaller
-    CreateShortcut "$SMPROGRAMS\${APPNAME}\Blog with Railroad.lnk" "$INSTDIR\railroad-windows.exe"
+    CreateShortcut "$SMPROGRAMS\${APPNAME}\Blog with Railroad.lnk" "$INSTDIR\railroad-windows-amd64.exe"
     CreateShortcut "$SMPROGRAMS\${APPNAME}\Uninstall Railroad Blog.lnk" "$INSTDIR\uninstall.exe"
 SectionEnd
  
