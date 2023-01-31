@@ -23,13 +23,12 @@ winbuild:
 
 linux:
 	GOOS=linux make build
+	GOOS=linux GOARCH=arm64 make build
 
 linux-release: linux
 
 linzip: linux
-	tar --exclude=./*.crt --exclude=./*.crl --exclude=./*.pem \
-		--exclude=./*.private --exclude=./*.public.txt \
-		--exclude="./.git/*" -zcvf ../railroad-$(VERSION).tar.gz .
+	tar -zcvf ../railroad-$(VERSION).tar.gz built-in content railroad-linux-amd64 railroad-linux-arm64
 	cp -v ../railroad-$(VERSION).tar.gz .
 
 windows: railroad-windows.exe
@@ -38,9 +37,7 @@ railroad-windows.exe:
 	GOOS=windows make winbuild
 
 winzip: windows nsis
-	zip -x=./*.crt -x=./*.crl -x=./*.pem \
-		-x=./*.private -x=./*.public.txt \
-		-x="./.git/*" -r ../railroad-$(VERSION).zip .
+	zip -r ../railroad-$(VERSION).zip built-in content railroad-windows-amd64.exe
 	cp -v ../railroad-$(VERSION).zip .
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
