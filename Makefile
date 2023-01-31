@@ -147,7 +147,7 @@ release-upload: check file-release basic-release upload-su3s upload-debs
 
 basic-release:
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(VERSION).zip`" -n "railroad-$(VERSION).zip" -f "./railroad-$(VERSION).zip"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe`" -n "railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe" -f "./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-windows-amd64-$(VERSION).exe`" -n "railroad-windows-amd64-$(VERSION).exe" -f "./railroad-windows-amd64-$(VERSION).exe"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(VERSION).tar.gz`" -n "railroad-$(VERSION).tar.gz" -f "./railroad-$(VERSION).tar.gz"
 
 upload-single-deb:
