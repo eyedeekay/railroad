@@ -28,8 +28,7 @@ linux:
 linux-release: linux
 
 linzip: linux
-	tar -zcvf ../railroad-$(VERSION).tar.gz built-in content railroad-linux-amd64 railroad-linux-arm64
-	cp -v ../railroad-$(VERSION).tar.gz .
+	tar -zcvf ./railroad-$(VERSION).tar.gz built-in content railroad-linux-amd64 railroad-linux-arm64
 
 windows: railroad-windows.exe
 
@@ -37,8 +36,7 @@ railroad-windows.exe:
 	GOOS=windows make winbuild
 
 winzip: windows nsis
-	zip -r ../railroad-$(VERSION).zip built-in content railroad-windows-amd64.exe
-	cp -v ../railroad-$(VERSION).zip .
+	zip -r ./railroad-$(VERSION).zip built-in content railroad-windows-amd64.exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
