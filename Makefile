@@ -99,7 +99,7 @@ checkinstall: linux preinstall-pak
 
 nsis: plugin-config windows
 	makensis railroad.nsi
-	cp ./railroad-installer.exe ../railroad-installer-$(VERSION).exe
+	cp ./railroad-installer.exe ./railroad-installer-$(VERSION).exe
 
 darwin:
 	GOOS=darwin make build
@@ -142,7 +142,8 @@ release-upload: check file-release basic-release upload-su3s upload-debs
 
 basic-release:
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(VERSION).zip`" -n "railroad-$(VERSION).zip" -f "./railroad-$(VERSION).zip"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-windows-amd64-$(VERSION).exe`" -n "railroad-windows-amd64-$(VERSION).exe" -f "./railroad-windows-amd64-$(VERSION).exe"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-windows-amd64.exe`" -n "railroad-windows-amd64-$(VERSION).exe" -f "./railroad-windows-amd64.exe"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-installer-$(VERSION).exe`" -n "railroad-installer-$(VERSION).exe" -f "./railroad-installer-$(VERSION).exe"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(VERSION).tar.gz`" -n "railroad-$(VERSION).tar.gz" -f "./railroad-$(VERSION).tar.gz"
 
 upload-single-deb:
