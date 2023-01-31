@@ -2,7 +2,6 @@
 Description=I2P Blog Service
 After=network.target
 StartLimitIntervalSec=0
-Requires=i2p.service
 
 [Service]
 User=railroad

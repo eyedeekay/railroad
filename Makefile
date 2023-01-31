@@ -30,6 +30,7 @@ linzip: linux
 	tar --exclude=./*.crt --exclude=./*.crl --exclude=./*.pem \
 		--exclude=./*.private --exclude=./*.public.txt \
 		--exclude="./.git/*" -zcvf ../railroad-$(VERSION).tar.gz .
+	cp -v ../railroad-$(VERSION).tar.gz .
 
 windows: railroad-windows.exe
 
@@ -40,12 +41,7 @@ winzip: windows nsis
 	zip -x=./*.crt -x=./*.crl -x=./*.pem \
 		-x=./*.private -x=./*.public.txt \
 		-x="./.git/*" -r ../railroad-$(VERSION).zip .
-
-copy:
-	cp -v ../railroad-$(VERSION).tar.gz .
 	cp -v ../railroad-$(VERSION).zip .
-	cp -v ../i2p-railroad_$(VERSION)-1_$(GOARCH).deb .
-	cp -v ./railroad-$(GOOS)-$(GOARCH).exe railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe
 
 $(GOPATH)/src/i2pgit.org/idk/railroad:
 	mkdir -p $(GOPATH)/src/i2pgit.org/idk/railroad
@@ -104,16 +100,17 @@ checkinstall: linux preinstall-pak
 		--deldesc=yes \
 		--pakdir=".." \
 		--backup=no
+	cp -v ../i2p-railroad_$(VERSION)-1_$(GOARCH).deb .
 
-nsis: plugin-config
+nsis: plugin-config windows
 	makensis railroad.nsi
 	cp ./railroad-installer.exe ../railroad-installer-$(VERSION).exe
 
-osx:
+darwin:
 	GOOS=darwin make build
 	GOOS=darwin GOARCH=arm64 make build
 
-macapp: osx
+macapp: darwin
 	mkdir -p railroad.app/Contents/MacOS/content
 	cp -r content/* railroad.app/Contents/MacOS/content/
 	cp railroad-$(GOOS)-$(GOARCH) railroad.app/Contents/MacOS/railroad
@@ -122,17 +119,20 @@ fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
 
 check:
-	ls -lah "../railroad-$(VERSION).zip" \
+	ls -lah "./railroad-$(VERSION).zip" \
 		"./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe" \
-		"../railroad-$(VERSION).tar.gz" \
-		"../i2p-railroad_$(VERSION)-1_amd64.deb" \
-		"../i2p-railroad_$(VERSION)-1_arm64.deb" \
+		"./railroad-$(VERSION).tar.gz" \
+		"./i2p-railroad_$(VERSION)-1_amd64.deb" \
+		"./i2p-railroad_$(VERSION)-1_arm64.deb" \
 		"./railroad-linux.su3" \
 		"./railroad-darwin.su3" \
 		"./railroad-darwin-arm64.su3" \
 		"./railroad-$(GOOS)-$(GOARCH).su3"
 	echo "PRE RELEASE ARTIFACT CHECK PASSED."
 	sleep 10s
+
+copy:
+	cp -v ./railroad-windows-amd64.exe railroad-windows-amd64-$(VERSION).exe
 
 all: clean linzip winzip macapp debs plugins nsis copy
 
@@ -145,12 +145,12 @@ file-release:
 release-upload: check file-release basic-release upload-su3s upload-debs
 
 basic-release:
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../railroad-$(VERSION).zip`" -n "railroad-$(VERSION).zip" -f "../railroad-$(VERSION).zip"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(VERSION).zip`" -n "railroad-$(VERSION).zip" -f "./railroad-$(VERSION).zip"
 	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe`" -n "railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe" -f "./railroad-$(GOOS)-$(GOARCH)-$(VERSION).exe"
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../railroad-$(VERSION).tar.gz`" -n "railroad-$(VERSION).tar.gz" -f "../railroad-$(VERSION).tar.gz"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./railroad-$(VERSION).tar.gz`" -n "railroad-$(VERSION).tar.gz" -f "./railroad-$(VERSION).tar.gz"
 
 upload-single-deb:
-	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ../i2p-railroad_$(VERSION)-1_$(GOARCH).deb`" -n "i2p-railroad_$(VERSION)-1_$(GOARCH).deb" -f "../i2p-railroad_$(VERSION)-1_$(GOARCH).deb"
+	gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum ./i2p-railroad_$(VERSION)-1_$(GOARCH).deb`" -n "i2p-railroad_$(VERSION)-1_$(GOARCH).deb" -f "./i2p-railroad_$(VERSION)-1_$(GOARCH).deb"
 
 upload-single-su3:
 	echo gothub upload -R -u $(USER_GH) -r "$(REPO_NAME)" -t $(VERSION) -l "`sha256sum "./railroad-$(GOOS)-$(GOARCH).su3"`" -n "$(REPO_NAME)-$(GOOS)-$(GOARCH).su3" -f "./railroad-$(GOOS)-$(GOARCH).su3"
@@ -197,22 +197,36 @@ plugin-config/lib/content:
 plugin-config/lib/built-in:
 	cp -r built-in plugin-config/lib/built-in
 
-plugin-linux:
-	make linux
-	make plugin-config
-	GOOS=linux make plugin-pkg
-	GOOS=linux GOARCH=arm64 make plugin-pkg
+plugin-linux: plugin-linux-amd64 plugin-linux-arm64
+
+plugin-build-linux:
+	GOOS=linux make linux
+	GOOS=linux make plugin-config
+	GOOS=linux make plugin-pkg	
+
+plugin-linux-amd64:
+	GOOS=linux GOARCH=amd64 make plugin-build-linux
+
+plugin-linux-arm64:
+	GOOS=linux GOARCH=arm64 make plugin-build-linux
 
 plugin-windows:
 	GOOS=windows make railroad-windows.exe
 	GOOS=windows make plugin-config
 	GOOS=windows make plugin-pkg
 
-plugin-darwin:
-	GOOS=darwin make osx
+plugin-darwin: plugin-darwin-amd64 plugin-darwin-arm64
+
+plugin-build-darwin:
+	GOOS=darwin make darwin
 	GOOS=darwin make plugin-config
-	GOOS=darwin make plugin-pkg
-	GOOS=darwin GOARCH=arm64 make plugin-pkg
+	GOOS=darwin make plugin-pkg	
+
+plugin-darwin-amd64:
+	GOOS=darwin GOARCH=amd64 make plugin-build-darwin
+
+plugin-darwin-arm64:
+	GOOS=darwin GOARCH=arm64 make plugin-build-darwin
 
 SIGNER_DIR=$(HOME)/i2p-go-keys/
 
@@ -238,5 +252,6 @@ plugin-pkg:
 		-license=MIT \
 		-targetos=$(GOOS)-$(GOARCH) \
 		-res=plugin-config/
-	cp -v railroad-$(GOOS)-$(GOARCH).su3 ../railroad-$(GOOS)-$(GOARCH).su3
-	unzip -o railroad-$(GOOS)-$(GOARCH).zip -d railroad-$(GOOS)-$(GOARCH)-zip
+	cp -v railroad-$(GOOS)-$(GOARCH).su3 ./railroad-$(GOOS)-$(GOARCH)-$(VERSION).su3
+	unzip -o railroad-$(GOOS)-$(GOARCH).zip -d railroad-$(GOOS)-$(GOARCH)-$(VERSION)-zip
+
