@@ -3,7 +3,7 @@
 ![Journey](journey.png)
 
 Really, really easy, individual-oriented I2P blogging with a low barrier to
-entry formerly based on [kabukky/journey](github.com/kabukky/journey), now
+entry formerly based on [kabukky/journey](https://github.com/kabukky/journey), now
 completely forked.
 
 The first time you run Railroad you'll need to set a password, then re-start
