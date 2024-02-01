@@ -8,308 +8,311 @@
     <meta name="keywords" content="master" />
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" type="text/css" href="showhider.css" />
+    <link rel="stylesheet" type="text/css" href="darklight.css" />
   </head>
   <body>
-    <div id="navbar">
-      <a href="#shownav">
-        Show navigation
-      </a>
-      <div id="shownav">
-        <div id="hidenav">
-          <ul>
-            <li>
-              <a href="..">
-                Up one level ^
-              </a>
-            </li>
-            <li>
-              <a href="index.html">
-                index
-              </a>
-            </li>
-            <li>
-              <a href="LICENSE.html">
-                LICENSE
-              </a>
-            </li>
-            <li>
-              <a href="index.html">
-                index.html
-              </a>
-            </li>
-          </ul>
-          <br>
-          <a href="#hidenav">
-            Hide Navigation
-          </a>
+    <input type="checkbox" id="checkboxDarkLight">
+    <div class="container">
+      <div id="navbar">
+        <a href="#shownav">
+          Show navigation
+        </a>
+        <div id="shownav">
+          <div id="hidenav">
+            <ul>
+              <li>
+                <a href="..">
+                  Up one level ^
+                </a>
+              </li>
+              <li>
+                <a href="index.html">
+                  index
+                </a>
+              </li>
+              <li>
+                <a href="LICENSE.html">
+                  LICENSE
+                </a>
+              </li>
+              <li>
+                <a href="index.html">
+                  index.html
+                </a>
+              </li>
+            </ul>
+            <br>
+            <a href="#hidenav">
+              Hide Navigation
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    <a id="returnhome" href="/">
-      /
-    </a>
-    <h1>
-      railroad
-    </h1>
-    <p>
-      <img src="journey.png" alt="Journey" />
-    </p>
-    <p>
-      Really, really easy, individual-oriented I2P blogging with a low barrier to
-      entry formerly based on
-      <a href="github.com/kabukky/journey">
-        kabukky/journey
+      <a id="returnhome" href="/">
+        /
       </a>
-      , now
-      completely forked.
-    </p>
-    <p>
-      The first time you run Railroad you&rsquo;ll need to set a password, then re-start
-      the application. You can do this by visiting the WebView(via the traymenu) or
-      by visiting
-      <a href="http://localhost:7672/admin/login">
-        http://localhost:7672/admin/login
-      </a>
-      .
-    </p>
-    <p>
-      Enable the SAM API: Go to
-      <a href="http://127.0.0.1:7657/configclients">
-        http://127.0.0.1:7657/configclients
-      </a>
-      . Find the menu
-      item called &ldquo;SAM application bridge.&rdquo; Select &ldquo;Run at Startup&rdquo; and press the small
-      arrow to the right of the text.
-    </p>
-    <ul>
-      <li>
-        Easy: Markdown-based blogging with Side-by-Side WYSIWYG output for your
-        blog&rsquo;s content. Edit live with a rich, intuitive interface.
-      </li>
-      <li>
-        Low barrier to Entry: Run on a desktop PC with any operating system. When
-        it&rsquo;s running, it shows up as an application in your system tray.
-      </li>
-      <li>
-        Individual-oriented: Host it anywhere you can install an I2P router, no
-        third-party hosting required. No complicated server setup.
-      </li>
-    </ul>
-    <p>
-      <strong>
-        Windows Users:
-      </strong>
-      On Windows this application depends on the presence of WebView2
-      libraries. If they aren&rsquo;t present, the application will attempt to automatically
-      download and install them. This is normal. If you do not want the application to
-      do it, then you should do it yourself:
-      <a href="https://developer.microsoft.com/en-us/microsoft-edge/webview2/">
-        https://developer.microsoft.com/en-us/microsoft-edge/webview2/
-      </a>
-      .
-    </p>
-    <h2>
-      Get it:
-    </h2>
-    <p>
-      <img src="menu.png" alt="Menu" />
-    </p>
-    <p>
-      The first time you run
-      <code>
+      <h1>
         railroad
-      </code>
-      you&rsquo;ll need to set up an account. Go to
-      <a href="http://localhost:7672/admin/login/">
-        http://localhost:7672/admin/login/
-      </a>
-      and
-      fill in your username and password. Restart the plugin and your site will
-      become available.
-    </p>
-    <ul>
-      <li>
-        <p>
-          Windows I2P Plugin:
-          <a href="http://idk.i2p/railroad/railroad-windows-amd64.su3">
-            http://idk.i2p/railroad/railroad-windows-amd64.su3
-          </a>
-        </p>
-      </li>
-      <li>
-        <p>
-          Linux I2P Plugin:
-          <a href="http://idk.i2p/railroad/railroad-linux-amd64.su3">
-            http://idk.i2p/railroad/railroad-linux-amd64.su3
-          </a>
-        </p>
-      </li>
-      <li>
-        <p>
-          Linux ARM64 I2P Plugin:
-          <a href="http://idk.i2p/railroad/railroad-linux-arm64.su3">
-            http://idk.i2p/railroad/railroad-linux-arm64.su3
-          </a>
-        </p>
-      </li>
-      <li>
-        <p>
-          Binary Releases:
-          <a href="https://github.com/eyedeekay/railroad/releases">
-            Github
-          </a>
-        </p>
-      </li>
-      <li>
-        <p>
-          Source Code:
-          <a href="https://i2pgit.org/idk/railroad">
-            i2pgit.org
-          </a>
-        </p>
-      </li>
-    </ul>
-    <h2>
-      OSX Builds
-    </h2>
-    <p>
-      I have no idea if these will work:
-    </p>
-    <ul>
-      <li>
-        Darwin I2P Plugin:
-        <a href="http://idk.i2p/railroad/railroad-darwin-amd64.su3">
-          http://idk.i2p/railroad/railroad-darwin-amd64.su3
+      </h1>
+      <p>
+        <img src="journey.png" alt="Journey" />
+      </p>
+      <p>
+        Really, really easy, individual-oriented I2P blogging with a low barrier to
+        entry formerly based on
+        <a href="github.com/kabukky/journey">
+          kabukky/journey
         </a>
-      </li>
-      <li>
-        Darwin ARM64 I2P Plugin:
-        <a href="http://idk.i2p/railroad/railroad-darwin-arm64.su3">
-          http://idk.i2p/railroad/railroad-darwin-arm64.su3
+        , now
+        completely forked.
+      </p>
+      <p>
+        The first time you run Railroad you&rsquo;ll need to set a password, then re-start
+        the application. You can do this by visiting the WebView(via the traymenu) or
+        by visiting
+        <a href="http://localhost:7672/admin/login">
+          http://localhost:7672/admin/login
         </a>
-      </li>
-    </ul>
-    <h2>
-      build from source
-    </h2>
-    <p>
-      <img src="edit.png" alt="Editing a post" />
-    </p>
-    <pre><code>    go get -u i2pgit.org/idk/railroad
+        .
+      </p>
+      <p>
+        Enable the SAM API: Go to
+        <a href="http://127.0.0.1:7657/configclients">
+          http://127.0.0.1:7657/configclients
+        </a>
+        . Find the menu
+        item called &ldquo;SAM application bridge.&rdquo; Select &ldquo;Run at Startup&rdquo; and press the small
+        arrow to the right of the text.
+      </p>
+      <ul>
+        <li>
+          Easy: Markdown-based blogging with Side-by-Side WYSIWYG output for your
+          blog&rsquo;s content. Edit live with a rich, intuitive interface.
+        </li>
+        <li>
+          Low barrier to Entry: Run on a desktop PC with any operating system. When
+          it&rsquo;s running, it shows up as an application in your system tray.
+        </li>
+        <li>
+          Individual-oriented: Host it anywhere you can install an I2P router, no
+          third-party hosting required. No complicated server setup.
+        </li>
+      </ul>
+      <p>
+        <strong>
+          Windows Users:
+        </strong>
+        On Windows this application depends on the presence of WebView2
+        libraries. If they aren&rsquo;t present, the application will attempt to automatically
+        download and install them. This is normal. If you do not want the application to
+        do it, then you should do it yourself:
+        <a href="https://developer.microsoft.com/en-us/microsoft-edge/webview2/">
+          https://developer.microsoft.com/en-us/microsoft-edge/webview2/
+        </a>
+        .
+      </p>
+      <h2>
+        Get it:
+      </h2>
+      <p>
+        <img src="menu.png" alt="Menu" />
+      </p>
+      <p>
+        The first time you run
+        <code>
+          railroad
+        </code>
+        you&rsquo;ll need to set up an account. Go to
+        <a href="http://localhost:7672/admin/login/">
+          http://localhost:7672/admin/login/
+        </a>
+        and
+        fill in your username and password. Restart the plugin and your site will
+        become available.
+      </p>
+      <ul>
+        <li>
+          <p>
+            Windows I2P Plugin:
+            <a href="http://idk.i2p/railroad/railroad-windows-amd64.su3">
+              http://idk.i2p/railroad/railroad-windows-amd64.su3
+            </a>
+          </p>
+        </li>
+        <li>
+          <p>
+            Linux I2P Plugin:
+            <a href="http://idk.i2p/railroad/railroad-linux-amd64.su3">
+              http://idk.i2p/railroad/railroad-linux-amd64.su3
+            </a>
+          </p>
+        </li>
+        <li>
+          <p>
+            Linux ARM64 I2P Plugin:
+            <a href="http://idk.i2p/railroad/railroad-linux-arm64.su3">
+              http://idk.i2p/railroad/railroad-linux-arm64.su3
+            </a>
+          </p>
+        </li>
+        <li>
+          <p>
+            Binary Releases:
+            <a href="https://github.com/eyedeekay/railroad/releases">
+              Github
+            </a>
+          </p>
+        </li>
+        <li>
+          <p>
+            Source Code:
+            <a href="https://i2pgit.org/idk/railroad">
+              i2pgit.org
+            </a>
+          </p>
+        </li>
+      </ul>
+      <h2>
+        OSX Builds
+      </h2>
+      <p>
+        I have no idea if these will work:
+      </p>
+      <ul>
+        <li>
+          Darwin I2P Plugin:
+          <a href="http://idk.i2p/railroad/railroad-darwin-amd64.su3">
+            http://idk.i2p/railroad/railroad-darwin-amd64.su3
+          </a>
+        </li>
+        <li>
+          Darwin ARM64 I2P Plugin:
+          <a href="http://idk.i2p/railroad/railroad-darwin-arm64.su3">
+            http://idk.i2p/railroad/railroad-darwin-arm64.su3
+          </a>
+        </li>
+      </ul>
+      <h2>
+        build from source
+      </h2>
+      <p>
+        <img src="edit.png" alt="Editing a post" />
+      </p>
+      <pre><code>    go get -u i2pgit.org/idk/railroad
 </code></pre>
-    <h2>
-      build a &lsquo;package&rsquo;
-    </h2>
-    <p>
-      If your GOPATH is unset, set it to $HOME/go
-    </p>
-    <pre><code>    export GOPATH=$HOME/go
+      <h2>
+        build a &lsquo;package&rsquo;
+      </h2>
+      <p>
+        If your GOPATH is unset, set it to $HOME/go
+      </p>
+      <pre><code>    export GOPATH=$HOME/go
 </code></pre>
-    <p>
-      If your $GOPATH is set, leave it as-is.
-    </p>
-    <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
+      <p>
+        If your $GOPATH is set, leave it as-is.
+      </p>
+      <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
     git clone https://i2pgit.org/idk/railroad \
       $GOPATH/src/i2pgit.org/idk/railroad
     cd $GOPATH/src/i2pgit.org/idk/railroad
     make releases
 </code></pre>
-    <h2>
-      install a package
-    </h2>
-    <p>
-      Enable the SAM API: Go to
-      <a href="http://127.0.0.1:7657/configclients">
-        http://127.0.0.1:7657/configclients
-      </a>
-      . Find the menu
-      item called &ldquo;SAM application bridge.&rdquo; Select &ldquo;Run at Startup&rdquo; and press the small
-      arrow to the right of the text.
-    </p>
-    <p>
-      <img src="configclients.png" alt="SAM API Screenshot" />
-    </p>
-    <p>
-      Download the package for your platform,
-      <code>
-        zip
-      </code>
-      for Windows,
-      <code>
-        tar.gz
-      </code>
-      for Linux.
-      Unzip the package and double-click the
-      <code>
-        railroad.exe
-      </code>
-      file for Windows or the
-      <code>
-        railroad
-      </code>
-      file for Linux.
-    </p>
-    <h3>
-      build your own deb
-    </h3>
-    <p>
-      Using
-      <code>
-        checkinstall
-      </code>
-      to generate a deb is done for you:
-    </p>
-    <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
+      <h2>
+        install a package
+      </h2>
+      <p>
+        Enable the SAM API: Go to
+        <a href="http://127.0.0.1:7657/configclients">
+          http://127.0.0.1:7657/configclients
+        </a>
+        . Find the menu
+        item called &ldquo;SAM application bridge.&rdquo; Select &ldquo;Run at Startup&rdquo; and press the small
+        arrow to the right of the text.
+      </p>
+      <p>
+        <img src="configclients.png" alt="SAM API Screenshot" />
+      </p>
+      <p>
+        Download the package for your platform,
+        <code>
+          zip
+        </code>
+        for Windows,
+        <code>
+          tar.gz
+        </code>
+        for Linux.
+        Unzip the package and double-click the
+        <code>
+          railroad.exe
+        </code>
+        file for Windows or the
+        <code>
+          railroad
+        </code>
+        file for Linux.
+      </p>
+      <h3>
+        build your own deb
+      </h3>
+      <p>
+        Using
+        <code>
+          checkinstall
+        </code>
+        to generate a deb is done for you:
+      </p>
+      <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
     git clone https://i2pgit.org/idk/railroad \
       $GOPATH/src/i2pgit.org/idk/railroad
     cd $GOPATH/src/i2pgit.org/idk/railroad
     make checkinstall
     sudo apt-get install ./i2p-railroad_0.0.01-1_amd64.deb
 </code></pre>
-    <p>
-      will set up railroad on Debian and Ubuntu for your system.
-    </p>
-    <h2>
-      install using
-      <code>
-        make install
-      </code>
-    </h2>
-    <p>
-      When using make install a wrapper script is installed to set up railroad in
-      the user&rsquo;s $HOME/.config/railroad directory. It&rsquo;s installed to
-      <code>
-        /usr/local/bin/railroad
-      </code>
-      .
-    </p>
-    <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
+      <p>
+        will set up railroad on Debian and Ubuntu for your system.
+      </p>
+      <h2>
+        install using
+        <code>
+          make install
+        </code>
+      </h2>
+      <p>
+        When using make install a wrapper script is installed to set up railroad in
+        the user&rsquo;s $HOME/.config/railroad directory. It&rsquo;s installed to
+        <code>
+          /usr/local/bin/railroad
+        </code>
+        .
+      </p>
+      <pre><code>    mkdir -p $GOPATH/src/i2pgit.org/idk/railroad
     git clone https://i2pgit.org/idk/railroad \
       $GOPATH/src/i2pgit.org/idk/railroad
     cd $GOPATH/src/i2pgit.org/idk/railroad
     sudo make install
 </code></pre>
-    <div id="sourcecode">
-      <span id="sourcehead">
-        <strong>
-          Get the source code:
-        </strong>
-      </span>
-      <ul>
-        <li>
-          <a href="https://github.com/eyedeekay/railroad">
-            Source Repository: (https://github.com/eyedeekay/railroad)
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div>
-      <a href="#show">
-        Show license
-      </a>
-      <div id="show">
-        <div id="hide">
-          <pre><code>The MIT License (MIT)
+      <div id="sourcecode">
+        <span id="sourcehead">
+          <strong>
+            Get the source code:
+          </strong>
+        </span>
+        <ul>
+          <li>
+            <a href="https://github.com/eyedeekay/railroad.git">
+              Source Repository: (https://github.com/eyedeekay/railroad.git)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <a href="#show">
+          Show license
+        </a>
+        <div id="show">
+          <div id="hide">
+            <pre><code>The MIT License (MIT)
 
 Copyright (c) 2015 kabukky
 
@@ -331,9 +334,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </code></pre>
-          <a href="#hide">
-            Hide license
-          </a>
+            <a href="#hide">
+              Hide license
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -342,7 +346,7 @@ SOFTWARE.
     </div>
     <div>
       <a href="https://geti2p.net/">
-        <img src="i2plogo.png"></img>
+        <img class="i2plogo" src="i2plogo.png"></img>
         I2P
       </a>
     </div>
