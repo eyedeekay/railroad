@@ -168,14 +168,6 @@ upload-su3s:
 	GOOS=darwin GOARCH=arm64 make upload-single-su3
 
 download-su3s:
-	GOOS=windows make download-single-su3
-	GOOS=linux make download-single-su3
-	GOOS=linux GOARCH=arm64 make download-single-su3
-	GOOS=darwin make download-single-su3
-	GOOS=darwin GOARCH=arm64 make download-single-su3
-
-download-single-su3:
-	wget-ds "https://github.com/$(USER_GH)/$(REPO_NAME)/releases/download/$(VERSION)/$(REPO_NAME)-$(GOOS)-$(GOARCH).su3"
 
 plugins: plugin-config plugin-linux plugin-darwin plugin-config plugin-windows
 
